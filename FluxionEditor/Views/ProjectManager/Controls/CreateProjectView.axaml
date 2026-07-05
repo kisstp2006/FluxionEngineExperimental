@@ -17,16 +17,19 @@
   
     <StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <ListBox Width="200" Height="250"></ListBox>
-            <Border Background="DimGray" Width="480" Height="250" Margin="5,0,0,0"></Border>
+            <ListBox Width="200" Height="250" ItemsSource="{Binding ProjectTemplates}">
+            </ListBox>
+            <Border Background="DimGray" Width="480" Height="250" Margin="5,0,0,0">
+            
+            </Border>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
             <TextBlock Text="Name" Width="50" VerticalAlignment="Center"></TextBlock>
-            <TextBox Width="550" Text="{Binding Name}"></TextBox>
+            <TextBox Width="550" Text="{Binding ProjectName}"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,0">
             <TextBlock Text="Path" Width="50" VerticalAlignment="Center"></TextBlock>
-            <TextBox Width="470" Text="{Binding Path}"></TextBox>
+            <TextBox Width="470" Text="{Binding ProjectPath}"></TextBox>
             <Button Width="75" Margin="5,0,0,0">Browse</Button>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">

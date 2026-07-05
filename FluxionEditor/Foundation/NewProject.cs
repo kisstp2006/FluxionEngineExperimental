@@ -8,6 +8,8 @@ using System.Text;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 using FluxionEditor.Foundation.Utilities;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 
 namespace FluxionEditor.Foundation
@@ -25,6 +27,17 @@ namespace FluxionEditor.Foundation
 
         [DataMember]
         public List<string> Folders { get; set; }
+
+        public byte[] Icon { get; set; }
+        public string IconFilePath { get; set; }
+
+        public byte[] Screenshot { get; set; }
+        public string ScreenshotFilePath { get; set; }
+
+        public string ProjectFilePath { get; set; }
+
+
+
     }
 
     class NewProject : ViewModelBase
@@ -32,12 +45,12 @@ namespace FluxionEditor.Foundation
         private readonly string _templatePaths = @"..\..\FluxionEditor\ProjectTemplates"; //TODO DONT HARDCODE THIS PATH, USE RELATIVE PATHS OR CONFIGURATION FILES
 
         private string _projectname = "Fluxion Game";
-        public string Name { 
+        public string ProjectName { 
             get { return _projectname; } 
             set { if (_projectname != value) 
                 { 
                     _projectname = value; 
-                    OnPropertyChanged(nameof(Name));
+                    OnPropertyChanged(nameof(ProjectName));
                 } 
             } 
         }
@@ -45,7 +58,7 @@ namespace FluxionEditor.Foundation
 
         private string _projectpath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\FluxionProject\";
 
-        public string Path
+        public string ProjectPath
         {
             get { return _projectpath; }
             set
@@ -53,29 +66,33 @@ namespace FluxionEditor.Foundation
                 if (_projectpath != value)
                 {
                     _projectpath = value;
-                    OnPropertyChanged(nameof(Path));
+                    OnPropertyChanged(nameof(ProjectPath));
                 }
             }
         }
+
+        private ObservableCollection<ProjectTemplate> _projectTemplates = new ObservableCollection<ProjectTemplate>();
+        public ReadOnlyObservableCollection<ProjectTemplate> ProjectTemplates { get; }
+
+
         public NewProject()
         {
+            ProjectTemplates = new ReadOnlyObservableCollection<ProjectTemplate>(_projectTemplates);
             try
             {
                 var templateFiles = Directory.GetFiles(_templatePaths, "template.xml", SearchOption.AllDirectories);
 
-                Debug.Assert(templateFiles.Length <1, "No project templates found in the specified path.");
+                Debug.Assert(templateFiles.Any(), "No project templates found in the specified path.");
 
                 foreach (var Files in templateFiles)
                 {
-                    var template = new ProjectTemplate()
-                    {
-                        ProjectType = "Empty Project",
-                        ProjectFile = "project.fluxion",
-                        Folders = new List<string> {".Fluxion", "Assets", "Scripts", "Scenes" }
+                   var template =  Serializer.FromFile<ProjectTemplate>(ProjectPath);
+                    template.IconFilePath = System.IO.Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Files),"icon.png"));
+                    template.Icon = System.IO.File.ReadAllBytes(template.IconFilePath);
+                    template.ScreenshotFilePath = System.IO.Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Files), "screenshot.png"));
+                    template.Screenshot = System.IO.File.ReadAllBytes(template.ScreenshotFilePath);
 
-                    };
-
-                    Serializer.ToFile(template, Files);
+                    _projectTemplates.Add(template);
                 }
             }
             catch (Exception ex)

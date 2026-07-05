@@ -29,5 +29,26 @@ namespace FluxionEditor.Foundation.Utilities
             }
 
         }
+
+        internal static T FromFile<T>(string filePath)
+        {
+            try
+            {
+                using var fs = new FileStream(filePath, FileMode.Open);
+                var serializer = new XmlSerializer(typeof(T));
+                T instance = (T)serializer.Deserialize(fs);
+
+                return instance;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                MessageBox.Error(ex.Message);
+
+
+                //TODO : Log the exception to a file or logging system
+                return default(T);
+            }
+        }
     }
 }
