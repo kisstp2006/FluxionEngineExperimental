@@ -22,7 +22,7 @@
   
     <StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-            <ListBox Width="200" Height="250" ItemsSource="{Binding ProjectTemplates}" x:Name="template_list">
+            <ListBox Width="200" Height="250" ItemsSource="{Binding ProjectTemplates}" x:Name="template_list" SelectedIndex="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="foundation:ProjectTemplate">
                         <StackPanel Orientation="Horizontal">
