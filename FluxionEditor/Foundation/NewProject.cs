@@ -146,6 +146,55 @@ namespace FluxionEditor.Foundation
         }
 
 
+        public string CreateProject(ProjectTemplate template)
+        {
+            ValidateProjectPath();
+            if (!IsValidProjectPath)
+            {
+                return "";
+            }
+
+            if (!Path.EndsInDirectorySeparator(ProjectPath)) 
+               ProjectPath += Path.DirectorySeparatorChar;
+            
+            var path = $@"{ProjectPath}{ProjectName}" + Path.DirectorySeparatorChar;
+
+            try
+            {
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+
+                foreach (var folder in template.Folders)
+                    {
+                        var folderPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(path), folder));
+                        Directory.CreateDirectory(folderPath);
+                    }
+
+                    var dirinfo = new DirectoryInfo(path + @".Fluxion\");
+                    dirinfo.Attributes |= FileAttributes.Hidden;
+                    File.Copy(template.IconFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "icon.png")));
+                    File.Copy(template.IconFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "screenshot.png")));
+
+                    var project = new Project(ProjectName, path);
+
+                    Serializer.ToFile(project,template.ProjectFilePath);
+
+
+                return "";
+                
+
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Error creating project: {ex.Message}");
+                MessageBox.Error($"Error creating project: {ex.Message}", "Error");
+                return "";
+            }
+        }
+
+
         public NewProject()
         {
             ProjectTemplates = new ReadOnlyObservableCollection<ProjectTemplate>(_projectTemplates);
