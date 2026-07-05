@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ProjectTemplate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectType>Top Down Project</ProjectType>
+  <ProjectFile>project.fluxion</ProjectFile>
+  <Folders>
+    <string>.Fluxion</string>
+    <string>Assets</string>
+    <string>Scripts</string>
+    <string>Scenes</string>
+  </Folders>
+</ProjectTemplate>

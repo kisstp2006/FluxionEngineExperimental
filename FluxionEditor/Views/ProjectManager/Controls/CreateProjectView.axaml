@@ -7,12 +7,12 @@
              xmlns:reflection="using:System.Reflection"
              xmlns:system="using:System"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:DataType="foundation:ProjectProperty"
+             x:DataType="foundation:NewProject"
              x:Class="FluxionEditor.CreateProjectView"
              Width="800">
 
     <UserControl.DataContext>
-        <foundation:ProjectProperty></foundation:ProjectProperty>
+        <foundation:NewProject></foundation:NewProject>
     </UserControl.DataContext>
   
     <StackPanel>
