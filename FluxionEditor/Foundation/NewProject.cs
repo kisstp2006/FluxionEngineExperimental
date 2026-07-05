@@ -49,7 +49,8 @@ namespace FluxionEditor.Foundation
             get { return _projectname; } 
             set { if (_projectname != value) 
                 { 
-                    _projectname = value; 
+                    _projectname = value;
+                    ValidateProjectPath();
                     OnPropertyChanged(nameof(ProjectName));
                 } 
             } 
@@ -73,6 +74,76 @@ namespace FluxionEditor.Foundation
 
         private ObservableCollection<ProjectTemplate> _projectTemplates = new ObservableCollection<ProjectTemplate>();
         public ReadOnlyObservableCollection<ProjectTemplate> ProjectTemplates { get; }
+
+        private bool _isValidProjectPath;
+        public bool IsValidProjectPath
+        {
+            get { return _isValidProjectPath; }
+            set
+            {
+                if (_isValidProjectPath != value)
+                {
+                    _isValidProjectPath = value;
+                    OnPropertyChanged(nameof(IsValidProjectPath));
+                }
+            }
+        }
+
+
+        private string _errorMessage;
+        public string ErrorMessage
+        {
+            get { return _errorMessage; }
+            set
+            {
+                if (_errorMessage != value)
+                {
+                    _errorMessage = value;
+                    OnPropertyChanged(nameof(ErrorMessage));
+                }
+            }
+        }
+
+
+        private bool ValidateProjectPath()
+        {
+             
+            var path = ProjectPath;
+            if (!path.EndsWith(Path.DirectorySeparatorChar.ToString())) path += Path.DirectorySeparatorChar;
+
+            path += $@"{ProjectName}" + Path.DirectorySeparatorChar;
+
+            IsValidProjectPath = false;
+
+            if(string.IsNullOrWhiteSpace(ProjectName.Trim()))
+            {
+                ErrorMessage = "Project name cannot be empty or white space.";
+                
+            }
+            else if(ProjectName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+            {
+                ErrorMessage = "Project name cannot be incorrect character(s).";
+            }
+            else if (string.IsNullOrWhiteSpace(ProjectPath.Trim()))
+            {
+                ErrorMessage = "Project path cannot be empty or white space.";
+            }
+            else if (ProjectPath.IndexOfAny(Path.GetInvalidPathChars()) != -1)
+            {
+                ErrorMessage = "Project path cannot be incorrect character(s).";
+            }
+            else if (Directory.Exists(path))
+            {
+                ErrorMessage = "Project path already exists.";
+            }
+            else
+            {
+                IsValidProjectPath = true;
+                ErrorMessage = string.Empty;
+            }
+
+            return IsValidProjectPath;
+        }
 
 
         public NewProject()
@@ -101,6 +172,7 @@ namespace FluxionEditor.Foundation
 
                     _projectTemplates.Add(template);
                 }
+                ValidateProjectPath();
             }
             catch (Exception ex)
             {

@@ -9,7 +9,7 @@
         x:Class="FluxionEditor.ProjectManagerDialog"
         Title="ProjectManager"
         Width="800"
-        Height="500"
+        Height="600"
         CanResize="False"
         WindowStartupLocation="CenterScreen">
 
