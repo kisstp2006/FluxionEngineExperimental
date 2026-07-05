@@ -1,0 +1,9 @@
+<Solution>
+  <Configurations>
+    <Platform Name="Any CPU" />
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="FluxionEditor/FluxionEditor.csproj" Id="5d970013-25d2-4fe4-9c17-de44a027d151" />
+  <Project Path="Engine/Engine.vcxproj" Id="7143fbd3-2c65-4a75-b433-25bc665152f8" />
+</Solution>

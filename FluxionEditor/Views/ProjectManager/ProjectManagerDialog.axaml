@@ -1,0 +1,62 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:local="using:FluxionEditor"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        d:DesignWidth="800"
+        d:DesignHeight="500"
+        x:Class="FluxionEditor.ProjectManagerDialog"
+        Title="ProjectManager"
+        Width="800"
+        Height="500"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen">
+
+    <Grid ClipToBounds="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Center"
+                    Margin="0,20,0,20">
+            <ToggleButton x:Name="openProjectBtn"
+                          FontSize="22"
+                          FontFamily="Default"
+                          Margin="25,0,0,0"
+                          Click="ToggleView"
+                          IsChecked="true">
+                Open Project
+            </ToggleButton>
+
+            <ToggleButton x:Name="createProjectBtn"
+                          FontSize="22"
+                          FontFamily="Default"
+                          Margin="25,0,0,0"
+                          Click="ToggleView"
+                          IsChecked="false">
+                Create Project
+            </ToggleButton>
+        </StackPanel>
+
+        <!-- Ez a viewport. Csak 800 széles részt enged látszani. -->
+        <Border Grid.Row="1"
+                Width="800"
+                ClipToBounds="True"
+                HorizontalAlignment="Left">
+
+            <!-- Ez lehet 1600 széles, de a Border levágja. -->
+            <StackPanel Orientation="Horizontal"
+                        x:Name="managerContent">
+                <local:OpenProjectView>
+                    
+                </local:OpenProjectView>
+                <local:CreateProjectView>
+                    
+                </local:CreateProjectView>
+            </StackPanel>
+        </Border>
+    </Grid>
+</Window>
