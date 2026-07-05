@@ -2,6 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:foundation="using:FluxionEditor.Foundation"
+             xmlns:utilities="using:FluxionEditor.Foundation.Utilities"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:metadata="using:System.Reflection.Metadata"
              xmlns:reflection="using:System.Reflection"
@@ -11,6 +12,10 @@
              x:Class="FluxionEditor.CreateProjectView"
              Width="800">
 
+    <UserControl.Resources>
+        <utilities:ByteArrayToBitmapConverter x:Key="ByteToBitmapConverter"/>
+    </UserControl.Resources>
+
     <UserControl.DataContext>
         <foundation:NewProject></foundation:NewProject>
     </UserControl.DataContext>
@@ -19,9 +24,9 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <ListBox Width="200" Height="250" ItemsSource="{Binding ProjectTemplates}" x:Name="template_list">
                 <ListBox.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="foundation:ProjectTemplate">
                         <StackPanel Orientation="Horizontal">
-                           <Image Source="{Binding Icon}" Width="32" Height="32" Margin="0,0,5,0"></Image>
+                           <Image Source="{Binding Icon, Converter={StaticResource ByteToBitmapConverter}}" Width="32" Height="32" Margin="0,0,5,0"></Image>
                             <TextBlock Text="{Binding ProjectType}" VerticalAlignment="Center"></TextBlock>
                         </StackPanel>
                     </DataTemplate>
@@ -30,7 +35,7 @@
             <Border Background="DimGray" Width="480" Height="250" Margin="5,0,0,0"
                     x:CompileBindings="False">
                 <Border.Background>
-                    <ImageBrush Source="{Binding SelectedItem.PreviewImage, ElementName=template_list}"></ImageBrush>
+                    <ImageBrush Source="{Binding SelectedItem.Screenshot, Converter={StaticResource ByteToBitmapConverter}, ElementName=template_list}"></ImageBrush>
                 </Border.Background>
             </Border>
         </StackPanel>
