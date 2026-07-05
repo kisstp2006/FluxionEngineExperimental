@@ -21,7 +21,7 @@ namespace FluxionEditor.Foundation
         }
 
 
-        private string _projectpath = "";
+        private string _projectpath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\FluxionProject\";
 
         public string Path
         {
