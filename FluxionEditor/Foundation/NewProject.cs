@@ -86,11 +86,18 @@ namespace FluxionEditor.Foundation
 
                 foreach (var Files in templateFiles)
                 {
-                   var template =  Serializer.FromFile<ProjectTemplate>(ProjectPath);
+                   var template =  Serializer.FromFile<ProjectTemplate>(Files);
+                    if (template == null) continue;
                     template.IconFilePath = System.IO.Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Files),"icon.png"));
-                    template.Icon = System.IO.File.ReadAllBytes(template.IconFilePath);
+                    if (!string.IsNullOrEmpty(template.IconFilePath) && File.Exists(template.IconFilePath))
+                    {
+                        template.Icon = File.ReadAllBytes(template.IconFilePath);
+                    }
                     template.ScreenshotFilePath = System.IO.Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Files), "screenshot.png"));
-                    template.Screenshot = System.IO.File.ReadAllBytes(template.ScreenshotFilePath);
+                    if (!string.IsNullOrEmpty(template.ScreenshotFilePath) && File.Exists(template.ScreenshotFilePath))
+                    {
+                        template.Screenshot = File.ReadAllBytes(template.ScreenshotFilePath);
+                    }
 
                     _projectTemplates.Add(template);
                 }
