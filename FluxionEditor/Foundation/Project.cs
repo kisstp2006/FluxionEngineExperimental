@@ -118,12 +118,12 @@ namespace FluxionEditor.Foundation
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
+            // Ensure the backing collection is never null (field initializer may not run during deserialization)
+            _scenes ??= new ObservableCollection<Scene>();
+
             // Re-wrap scene collection for read-only public access
-            if (_scenes != null)
-            {
-                Scenes = new ReadOnlyObservableCollection<Scene>(_scenes);
-                OnPropertyChanged(nameof(Scenes));
-            }
+            Scenes = new ReadOnlyObservableCollection<Scene>(_scenes);
+            OnPropertyChanged(nameof(Scenes));
 
             ActiveScene = Scenes?.FirstOrDefault(x => x.IsActive);
 

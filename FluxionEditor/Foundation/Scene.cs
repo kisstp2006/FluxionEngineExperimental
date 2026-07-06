@@ -63,7 +63,7 @@ namespace FluxionEditor.Foundation
         // ── GameObjects ─────────────────────────────────────────────
 
         [DataMember(Name = nameof(GameObjects))]
-        private readonly ObservableCollection<GameObject> _gameObjects = new ObservableCollection<GameObject>();
+        private ObservableCollection<GameObject> _gameObjects = new ObservableCollection<GameObject>();
         public ReadOnlyObservableCollection<GameObject> GameObjects { get; private set; }
 
         public ICommand AddGameObjectCommand { get; private set; }
@@ -92,24 +92,25 @@ namespace FluxionEditor.Foundation
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (_gameObjects != null)
-            {
-                GameObjects = new ReadOnlyObservableCollection<GameObject>(_gameObjects);
-                OnPropertyChanged(nameof(GameObjects));
-            }
+            // Ensure the backing collection is never null (field initializer may not run during deserialization)
+            _gameObjects ??= new ObservableCollection<GameObject>();
+
+            // Re-wrap for read-only public access
+            GameObjects = new ReadOnlyObservableCollection<GameObject>(_gameObjects);
+            OnPropertyChanged(nameof(GameObjects));
 
             // ── Add GameObject command ──
 
-            AddGameObjectCommand = new RelayCommand<GameObject>(x =>
+            AddGameObjectCommand = new RelayCommand<object>(_ =>
             {
-                if (x == null) return;
-                AddGameObjectInternal(x);
+                var newObj = new GameObject(this) { Name = $"GameObject {_gameObjects.Count}" };
+                AddGameObjectInternal(newObj);
                 var gameObjectIndex = _gameObjects.Count - 1;
 
                 Project?.UndoRedo.Add(new UndoRedoCommand(
-                    $"Add {x.Name} to {Name}",
-                    execute: () => _gameObjects.Insert(gameObjectIndex, x),
-                    undo: () => RemoveGameObjectInternal(x)
+                    $"Add {newObj.Name} to {Name}",
+                    execute: () => _gameObjects.Insert(gameObjectIndex, newObj),
+                    undo: () => RemoveGameObjectInternal(newObj)
                 ));
             });
 

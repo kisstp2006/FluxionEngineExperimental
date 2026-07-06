@@ -36,7 +36,7 @@ namespace FluxionEditor.Foundation.Components
         // ── Components ──
 
         [DataMember(Name = nameof(Components))]
-        private readonly ObservableCollection<Component> _components = new ObservableCollection<Component>();
+        private ObservableCollection<Component> _components = new ObservableCollection<Component>();
 
         public ReadOnlyObservableCollection<Component> Components { get; private set; } = null!;
 
@@ -60,8 +60,9 @@ namespace FluxionEditor.Foundation.Components
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if (_components != null)
-                Components = new ReadOnlyObservableCollection<Component>(_components);
+            // Ensure the backing collection is never null (field initializer may not run during deserialization)
+            _components ??= new ObservableCollection<Component>();
+            Components = new ReadOnlyObservableCollection<Component>(_components);
         }
     }
 }

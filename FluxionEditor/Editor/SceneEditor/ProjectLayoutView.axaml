@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:foundation="using:FluxionEditor.Foundation"
+             xmlns:components="using:FluxionEditor.Foundation.Components"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.ProjectLayoutView"
              x:DataType="foundation:Project"
@@ -41,17 +42,29 @@
                                   HorizontalContentAlignment="Stretch">
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="{Binding Name}"/>
-                                    <Button  Command="{Binding DataContext.RemoveSceneCommand, ElementName=Root}"
-                                             CommandParameter="{Binding}">Remove Scene</Button>
-                                    <Button Command="{Binding AddGameObjectCommand}">Add Game Object to scene</Button>
+                                    <TextBlock Text="{Binding Name}"
+                                               VerticalAlignment="Center"/>
+                                    <Button Command="{Binding DataContext.RemoveSceneCommand, ElementName=Root}"
+                                            CommandParameter="{Binding}">Remove Scene</Button>
+                                    <Button IsEnabled="{Binding IsActive}"
+                                            Command="{Binding AddGameObjectCommand}">Add GameObject</Button>
                                 </StackPanel>
-                                
                             </Expander.Header>
                             <StackPanel Margin="8,4">
-                                <Border Background="Blue"
-                                        MinHeight="100"
-                                        CornerRadius="4"/>
+                                <ListBox IsEnabled="{Binding IsActive}"
+                                         ItemsSource="{Binding GameObjects}"
+                                         SelectionMode="Multiple">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate x:DataType="components:GameObject">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Name}"
+                                                           VerticalAlignment="Center"/>
+                                                <Button Command="{Binding ParentScene.RemoveGameObjectCommand}"
+                                                        CommandParameter="{Binding}">Remove</Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
                             </StackPanel>
                         </Expander>
                     </DataTemplate>
