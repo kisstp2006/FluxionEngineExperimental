@@ -57,6 +57,10 @@ namespace FluxionEditor.Foundation
         public ICommand RemoveScene { get; private set; }
 
 
+        public ICommand Undo { get; private set; }
+        public ICommand Redo { get; private set; }
+
+
         private void RemoveSceneInternal(Scene scene)
         {
             Debug.Assert(scene != null, "Scene cannot be null.");
@@ -97,11 +101,34 @@ namespace FluxionEditor.Foundation
                 AddSceneInternal($"New Scene {Scenes.Count}");
                 var newScene = _scenes.Last();
                 var sceneIndex = _scenes.Count()-1;
-                UndoRedo.Add(new UndoRedoCommand()
-                {
+                UndoRedo.Add(new UndoRedoCommand(
+                    $"Add new scene {newScene.Name}",
+                    execute: () => AddSceneInternal(newScene.Name),
+                    undo: () => RemoveSceneInternal(newScene)
+                ));
+            });
+
+            RemoveScene = new RelayCommand<Scene>(x =>
+            {
+                var sceneIndex = _scenes.IndexOf(x);
+                RemoveSceneInternal(x);
+
+                UndoRedo.Add(new UndoRedoCommand(
+                    $"Remove scene {x.Name}",
+                    execute: () => RemoveSceneInternal(x),
+                    undo: () => _scenes.Insert(sceneIndex, x)
+                ));
+            },x=>!x.IsActive);
 
 
-                });
+            Undo = new RelayCommand<object>(x =>
+            {
+                UndoRedo.Undo();
+            });
+
+            Redo = new RelayCommand<object>(x =>
+            {
+                UndoRedo.Redo();
             });
 
         }

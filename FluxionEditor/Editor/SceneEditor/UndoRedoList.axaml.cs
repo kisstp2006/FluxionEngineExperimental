@@ -1,13 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using FluxionEditor.Foundation;
 
 namespace FluxionEditor;
 
-public partial class ProjectLayoutView : UserControl
+public partial class UndoRedoList : UserControl
 {
-    public ProjectLayoutView()
+    public UndoRedoList()
     {
         InitializeComponent();
     }

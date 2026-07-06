@@ -5,7 +5,8 @@
              xmlns:foundation="using:FluxionEditor.Foundation"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.ProjectLayoutView"
-             x:DataType="foundation:Project">
+             x:DataType="foundation:Project"
+             x:Name="Root">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -19,7 +20,7 @@
                 Margin="20,0,0,0"
                 VerticalContentAlignment="Center"
                 HorizontalContentAlignment="Center"
-                Click="Add_New_Button_Click">
+                Command="{Binding AddScene}">
             Add new scene
         </Button>
 
@@ -39,7 +40,12 @@
                                   MinWidth="200"
                                   HorizontalContentAlignment="Stretch">
                             <Expander.Header>
-                                <TextBlock Text="{Binding Name}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <Button  Command="{Binding DataContext.RemoveScene, ElementName=Root}"
+                                             CommandParameter="{Binding}">Remove Scene</Button>
+                                </StackPanel>
+                                
                             </Expander.Header>
                             <StackPanel Margin="8,4">
                                 <Border Background="Blue"
