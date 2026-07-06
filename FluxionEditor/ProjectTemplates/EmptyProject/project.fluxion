@@ -1,14 +1,1 @@
-<Game z:Id="i1"
-      xmlns="http://schemas.datacontract.org/2004/07/FluxionEditor.Foundation"
-      xmlns:i="http://www.w3.org/2001/XMLSchema-instance"
-      xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/">
-    <Name>{0}</Name>
-    <Path>{1}</Path>
-    
-    <Scenes>
-        <Scene z:Id="i2">
-            <IsActive>true</IsActive>
-            <Name>Main Scene</Name>
-        </Scene>
-    </Scenes>
-</Game>
+<Game z:Id="i1" xmlns="http://schemas.datacontract.org/2004/07/FluxionEditor.Foundation" xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns:z="http://schemas.microsoft.com/2003/10/Serialization/"><Name>{0}</Name><Path>{1}</Path><Scenes><Scene z:Id="i2"><GameObjects xmlns:a="http://schemas.datacontract.org/2004/07/FluxionEditor.Foundation.Components"><a:GameObject z:Id="i3"><a:Components/><a:Name>Root</a:Name><a:ParentScene z:Ref="i2"/></a:GameObject></GameObjects><IsActive>true</IsActive><Name>Main Scene</Name></Scene></Scenes></Game>
