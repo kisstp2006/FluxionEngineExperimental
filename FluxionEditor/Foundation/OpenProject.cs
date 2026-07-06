@@ -91,7 +91,7 @@ namespace FluxionEditor.Foundation
 
             WriteProjectData();
 
-            return null;
+            return Project.Load(projectData.FullPath);
         }
 
         private static void LoadProjectMedia(ProjectData project)
