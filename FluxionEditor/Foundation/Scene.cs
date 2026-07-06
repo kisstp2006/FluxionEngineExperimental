@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FluxionEditor.Foundation.Components;
+using System;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
 
@@ -45,6 +47,9 @@ namespace FluxionEditor.Foundation
         private Scene()
         {
         }
+        [DataMember(Name = nameof(GameObjects))]
+        private readonly ObservableCollection<GameObject> _gameObjects = new ObservableCollection<GameObject>();
+        public readonly ReadOnlyObservableCollection<GameObject> GameObjects;
 
         public Scene(Project project, string name)
         {
