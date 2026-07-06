@@ -121,15 +121,25 @@ namespace FluxionEditor.Foundation
             },x=>!x.IsActive);
 
 
-            Undo = new RelayCommand<object>(x =>
+            RelayCommand<object> undoCmd = null!;
+            RelayCommand<object> redoCmd = null!;
+
+            undoCmd = new RelayCommand<object>(x =>
             {
                 UndoRedo.Undo();
-            });
+                undoCmd.NotifyCanExecuteChanged();
+                redoCmd.NotifyCanExecuteChanged();
+            }, x => UndoRedo.UndoStack.Count > 0);
 
-            Redo = new RelayCommand<object>(x =>
+            redoCmd = new RelayCommand<object>(x =>
             {
                 UndoRedo.Redo();
-            });
+                undoCmd.NotifyCanExecuteChanged();
+                redoCmd.NotifyCanExecuteChanged();
+            }, x => UndoRedo.RedoStack.Count > 0);
+
+            Undo = undoCmd;
+            Redo = redoCmd;
 
         }
 
