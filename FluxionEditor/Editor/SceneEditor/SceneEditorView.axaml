@@ -8,6 +8,13 @@
              x:Class="FluxionEditor.Editor.SceneEditorView"
              x:DataType="foundation:Project"
              Background="Blue">
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding Undo}"/>
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding Redo}"/>
+    </UserControl.KeyBindings>
+
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
