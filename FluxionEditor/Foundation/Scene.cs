@@ -25,6 +25,8 @@ namespace FluxionEditor.Foundation
         /// <summary>Not serialized — re-linked by <see cref="Project"/> after deserialization.</summary>
         public Project? Project { get; internal set; }
 
+        public bool isActive => Project.ActiveScene == this;
+
         /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
         private Scene()
         {

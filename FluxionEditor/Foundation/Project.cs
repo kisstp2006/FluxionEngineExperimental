@@ -26,6 +26,7 @@ namespace FluxionEditor.Foundation
         public ReadOnlyObservableCollection<Scene> Scenes { get; private set; }
 
         private Scene activeScene;
+        [DataMember]
         public Scene ActiveScene
         {
             get => activeScene;
