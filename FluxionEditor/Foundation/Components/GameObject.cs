@@ -8,6 +8,7 @@ namespace FluxionEditor.Foundation.Components
     /// An entity in a <see cref="Scene"/>. Can hold multiple <see cref="Component"/> instances.
     /// </summary>
     [DataContract]
+    [KnownType(typeof(Transform))] //Include new component types here for serialization
     public class GameObject : ViewModelBase
     {
         // ── Identity ──

@@ -10,7 +10,7 @@ namespace FluxionEditor.Foundation.Components
     public class Component : ViewModelBase
     {
         // ── Owner ──
-
+        [DataMember]
         public GameObject Owner { get; private set; } = null!;
 
         // ── State ──

@@ -9,10 +9,13 @@ namespace FluxionEditor.Foundation.Components
     [DataContract]
     public class Transform : Component
     {
+        /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
         public Transform() 
         { 
-            
-        
+        }
+
+        public Transform(GameObject owner) : base(owner)
+        {
         }
 
         private Vector3 _position;

@@ -113,13 +113,8 @@
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"/>
 
-                    <Grid Grid.Row="2" Background="DarkBlue">
-                        <TextBlock Text="Bottom Right"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="White"/>
-                    </Grid>
+                    <editor:InspectorView Grid.Row="2" />
                 </Grid>
             </Grid>
-        </Grid>
+    </Grid>
 </UserControl>

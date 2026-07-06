@@ -53,6 +53,7 @@
                             <StackPanel Margin="8,4">
                                 <ListBox IsEnabled="{Binding IsActive}"
                                          ItemsSource="{Binding GameObjects}"
+                                         SelectionChanged="OnGameObject_list_Selection_Changed"
                                          SelectionMode="Multiple">
                                     <ListBox.ItemTemplate>
                                         <DataTemplate x:DataType="components:GameObject">

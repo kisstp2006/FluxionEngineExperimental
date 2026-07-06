@@ -18,6 +18,13 @@ public partial class ProjectLayoutView : UserControl
         var btn = sender as Button;
         var vm = btn?.DataContext as Scene;
 
-        vm.AddGameObjectCommand.Execute(new GameObject(vm) {Name ="GameObject" });
+        vm.AddGameObjectCommand.Execute(new GameObject(vm) { Name = "GameObject" });
+    }
+
+    private void OnGameObject_list_Selection_Changed(object? sender, SelectionChangedEventArgs e)
+    {
+        var gameObject=(sender as ListBox).SelectedItems[0];
+        InspectorView.Instance.DataContext = gameObject;
+
     }
 }

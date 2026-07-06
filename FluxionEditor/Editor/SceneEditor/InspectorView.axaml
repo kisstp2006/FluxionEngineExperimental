@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:components="using:FluxionEditor.Foundation.Components"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluxionEditor.InspectorView"
+             x:DataType="components:GameObject">
+
+    <StackPanel>
+        <TextBlock Text="Name:"/>
+        <TextBox Text="{Binding Name}"
+                 Margin="0,0,0,8"/>
+
+        <TextBlock Text="Components:"/>
+        <ItemsControl ItemsSource="{Binding Components}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="components:Component">
+                    <TextBlock Text="{Binding Owner}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </StackPanel>
+</UserControl>
