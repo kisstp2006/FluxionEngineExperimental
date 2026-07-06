@@ -29,8 +29,8 @@ namespace FluxionEditor.Foundation
     [DataContract]
     public class ProjectDataCollection 
     {
-        [DataMember]
-        public List<ProjectData> _projects = new List<ProjectData>();
+        [DataMember(Name = "_projects")]
+        public List<ProjectData> Projects { get; set; } = new List<ProjectData>();
     }
 
 
@@ -49,7 +49,7 @@ namespace FluxionEditor.Foundation
             {
                 if (File.Exists(_projectDataFilePath)) 
                 { 
-                    var projects = Serializer.FromFile<ProjectDataCollection>(_projectDataFilePath)._projects.OrderByDescending(x=> x.LastModified);
+                    var projects = Serializer.FromFile<ProjectDataCollection>(_projectDataFilePath).Projects.OrderByDescending(x=> x.LastModified);
                     _projectData.Clear();
 
                     foreach (var project in projects)
@@ -69,7 +69,7 @@ namespace FluxionEditor.Foundation
         private static void WriteProjectData()
         {
             var projects = _projectData.OrderBy(x  => x.LastModified).ToList();
-            Serializer.ToFile(new ProjectDataCollection() { _projects=projects}, _projectDataFilePath);
+            Serializer.ToFile(new ProjectDataCollection() { Projects = projects }, _projectDataFilePath);
         }
 
         public static Project Open(ProjectData projectData)

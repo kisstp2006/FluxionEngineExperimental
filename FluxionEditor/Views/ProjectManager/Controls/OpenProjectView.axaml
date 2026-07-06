@@ -16,7 +16,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
             <ListBox Width="200" Height="250"
                      ItemsSource="{x:Static foundation:OpenProject.Projects}"
-                     x:Name="projectsListBox"
+                     x:Name="ProjectsListBox"
                      SelectedIndex="0"
                      DoubleTapped="OnProjectDoubleTapped">
                
@@ -33,12 +33,12 @@
             <Border Background="DimGray" Width="480" Height="250" Margin="5,0,0,0"
                     x:CompileBindings="False">
                 <Border.Background>
-                    <ImageBrush Source="{Binding SelectedItem.Screenshot, Converter={StaticResource ByteToBitmapConverter}, ElementName=projectsListBox}" />
+                    <ImageBrush Source="{Binding SelectedItem.Screenshot, Converter={StaticResource ByteToBitmapConverter}, ElementName=ProjectsListBox}" />
                 </Border.Background>
             </Border>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
-            <Button Width="100" IsDefault="True" Click="Open_Button_Click">Open</Button>
+            <Button Width="100" IsDefault="True" Click="OpenButton_Click">Open</Button>
             <Button Width="100" Margin="30,0,0,0" IsCancel="True">Exit</Button>
         </StackPanel>
     </StackPanel>

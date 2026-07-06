@@ -10,10 +10,10 @@ public partial class CreateProjectView : UserControl
         InitializeComponent();
     }
 
-    private void Create_Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void CreateButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         var vm = this.DataContext as NewProject;
-        var projectPath = vm?.CreateProject(template_list.SelectedItem as ProjectTemplate);
+        var projectPath = vm?.CreateProject(TemplateList.SelectedItem as ProjectTemplate);
 
         Project? project = null;
         if (!string.IsNullOrEmpty(projectPath))
@@ -25,7 +25,7 @@ public partial class CreateProjectView : UserControl
         window?.Close(project);
     }
 
-    private void Exit_Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void ExitButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         var window = TopLevel.GetTopLevel(this) as Window;
         window?.Close(null);

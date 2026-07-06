@@ -15,14 +15,14 @@ public partial class OpenProjectView : UserControl
         OpenSelectedProject();
     }
 
-    private void Open_Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OpenButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         OpenSelectedProject();
     }
 
     private void OpenSelectedProject()
     {
-        var project = OpenProject.Open(projectsListBox.SelectedItem as ProjectData);
+        var project = OpenProject.Open(ProjectsListBox.SelectedItem as ProjectData);
         var window = TopLevel.GetTopLevel(this) as Window;
         window?.Close(project);
     }

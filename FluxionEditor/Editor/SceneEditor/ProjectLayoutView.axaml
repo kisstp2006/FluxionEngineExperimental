@@ -20,7 +20,7 @@
                 Margin="20,0,0,0"
                 VerticalContentAlignment="Center"
                 HorizontalContentAlignment="Center"
-                Command="{Binding AddScene}">
+                Command="{Binding AddSceneCommand}">
             Add new scene
         </Button>
 
@@ -42,9 +42,9 @@
                             <Expander.Header>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="{Binding Name}"/>
-                                    <Button  Command="{Binding DataContext.RemoveScene, ElementName=Root}"
+                                    <Button  Command="{Binding DataContext.RemoveSceneCommand, ElementName=Root}"
                                              CommandParameter="{Binding}">Remove Scene</Button>
-                                    <Button>Add Game Object to scene</Button>
+                                    <Button Command="{Binding AddGameObjectCommand}">Add Game Object to scene</Button>
                                 </StackPanel>
                                 
                             </Expander.Header>

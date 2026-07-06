@@ -30,16 +30,16 @@ namespace FluxionEditor.Foundation
         private UndoRedo? _undoRedo;
         public UndoRedo UndoRedo => _undoRedo ??= new UndoRedo();
 
-        private Scene activeScene;
+        private Scene _activeScene;
         public Scene ActiveScene
         {
-            get => activeScene;
+            get => _activeScene;
 
             set
             {
-                if (activeScene != value)
+                if (_activeScene != value)
                 {
-                    activeScene = value;
+                    _activeScene = value;
                     OnPropertyChanged(nameof(ActiveScene));
                 }
             }
@@ -54,8 +54,8 @@ namespace FluxionEditor.Foundation
             _scenes.Add(new Scene(this, sceneName));
         }
 
-        public ICommand AddScene {  get; private set; }
-        public ICommand RemoveScene { get; private set; }
+        public ICommand AddSceneCommand {  get; private set; }
+        public ICommand RemoveSceneCommand { get; private set; }
 
 
         public ICommand UndoCommand { get; private set; }
@@ -100,7 +100,7 @@ namespace FluxionEditor.Foundation
 
             ActiveScene = Scenes?.FirstOrDefault(x => x.IsActive);
 
-            AddScene = new RelayCommand<object>(x =>
+            AddSceneCommand = new RelayCommand<object>(x =>
             {
                 AddSceneInternal($"New Scene {Scenes?.Count ?? 0}");
                 var newScene = _scenes.Last();
@@ -112,7 +112,7 @@ namespace FluxionEditor.Foundation
                 ));
             });
 
-            RemoveScene = new RelayCommand<Scene>(x =>
+            RemoveSceneCommand = new RelayCommand<Scene>(x =>
             {
                 if (x == null) return;
                 var sceneIndex = _scenes.IndexOf(x);
@@ -166,8 +166,8 @@ namespace FluxionEditor.Foundation
             Name = name;
             Path = path;
 
-            AddScene = new RelayCommand<string?>(AddSceneInternal);
-            RemoveScene = new RelayCommand<Scene>(RemoveSceneInternal);
+            AddSceneCommand = new RelayCommand<string?>(AddSceneInternal);
+            RemoveSceneCommand = new RelayCommand<Scene>(RemoveSceneInternal);
 
             OnDeserialized(new StreamingContext());
         }

@@ -44,12 +44,12 @@ namespace FluxionEditor.Foundation
     {
         private readonly string _templatePaths = @"..\..\FluxionEditor\ProjectTemplates"; //TODO DONT HARDCODE THIS PATH, USE RELATIVE PATHS OR CONFIGURATION FILES
 
-        private string _projectname = "Fluxion Game";
+        private string _projectName = "Fluxion Game";
         public string ProjectName { 
-            get { return _projectname; } 
-            set { if (_projectname != value) 
+            get { return _projectName; } 
+            set { if (_projectName != value) 
                 { 
-                    _projectname = value;
+                    _projectName = value;
                     ValidateProjectPath();
                     OnPropertyChanged(nameof(ProjectName));
                 } 
@@ -57,16 +57,16 @@ namespace FluxionEditor.Foundation
         }
 
 
-        private string _projectpath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\FluxionProject\";
+        private string _projectPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\FluxionProject\";
 
         public string ProjectPath
         {
-            get { return _projectpath; }
+            get { return _projectPath; }
             set
             {
-                if (_projectpath != value)
+                if (_projectPath != value)
                 {
-                    _projectpath = value;
+                    _projectPath = value;
                     OnPropertyChanged(nameof(ProjectPath));
                 }
             }

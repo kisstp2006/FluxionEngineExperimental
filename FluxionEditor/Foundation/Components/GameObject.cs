@@ -32,15 +32,25 @@ namespace FluxionEditor.Foundation.Components
         [DataMember(Name = nameof(Components))]
         private readonly ObservableCollection<Component> _components = new ObservableCollection<Component>();
 
-        public ReadOnlyObservableCollection<Component> Components { get; }
+        public ReadOnlyObservableCollection<Component> Components { get; private set; }
 
+        /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
+        private GameObject()
+        {
+        }
 
         public GameObject(Scene scene) 
         {
             Debug.Assert(scene != null);
-
             ParentScene = scene;
+            Components = new ReadOnlyObservableCollection<Component>(_components);
+        }
 
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            if (_components != null)
+                Components = new ReadOnlyObservableCollection<Component>(_components);
         }
 
     }

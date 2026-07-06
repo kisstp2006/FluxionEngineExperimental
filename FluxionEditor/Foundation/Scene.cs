@@ -30,7 +30,7 @@ namespace FluxionEditor.Foundation
         /// <summary>Not serialized — re-linked by <see cref="Project"/> after deserialization.</summary>
         public Project? Project { get; internal set; }
         
-        public bool _isActive;
+        private bool _isActive;
         
         [DataMember]
         public bool IsActive
