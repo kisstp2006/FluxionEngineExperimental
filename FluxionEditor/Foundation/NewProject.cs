@@ -203,9 +203,12 @@ namespace FluxionEditor.Foundation
                         Debug.WriteLine($"Skipping screenshot copy: file not found '{template.ScreenshotFilePath}'");
                     }
 
-                    var project = new Project(ProjectName, path);
+                    
+                var projectXMLFile = File.ReadAllText(template.ProjectFilePath);
+                projectXMLFile = string.Format(projectXMLFile, ProjectName, ProjectPath);
 
-                    Serializer.ToFile(project,path+ $"{ProjectName}"+Project.Extension);
+                var projectPath = Path.GetFullPath(Path.Combine(path,$"{ProjectName}{Project.Extension }"));
+                File.WriteAllText(projectPath, projectXMLFile);
 
 
                 return path;
@@ -252,6 +255,7 @@ namespace FluxionEditor.Foundation
                     {
                         Debug.WriteLine($"Screenshot not found for template '{template.ProjectType}': {template.ScreenshotFilePath}");
                     }
+                    template.ProjectFilePath = System.IO.Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Files), template.ProjectFile));
 
                     Debug.WriteLine($"Loaded template: {template.ProjectType}");
                     _projectTemplates.Add(template);
