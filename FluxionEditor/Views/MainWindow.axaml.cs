@@ -41,9 +41,9 @@ namespace FluxionEditor.Views
             {
                 ProjectManagerDialog projectManagerDialog = new ProjectManagerDialog();
 
-                bool result = await projectManagerDialog.ShowDialog<bool>(this);
+                var project = await projectManagerDialog.ShowDialog<Project?>(this);
 
-                if (!result || projectManagerDialog.DataContext == null)
+                if (project == null)
                 {
                     if (Application.Current?.ApplicationLifetime
                         is IClassicDesktopStyleApplicationLifetime desktop)
@@ -54,16 +54,13 @@ namespace FluxionEditor.Views
                 else
                 {
                     Project.Current?.Unload();
-                    DataContext = projectManagerDialog.DataContext;
+                    DataContext = project;
                 }
             }
             finally
             {
                 _isProjectManagerDialogOpen = false;
             }
-
-            
-           
         }
     }
 }

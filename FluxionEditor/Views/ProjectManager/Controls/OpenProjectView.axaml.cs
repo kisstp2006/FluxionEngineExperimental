@@ -1,6 +1,4 @@
-using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
 using FluxionEditor.Foundation;
 
 namespace FluxionEditor;
@@ -24,19 +22,8 @@ public partial class OpenProjectView : UserControl
 
     private void OpenSelectedProject()
     {
-        var window = this.VisualRoot as Window;
-
         var project = OpenProject.Open(projectsListBox.SelectedItem as ProjectData);
-
-        bool dialogResult = false;
-        if (project != null)
-        {
-            dialogResult = true;
-            window.DataContext = project;
-        }
-
-
-        // Close the parent dialog and return true = project opened
-        window?.Close(true);
+        var window = TopLevel.GetTopLevel(this) as Window;
+        window?.Close(project);
     }
 }

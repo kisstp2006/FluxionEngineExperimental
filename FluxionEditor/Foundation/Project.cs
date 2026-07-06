@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -26,7 +27,6 @@ namespace FluxionEditor.Foundation
         public ReadOnlyObservableCollection<Scene> Scenes { get; private set; }
 
         private Scene activeScene;
-        [DataMember]
         public Scene ActiveScene
         {
             get => activeScene;
@@ -69,6 +69,8 @@ namespace FluxionEditor.Foundation
                 Scenes = new ReadOnlyObservableCollection<Scene>(_scenes);
                 OnPropertyChanged(nameof(Scenes));
             }
+
+            ActiveScene = Scenes.FirstOrDefault(x => x.IsActive);
 
         }
 
