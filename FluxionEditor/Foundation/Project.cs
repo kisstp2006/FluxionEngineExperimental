@@ -27,6 +27,8 @@ namespace FluxionEditor.Foundation
         private ObservableCollection<Scene> _scenes  = new ObservableCollection<Scene>();
         public ReadOnlyObservableCollection<Scene> Scenes { get; private set; }
 
+        public static UndoRedo UndoRedo { get; } = new UndoRedo();
+
         private Scene activeScene;
         public Scene ActiveScene
         {
@@ -89,6 +91,18 @@ namespace FluxionEditor.Foundation
             }
 
             ActiveScene = Scenes.FirstOrDefault(x => x.IsActive);
+
+            AddScene = new RelayCommand<object>(x =>
+            {
+                AddSceneInternal($"New Scene {Scenes.Count}");
+                var newScene = _scenes.Last();
+                var sceneIndex = _scenes.Count()-1;
+                UndoRedo.Add(new UndoRedoCommand()
+                {
+
+
+                });
+            });
 
         }
 

@@ -6,7 +6,7 @@ using System.Text;
 
 namespace FluxionEditor.Foundation.Utilities
 {
-    interface IUndoRedo
+    public interface IUndoRedo
     {
         string Name { get; }
 
@@ -14,7 +14,7 @@ namespace FluxionEditor.Foundation.Utilities
         void Undo();
     }
 
-    class UndoRedoCommand : IUndoRedo
+    public class UndoRedoCommand : IUndoRedo
     {
         private readonly Action _execute;
         private readonly Action _undo;
@@ -42,7 +42,7 @@ namespace FluxionEditor.Foundation.Utilities
         }
     } 
 
-    internal class UndoRedo
+    public class UndoRedo
     {
         private readonly ObservableCollection<IUndoRedo> _undoStack = new ObservableCollection<IUndoRedo>();
         private readonly ObservableCollection<IUndoRedo> _redoStack = new ObservableCollection<IUndoRedo>();
