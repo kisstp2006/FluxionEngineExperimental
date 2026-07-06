@@ -12,6 +12,11 @@ public partial class OpenProjectView : UserControl
         InitializeComponent();
     }
 
+    private void OnProjectDoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        OpenSelectedProject();
+    }
+
     private void Open_Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         OpenSelectedProject();

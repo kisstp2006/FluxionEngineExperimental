@@ -17,7 +17,8 @@
             <ListBox Width="200" Height="250"
                      ItemsSource="{x:Static foundation:OpenProject.Projects}"
                      x:Name="projectsListBox"
-                     SelectedIndex="0">
+                     SelectedIndex="0"
+                     DoubleTapped="OnProjectDoubleTapped">
                
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="foundation:ProjectData">
