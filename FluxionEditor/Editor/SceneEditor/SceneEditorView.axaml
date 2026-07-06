@@ -7,6 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.Editor.SceneEditorView"
              x:DataType="foundation:Project"
+             Focusable="True"
              Background="Blue">
     <UserControl.KeyBindings>
         <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}"/>
@@ -27,7 +28,7 @@
                 <MenuItem Header="_New Project" InputGesture="Ctrl+N"/>
                 <MenuItem Header="_Open Project" InputGesture="Ctrl+O"/>
                 <Separator/>
-                <MenuItem Header="_Save" InputGesture="Ctrl+S"/>
+                <MenuItem Header="_Save" InputGesture="Ctrl+S" Command="{Binding SaveCommand}"  />
                 <MenuItem Header="Save _As..." InputGesture="Ctrl+Shift+S"/>
                 <Separator/>
                 <MenuItem Header="E_xit" InputGesture="Alt+F4"/>

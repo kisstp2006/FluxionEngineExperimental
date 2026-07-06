@@ -61,6 +61,9 @@ namespace FluxionEditor.Foundation
         public ICommand UndoCommand { get; private set; }
         public ICommand RedoCommand { get; private set; }
 
+        public ICommand SaveCommand { get; private set; }
+
+
 
         private void RemoveSceneInternal(Scene scene)
         {
@@ -82,8 +85,8 @@ namespace FluxionEditor.Foundation
 
         public static void Save(Project project)
         {
-            
-           Serializer.ToFile(project, project.FullPath);
+            Debug.WriteLine($"Saving project {project.Name} to {project.FullPath}");
+            Serializer.ToFile(project, project.FullPath);
         }
 
         [OnDeserialized]
@@ -126,6 +129,7 @@ namespace FluxionEditor.Foundation
             RelayCommand<object> undoCmd = null!;
             RelayCommand<object> redoCmd = null!;
 
+
             undoCmd = new RelayCommand<object>(x =>
             {
                 UndoRedo.Undo();
@@ -142,6 +146,14 @@ namespace FluxionEditor.Foundation
 
             UndoCommand = undoCmd;
             RedoCommand = redoCmd;
+
+
+            RelayCommand<object> saveCmd = null!;
+            saveCmd = new RelayCommand<object>(x =>
+            {
+                Project.Save(this);
+            }, x => true);
+
 
         }
 
