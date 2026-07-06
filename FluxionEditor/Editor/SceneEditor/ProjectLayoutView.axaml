@@ -44,6 +44,7 @@
                                     <TextBlock Text="{Binding Name}"/>
                                     <Button  Command="{Binding DataContext.RemoveScene, ElementName=Root}"
                                              CommandParameter="{Binding}">Remove Scene</Button>
+                                    <Button>Add Game Object to scene</Button>
                                 </StackPanel>
                                 
                             </Expander.Header>
