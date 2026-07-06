@@ -51,6 +51,15 @@ namespace FluxionEditor.Foundation.Utilities
             Name = name;
         }
 
+
+        public UndoRedoCommand(string name, string property, object instance, object undoValue, object redoValue)
+            : this(
+                name,
+                () => instance.GetType().GetProperty(property)?.SetValue(instance, undoValue),
+                () => instance.GetType().GetProperty(property)?.SetValue(instance, redoValue))
+        {
+        }
+
         public void Execute() => _execute();
         public void Undo() => _undo();
     }

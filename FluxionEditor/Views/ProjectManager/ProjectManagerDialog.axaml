@@ -50,10 +50,10 @@
             <!-- Ez lehet 1600 széles, de a Border levágja. -->
             <StackPanel Orientation="Horizontal"
                         x:Name="ManagerContent">
-                <local:OpenProjectView>
+                <local:OpenProjectView x:Name="openProjectView">
                     
                 </local:OpenProjectView>
-                <local:CreateProjectView>
+                <local:CreateProjectView x:Name="createProjectView">
                     
                 </local:CreateProjectView>
             </StackPanel>

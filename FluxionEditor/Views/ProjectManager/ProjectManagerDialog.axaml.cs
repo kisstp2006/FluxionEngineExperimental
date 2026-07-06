@@ -1,6 +1,9 @@
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using FluxionEditor.Foundation;
+using System;
+using System.Linq;
 
 namespace FluxionEditor;
 
@@ -14,10 +17,23 @@ public partial class ProjectManagerDialog : Window
     {
         InitializeComponent();
 
+        Loaded += OnLoaded;
+
         // Default to the "Open Project" view
         OpenProjectBtn.IsChecked = true;
         CreateProjectBtn.IsChecked = false;
         ManagerContent.RenderTransform = new TranslateTransform(0, 0);
+    }
+
+    private void OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        Loaded -= OnLoaded;
+        if (!OpenProject.Projects.Any())
+        {
+            
+            
+            ToggleView(CreateProjectBtn, new RoutedEventArgs());
+        }
     }
 
     /// <summary>

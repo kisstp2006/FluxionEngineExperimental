@@ -1,6 +1,8 @@
-﻿using System.Collections.ObjectModel;
+﻿using FluxionEditor.Foundation.Utilities;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
+using System.Windows.Input;
 
 namespace FluxionEditor.Foundation.Components
 {
@@ -8,10 +10,26 @@ namespace FluxionEditor.Foundation.Components
     /// An entity in a <see cref="Scene"/>. Can hold multiple <see cref="Component"/> instances.
     /// </summary>
     [DataContract]
-    [KnownType(typeof(Transform))] //Include new component types here for serialization
+    [KnownType(typeof(Transform))] // Include new component types here for serialization
     public class GameObject : ViewModelBase
     {
         // ── Identity ──
+
+        private bool _isEnabled = true;
+
+        [DataMember]
+        public bool IsEnabled
+        {
+            get => _isEnabled;
+            set
+            {
+                if (_isEnabled != value)
+                {
+                    _isEnabled = value;
+                    OnPropertyChanged(nameof(IsEnabled));
+                }
+            }
+        }
 
         private string _name = string.Empty;
 
@@ -41,6 +59,11 @@ namespace FluxionEditor.Foundation.Components
 
         public ReadOnlyObservableCollection<Component> Components { get; private set; } = null!;
 
+        // ── Commands ──
+
+        public ICommand RenameCommand { get; private set; }
+        public ICommand IsEnabledCommand { get; private set; }
+
         // ── Constructors ──
 
         /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
@@ -53,6 +76,7 @@ namespace FluxionEditor.Foundation.Components
             Debug.Assert(scene != null);
             ParentScene = scene;
             _components.Add(new Transform(this));
+            OnDeserialized(new StreamingContext());
         }
 
         // ── Deserialization ──
@@ -61,9 +85,17 @@ namespace FluxionEditor.Foundation.Components
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            // Ensure the backing collection is never null (field initializer may not run during deserialization)
             Components = new ReadOnlyObservableCollection<Component>(_components);
             OnPropertyChanged(nameof(Components));
+
+            RenameCommand = new RelayCommand<string>(x =>
+            {
+                var oldName = Name;
+                Name = x;
+                ParentScene.Project?.UndoRedo.Add(new UndoRedoCommand(
+                    $"Rename {oldName} to {x}",
+                    nameof(Name), this, oldName, x));
+            }, x => x != _name);
         }
     }
 }
