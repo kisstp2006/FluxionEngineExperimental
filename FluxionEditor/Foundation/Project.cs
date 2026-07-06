@@ -125,6 +125,10 @@ namespace FluxionEditor.Foundation
             Scenes = new ReadOnlyObservableCollection<Scene>(_scenes);
             OnPropertyChanged(nameof(Scenes));
 
+            // Re-link parent project on each scene (not serialized)
+            foreach (var scene in _scenes)
+                scene.Project = this;
+
             ActiveScene = Scenes?.FirstOrDefault(x => x.IsActive);
 
             // ── Add / Remove Scene commands (with undo support) ──
