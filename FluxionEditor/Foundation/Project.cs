@@ -22,7 +22,7 @@ namespace FluxionEditor.Foundation
         [DataMember]
         public string Path { get; set; }
 
-        public string FullPath => System.IO.Path.Combine(Path, Name + Extension);
+        public string FullPath => $@"{Path}{Name}\{Name}{Extension}";
         [DataMember (Name ="Scenes")]
         private ObservableCollection<Scene> _scenes  = new ObservableCollection<Scene>();
         public ReadOnlyObservableCollection<Scene> Scenes { get; private set; }
