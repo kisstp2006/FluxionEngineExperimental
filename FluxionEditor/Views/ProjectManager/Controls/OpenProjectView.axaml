@@ -18,6 +18,7 @@
                      ItemsSource="{x:Static foundation:OpenProject.Projects}"
                      x:Name="projectsListBox"
                      SelectedIndex="0">
+               
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="foundation:ProjectData">
                         <StackPanel Orientation="Horizontal">
@@ -36,7 +37,7 @@
             </Border>
         </StackPanel>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
-            <Button Width="100" IsDefault="True">Open</Button>
+            <Button Width="100" IsDefault="True" Click="Open_Button_Click">Open</Button>
             <Button Width="100" Margin="30,0,0,0" IsCancel="True">Exit</Button>
         </StackPanel>
     </StackPanel>
