@@ -60,6 +60,7 @@ namespace FluxionEditor.Foundation.Utilities
     /// </summary>
     public class UndoRedo
     {
+        private bool _enableAdd = true;
         private readonly ObservableCollection<IUndoRedo> _undoStack = new ObservableCollection<IUndoRedo>();
         private readonly ObservableCollection<IUndoRedo> _redoStack = new ObservableCollection<IUndoRedo>();
 
@@ -87,8 +88,11 @@ namespace FluxionEditor.Foundation.Utilities
         /// </summary>
         public void Add(IUndoRedo cmd)
         {
-            _undoStack.Add(cmd);
-            _redoStack.Clear();
+            if (_enableAdd)
+            {
+                _undoStack.Add(cmd);
+                _redoStack.Clear();
+            }
         }
 
         /// <summary>
@@ -100,7 +104,9 @@ namespace FluxionEditor.Foundation.Utilities
                 return;
 
             var action = _undoStack[^1];
+            _enableAdd = false;
             action.Undo();
+            _enableAdd = true;
             _undoStack.RemoveAt(_undoStack.Count - 1);
             _redoStack.Add(action);
         }
@@ -114,7 +120,9 @@ namespace FluxionEditor.Foundation.Utilities
                 return;
 
             var action = _redoStack[^1];
+            _enableAdd = false;
             action.Execute();
+            _enableAdd = true;
             _redoStack.RemoveAt(_redoStack.Count - 1);
             _undoStack.Add(action);
         }
