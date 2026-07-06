@@ -21,6 +21,7 @@ public partial class CreateProjectView : UserControl
         if (!string.IsNullOrEmpty(projectPath))
         {
             dialogResult = true;
+            var project = OpenProject.Open(new ProjectData { Name = vm.ProjectName, Path = projectPath });
         } 
 
 
