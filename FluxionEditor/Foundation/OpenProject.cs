@@ -54,12 +54,8 @@ namespace FluxionEditor.Foundation
 
                     foreach (var project in projects)
                     {
-                        if (!File.Exists(_projectDataFilePath)){
-                            project.Icon = File.ReadAllBytes($@"{project.Path}\.Fluxion\icon.png");
-                            project.Screenshot = File.ReadAllBytes($@"{project.Path}\.Fluxion\screenshot.png");
-                            _projectData.Add(project);
-                        }
-                    
+                        LoadProjectMedia(project);
+                        _projectData.Add(project);
                     }
                 }
             }
@@ -81,7 +77,7 @@ namespace FluxionEditor.Foundation
             ReadProjectData();
 
             var projectFound = _projectData.FirstOrDefault(x => x.FullPath == projectData.FullPath);
-            if(projectFound != null)
+            if (projectFound != null)
             {
                 projectFound.LastModified = DateTime.Now;
             }
@@ -89,13 +85,24 @@ namespace FluxionEditor.Foundation
             {
                 projectFound = projectData;
                 projectFound.LastModified = DateTime.Now;
+                LoadProjectMedia(projectFound);
                 _projectData.Add(projectFound);
             }
 
             WriteProjectData();
 
-
             return null;
+        }
+
+        private static void LoadProjectMedia(ProjectData project)
+        {
+            var iconPath = Path.Combine(project.Path, ".Fluxion", "icon.png");
+            var screenshotPath = Path.Combine(project.Path, ".Fluxion", "screenshot.png");
+
+            if (File.Exists(iconPath))
+                project.Icon = File.ReadAllBytes(iconPath);
+            if (File.Exists(screenshotPath))
+                project.Screenshot = File.ReadAllBytes(screenshotPath);
         }
 
 
