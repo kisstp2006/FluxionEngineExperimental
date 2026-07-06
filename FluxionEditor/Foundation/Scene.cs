@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace FluxionEditor.Foundation
 {
-    
+    [DataContract]
     public  class Scene : ViewModelBase
     {
-        private string _name;
-
+        private string _name = string.Empty;
+        [DataMember]
         public string Name
         {
             get => _name;
@@ -24,8 +22,13 @@ namespace FluxionEditor.Foundation
             }
         }
 
+        /// <summary>Not serialized — re-linked by <see cref="Project"/> after deserialization.</summary>
+        public Project? Project { get; internal set; }
 
-        public Project Project { get; private set; }
+        /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
+        private Scene()
+        {
+        }
 
         public Scene(Project project, string name)
         {

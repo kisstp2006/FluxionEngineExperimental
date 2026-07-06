@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Text;
-using FluxionEditor.Foundation;
-using System.Xml.Serialization;
+using System.Runtime.Serialization;
 
 namespace FluxionEditor.Foundation.Utilities
 {
@@ -17,8 +14,8 @@ namespace FluxionEditor.Foundation.Utilities
             try
             {
                 using var fs = new FileStream(filePath, FileMode.Create);
-                var serializer = new XmlSerializer(typeof(T));
-                serializer.Serialize(fs, instance);
+                var serializer = new DataContractSerializer(typeof(T));
+                serializer.WriteObject(fs, instance);
             }
             catch (Exception ex)
             {
@@ -31,13 +28,13 @@ namespace FluxionEditor.Foundation.Utilities
 
         }
 
-        internal static T FromFile<T>(string filePath)
+        internal static T? FromFile<T>(string filePath)
         {
             try
             {
                 using var fs = new FileStream(filePath, FileMode.Open);
-                var serializer = new XmlSerializer(typeof(T));
-                T instance = (T)serializer.Deserialize(fs);
+                var serializer = new DataContractSerializer(typeof(T));
+                var instance = (T?)serializer.ReadObject(fs);
 
                 return instance;
             }
@@ -48,7 +45,7 @@ namespace FluxionEditor.Foundation.Utilities
 
 
                 //TODO : Log the exception to a file or logging system
-                return default(T);
+                return default;
             }
         }
     }
