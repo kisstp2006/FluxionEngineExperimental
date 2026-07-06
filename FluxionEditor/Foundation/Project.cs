@@ -154,6 +154,8 @@ namespace FluxionEditor.Foundation
                 Project.Save(this);
             }, x => true);
 
+            SaveCommand = saveCmd;
+
 
         }
 

@@ -55,6 +55,7 @@ namespace FluxionEditor.Views
                 {
                     Project.Current?.Unload();
                     DataContext = project;
+                    Application.Current!.DataContext = project;
                 }
             }
             finally
