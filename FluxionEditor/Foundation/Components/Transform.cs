@@ -9,6 +9,12 @@ namespace FluxionEditor.Foundation.Components
     [DataContract]
     public class Transform : Component
     {
+        public Transform() 
+        { 
+            
+        
+        }
+
         private Vector3 _position;
         [DataMember]
         public Vector3 Position

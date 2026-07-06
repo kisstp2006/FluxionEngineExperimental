@@ -51,7 +51,7 @@ namespace FluxionEditor.Foundation.Components
         {
             Debug.Assert(scene != null);
             ParentScene = scene;
-            Components = new ReadOnlyObservableCollection<Component>(_components);
+            _components.Add(new Transform(this));
         }
 
         // ── Deserialization ──
@@ -61,8 +61,8 @@ namespace FluxionEditor.Foundation.Components
         private void OnDeserialized(StreamingContext context)
         {
             // Ensure the backing collection is never null (field initializer may not run during deserialization)
-            _components ??= new ObservableCollection<Component>();
             Components = new ReadOnlyObservableCollection<Component>(_components);
+            OnPropertyChanged(nameof(Components));
         }
     }
 }
