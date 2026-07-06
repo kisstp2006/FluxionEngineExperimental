@@ -1,0 +1,55 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:foundation="using:FluxionEditor.Foundation"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluxionEditor.ProjectLayoutView"
+             x:DataType="foundation:Project">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0"
+                Width="150"
+                HorizontalAlignment="Left"
+                Margin="20,0,0,0"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Click="Add_New_Button_Click">
+            Add new scene
+        </Button>
+
+        <ScrollViewer Grid.Row="1"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Visible">
+            <ItemsControl ItemsSource="{Binding Scenes}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="foundation:Scene">
+                        <Expander IsExpanded="{Binding IsActive, Mode=OneWay}"
+                                  Margin="8"
+                                  MinWidth="200"
+                                  HorizontalContentAlignment="Stretch">
+                            <Expander.Header>
+                                <TextBlock Text="{Binding Name}"/>
+                            </Expander.Header>
+                            <StackPanel Margin="8,4">
+                                <Border Background="Blue"
+                                        MinHeight="100"
+                                        CornerRadius="4"/>
+                            </StackPanel>
+                        </Expander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

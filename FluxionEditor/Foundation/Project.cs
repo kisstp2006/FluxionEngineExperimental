@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using System.Windows.Input;
 
 namespace FluxionEditor.Foundation
 {
@@ -43,6 +44,23 @@ namespace FluxionEditor.Foundation
 
 
         public static Project Current => Application.Current.DataContext as Project;
+
+        private void AddSceneInternal(string sceneName)
+        {
+            Debug.Assert(!string.IsNullOrEmpty(sceneName.Trim()));
+            _scenes.Add(new Scene(this, sceneName));
+        }
+
+        public ICommand AddScene {  get; private set; }
+        public ICommand RemoveScene { get; private set; }
+
+
+        private void RemoveSceneInternal(Scene scene)
+        {
+            Debug.Assert(scene != null, "Scene cannot be null.");
+            Debug.Assert(_scenes.Contains(scene), "Scene does not belong to this project.");
+            _scenes.Remove(scene);
+        }
 
         public static Project Load (string file) 
         {
@@ -80,7 +98,9 @@ namespace FluxionEditor.Foundation
             Debug.Assert(!string.IsNullOrEmpty(path), "Project path cannot be null or empty.");
             Name = name;
             Path = path;
-        
+
+            AddScene = new RelayCommand<string?>(AddSceneInternal);
+            RemoveScene = new RelayCommand<Scene>(RemoveSceneInternal);
 
             OnDeserialized(new StreamingContext());
         }
