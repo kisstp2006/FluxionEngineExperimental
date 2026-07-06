@@ -79,12 +79,7 @@
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"/>
 
-                    <Grid Grid.Row="2" Background="IndianRed">
-                        <TextBlock Text="Bottom Left"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"
-                                   Foreground="White"/>
-                    </Grid>
+                    <editor:UndoRedoList Grid.Row="2" />
                 </Grid>
 
                 <GridSplitter Grid.Column="1"

@@ -27,7 +27,7 @@ namespace FluxionEditor.Foundation
         private ObservableCollection<Scene> _scenes  = new ObservableCollection<Scene>();
         public ReadOnlyObservableCollection<Scene> Scenes { get; private set; }
 
-        public static UndoRedo UndoRedo { get; } = new UndoRedo();
+        public UndoRedo UndoRedo { get; } = new UndoRedo();
 
         private Scene activeScene;
         public Scene ActiveScene
