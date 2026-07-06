@@ -14,6 +14,7 @@ public partial class CreateProjectView : UserControl
 
     private void Create_Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        var window = this.VisualRoot as Window;
         var vm = this.DataContext as NewProject;
         var projectPath = vm?.CreateProject(template_list.SelectedItem as ProjectTemplate);
 
@@ -22,13 +23,12 @@ public partial class CreateProjectView : UserControl
         {
             dialogResult = true;
             var project = OpenProject.Open(new ProjectData { Name = vm.ProjectName, Path = projectPath });
-            
+            window.DataContext = project;
         } 
 
 
         // Close the parent dialog and return true = project created
-        if (this.VisualRoot is Window window)
-            window.Close(true);
+        window?.Close(true);
     }
 
     private void Exit_Button_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

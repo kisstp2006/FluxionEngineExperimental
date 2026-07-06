@@ -1,6 +1,8 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using FluxionEditor.Foundation;
+using System;
 
 namespace FluxionEditor.Views
 {
@@ -12,6 +14,7 @@ namespace FluxionEditor.Views
         {
             InitializeComponent();
             Loaded += OnMainWindowLoaded;
+            Closing += OnMainWindowClosing;
         }
 
         private void OnMainWindowLoaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -19,6 +22,12 @@ namespace FluxionEditor.Views
             Loaded -= OnMainWindowLoaded; //We olnly need this once (TODO: Make it arg and project state aware)
             OpenProjectManagerDialog(0);
 
+        }
+
+        private void OnMainWindowClosing(object? sender, WindowClosingEventArgs e)
+        {
+            Closing -= OnMainWindowClosing;
+            Project.Current?.Unload();
         }
 
         private async void OpenProjectManagerDialog(int wichPage=0)
@@ -34,7 +43,7 @@ namespace FluxionEditor.Views
 
                 bool result = await projectManagerDialog.ShowDialog<bool>(this);
 
-                if (!result)
+                if (!result || projectManagerDialog.DataContext == null)
                 {
                     if (Application.Current?.ApplicationLifetime
                         is IClassicDesktopStyleApplicationLifetime desktop)
@@ -44,7 +53,8 @@ namespace FluxionEditor.Views
                 }
                 else
                 {
-                    // Project selected / created successfully
+                    Project.Current?.Unload();
+                    DataContext = projectManagerDialog.DataContext;
                 }
             }
             finally

@@ -24,18 +24,19 @@ public partial class OpenProjectView : UserControl
 
     private void OpenSelectedProject()
     {
-        
+        var window = this.VisualRoot as Window;
+
         var project = OpenProject.Open(projectsListBox.SelectedItem as ProjectData);
 
         bool dialogResult = false;
         if (project != null)
         {
             dialogResult = true;
+            window.DataContext = project;
         }
 
 
-        // Close the parent dialog and return true = project created
-        if (this.VisualRoot is Window window)
-            window.Close(true);
+        // Close the parent dialog and return true = project opened
+        window?.Close(true);
     }
 }

@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Avalonia;
+using FluxionEditor.Foundation.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -13,15 +16,60 @@ namespace FluxionEditor.Foundation
 
         public static string Extension => ".fluxion";
         [DataMember]
-        public string Name { get; set; }
+        public string Name { get; set; } = "Fluxion Project";
         [DataMember]
         public string Path { get; set; }
 
         public string FullPath => System.IO.Path.Combine(Path, Name + Extension);
         [DataMember (Name ="Scenes")]
         private ObservableCollection<Scene> _scenes  = new ObservableCollection<Scene>();
-        public ReadOnlyObservableCollection<Scene> Scenes { get; } 
+        public ReadOnlyObservableCollection<Scene> Scenes { get; private set; }
 
+        private Scene activeScene;
+        public Scene ActiveScene
+        {
+            get => activeScene;
+
+            set
+            {
+                if (activeScene != value)
+                {
+                    activeScene = value;
+                    OnPropertyChanged(nameof(ActiveScene));
+                }
+            }
+        }
+
+
+        public static Project Current => Application.Current.DataContext as Project;
+
+        public static Project Load (string file) 
+        {
+            Debug.Assert(File.Exists(file));
+            return Serializer.FromFile<Project>(file);
+        }
+
+        public void Unload()
+        {
+
+        }
+
+        public static void Save(Project project)
+        {
+            
+           Serializer.ToFile(project, project.FullPath);
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            if(_scenes != null)
+            {
+                Scenes = new ReadOnlyObservableCollection<Scene>(_scenes);
+                OnPropertyChanged(nameof(Scenes));
+            }
+
+        }
 
         public Project(string name, string path)
         {
@@ -31,7 +79,7 @@ namespace FluxionEditor.Foundation
             Path = path;
         
 
-            _scenes.Add(new Scene(this, "Main Scene"));
+            OnDeserialized(new StreamingContext());
         }
     }
 }
