@@ -1,40 +1,45 @@
 ﻿using Avalonia;
 using FluxionEditor.Foundation.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
-using System.Text;
 using System.Windows.Input;
 
 namespace FluxionEditor.Foundation
 {
-    [DataContract (Name ="Game")]
-    public  class Project : ViewModelBase
+    /// <summary>
+    /// Represents a game project. Serialized to disk as the main project file.
+    /// Contains scenes, undo/redo history, and top-level editor commands.
+    /// </summary>
+    [DataContract(Name = "Game")]
+    public class Project : ViewModelBase
     {
+        // ── File metadata ──────────────────────────────────────────
 
         public static string Extension => ".fluxion";
+
         [DataMember]
         public string Name { get; set; } = "Fluxion Project";
+
         [DataMember]
         public string Path { get; set; }
 
+        /// <summary>Full file path including name and extension.</summary>
         public string FullPath => $@"{Path}{Name}\{Name}{Extension}";
-        [DataMember (Name ="Scenes")]
-        private ObservableCollection<Scene> _scenes  = new ObservableCollection<Scene>();
-        public ReadOnlyObservableCollection<Scene> Scenes { get; private set; }
 
-        private UndoRedo? _undoRedo;
-        public UndoRedo UndoRedo => _undoRedo ??= new UndoRedo();
+        // ── Scenes ──────────────────────────────────────────────────
+
+        [DataMember(Name = "Scenes")]
+        private ObservableCollection<Scene> _scenes = new ObservableCollection<Scene>();
+        public ReadOnlyObservableCollection<Scene> Scenes { get; private set; }
 
         private Scene _activeScene;
         public Scene ActiveScene
         {
             get => _activeScene;
-
             set
             {
                 if (_activeScene != value)
@@ -45,25 +50,36 @@ namespace FluxionEditor.Foundation
             }
         }
 
+        // ── Undo / Redo ─────────────────────────────────────────────
 
+        private UndoRedo? _undoRedo;
+
+        /// <summary>
+        /// Lazily-initialized undo/redo manager.
+        /// Not serialized — recreated on load.
+        /// </summary>
+        public UndoRedo UndoRedo => _undoRedo ??= new UndoRedo();
+
+        // ── Commands ────────────────────────────────────────────────
+
+        public ICommand AddSceneCommand { get; private set; }
+        public ICommand RemoveSceneCommand { get; private set; }
+        public ICommand UndoCommand { get; private set; }
+        public ICommand RedoCommand { get; private set; }
+        public ICommand SaveCommand { get; private set; }
+
+        // ── Static helpers ──────────────────────────────────────────
+
+        /// <summary>Returns the currently loaded project, if any.</summary>
         public static Project Current => Application.Current.DataContext as Project;
+
+        // ── Scene management ────────────────────────────────────────
 
         private void AddSceneInternal(string sceneName)
         {
             Debug.Assert(!string.IsNullOrEmpty(sceneName.Trim()));
             _scenes.Add(new Scene(this, sceneName));
         }
-
-        public ICommand AddSceneCommand {  get; private set; }
-        public ICommand RemoveSceneCommand { get; private set; }
-
-
-        public ICommand UndoCommand { get; private set; }
-        public ICommand RedoCommand { get; private set; }
-
-        public ICommand SaveCommand { get; private set; }
-
-
 
         private void RemoveSceneInternal(Scene scene)
         {
@@ -72,7 +88,9 @@ namespace FluxionEditor.Foundation
             _scenes.Remove(scene);
         }
 
-        public static Project Load (string file) 
+        // ── Persistence ─────────────────────────────────────────────
+
+        public static Project Load(string file)
         {
             Debug.Assert(File.Exists(file));
             return Serializer.FromFile<Project>(file);
@@ -80,19 +98,28 @@ namespace FluxionEditor.Foundation
 
         public void Unload()
         {
-
+            // TODO: clean up resources, close open file handles
         }
 
+        /// <summary>Saves the project to its <see cref="FullPath"/> on disk.</summary>
         public static void Save(Project project)
         {
             Debug.WriteLine($"Saving project {project.Name} to {project.FullPath}");
             Serializer.ToFile(project, project.FullPath);
         }
 
+        // ── Deserialization callback ────────────────────────────────
+
+        /// <summary>
+        /// Called by <see cref="DataContractSerializer"/> after loading,
+        /// and manually from the constructor. Re-wraps collections and
+        /// wires up all editor commands with undo support.
+        /// </summary>
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
-            if(_scenes != null)
+            // Re-wrap scene collection for read-only public access
+            if (_scenes != null)
             {
                 Scenes = new ReadOnlyObservableCollection<Scene>(_scenes);
                 OnPropertyChanged(nameof(Scenes));
@@ -100,11 +127,14 @@ namespace FluxionEditor.Foundation
 
             ActiveScene = Scenes?.FirstOrDefault(x => x.IsActive);
 
-            AddSceneCommand = new RelayCommand<object>(x =>
+            // ── Add / Remove Scene commands (with undo support) ──
+
+            AddSceneCommand = new RelayCommand<object>(_ =>
             {
                 AddSceneInternal($"New Scene {Scenes?.Count ?? 0}");
                 var newScene = _scenes.Last();
                 var sceneIndex = _scenes.Count - 1;
+
                 UndoRedo.Add(new UndoRedoCommand(
                     $"Add new scene {newScene.Name}",
                     execute: () => AddSceneInternal(newScene.Name),
@@ -125,39 +155,34 @@ namespace FluxionEditor.Foundation
                 ));
             }, x => x != null && !x.IsActive);
 
+            // ── Undo / Redo commands (must reference each other) ──
 
             RelayCommand<object> undoCmd = null!;
             RelayCommand<object> redoCmd = null!;
 
-
-            undoCmd = new RelayCommand<object>(x =>
+            undoCmd = new RelayCommand<object>(_ =>
             {
                 UndoRedo.Undo();
                 undoCmd.NotifyCanExecuteChanged();
                 redoCmd.NotifyCanExecuteChanged();
-            }, x => UndoRedo.UndoStack.Count > 0);
+            }, _ => UndoRedo.UndoStack.Count > 0);
 
-            redoCmd = new RelayCommand<object>(x =>
+            redoCmd = new RelayCommand<object>(_ =>
             {
                 UndoRedo.Redo();
                 undoCmd.NotifyCanExecuteChanged();
                 redoCmd.NotifyCanExecuteChanged();
-            }, x => UndoRedo.RedoStack.Count > 0);
+            }, _ => UndoRedo.RedoStack.Count > 0);
 
             UndoCommand = undoCmd;
             RedoCommand = redoCmd;
 
+            // ── Save command ──
 
-            RelayCommand<object> saveCmd = null!;
-            saveCmd = new RelayCommand<object>(x =>
-            {
-                Project.Save(this);
-            }, x => true);
-
-            SaveCommand = saveCmd;
-
-
+            SaveCommand = new RelayCommand<object>(_ => Project.Save(this), _ => true);
         }
+
+        // ── Constructor ─────────────────────────────────────────────
 
         public Project(string name, string path)
         {
@@ -166,6 +191,7 @@ namespace FluxionEditor.Foundation
             Name = name;
             Path = path;
 
+            // Default commands (overwritten by OnDeserialized for full undo support)
             AddSceneCommand = new RelayCommand<string?>(AddSceneInternal);
             RemoveSceneCommand = new RelayCommand<Scene>(RemoveSceneInternal);
 

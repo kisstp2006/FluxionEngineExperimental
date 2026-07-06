@@ -9,10 +9,17 @@ using System.Windows.Input;
 
 namespace FluxionEditor.Foundation
 {
+    /// <summary>
+    /// A scene within a <see cref="Project"/>. Contains a collection of
+    /// <see cref="GameObject"/> instances and commands to manage them.
+    /// </summary>
     [DataContract]
-    public  class Scene : ViewModelBase
+    public class Scene : ViewModelBase
     {
+        // ── Identity ────────────────────────────────────────────────
+
         private string _name = string.Empty;
+
         [DataMember]
         public string Name
         {
@@ -27,11 +34,18 @@ namespace FluxionEditor.Foundation
             }
         }
 
-        /// <summary>Not serialized — re-linked by <see cref="Project"/> after deserialization.</summary>
+        // ── Parent project ──────────────────────────────────────────
+
+        /// <summary>
+        /// Not serialized — re-linked by <see cref="Project"/>
+        /// after deserialization.
+        /// </summary>
         public Project? Project { get; internal set; }
-        
+
+        // ── Active state ────────────────────────────────────────────
+
         private bool _isActive;
-        
+
         [DataMember]
         public bool IsActive
         {
@@ -46,11 +60,8 @@ namespace FluxionEditor.Foundation
             }
         }
 
+        // ── GameObjects ─────────────────────────────────────────────
 
-        /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
-        private Scene()
-        {
-        }
         [DataMember(Name = nameof(GameObjects))]
         private readonly ObservableCollection<GameObject> _gameObjects = new ObservableCollection<GameObject>();
         public ReadOnlyObservableCollection<GameObject> GameObjects { get; private set; }
@@ -58,11 +69,11 @@ namespace FluxionEditor.Foundation
         public ICommand AddGameObjectCommand { get; private set; }
         public ICommand RemoveGameObjectCommand { get; private set; }
 
-
+        // ── Internal helpers ────────────────────────────────────────
 
         private void AddGameObjectInternal(GameObject gameObject)
         {
-            Debug.Assert(!_gameObjects.Contains(gameObject));  
+            Debug.Assert(!_gameObjects.Contains(gameObject));
             _gameObjects.Add(gameObject);
         }
 
@@ -72,6 +83,12 @@ namespace FluxionEditor.Foundation
             _gameObjects.Remove(gameObject);
         }
 
+        // ── Deserialization callback ────────────────────────────────
+
+        /// <summary>
+        /// Re-wraps the GameObject collection and wires up
+        /// add/remove commands with undo support.
+        /// </summary>
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
@@ -80,6 +97,8 @@ namespace FluxionEditor.Foundation
                 GameObjects = new ReadOnlyObservableCollection<GameObject>(_gameObjects);
                 OnPropertyChanged(nameof(GameObjects));
             }
+
+            // ── Add GameObject command ──
 
             AddGameObjectCommand = new RelayCommand<GameObject>(x =>
             {
@@ -93,6 +112,8 @@ namespace FluxionEditor.Foundation
                     undo: () => RemoveGameObjectInternal(x)
                 ));
             });
+
+            // ── Remove GameObject command ──
 
             RemoveGameObjectCommand = new RelayCommand<GameObject>(x =>
             {
@@ -108,7 +129,12 @@ namespace FluxionEditor.Foundation
             }, x => x != null);
         }
 
+        // ── Constructors ────────────────────────────────────────────
 
+        /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
+        private Scene()
+        {
+        }
 
         public Scene(Project project, string name)
         {

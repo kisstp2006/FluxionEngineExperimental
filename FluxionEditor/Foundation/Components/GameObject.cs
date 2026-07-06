@@ -1,17 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace FluxionEditor.Foundation.Components
 {
+    /// <summary>
+    /// An entity in a <see cref="Scene"/>. Can hold multiple <see cref="Component"/> instances.
+    /// </summary>
     [DataContract]
     public class GameObject : ViewModelBase
     {
-        private string _name;
+        // ── Identity ──
+
+        private string _name = string.Empty;
+
         [DataMember]
         public string Name
         {
@@ -26,32 +28,40 @@ namespace FluxionEditor.Foundation.Components
             }
         }
 
+        // ── Parent scene ──
+
         [DataMember]
-        public Scene ParentScene { get; private set; }
+        public Scene ParentScene { get; private set; } = null!;
+
+        // ── Components ──
 
         [DataMember(Name = nameof(Components))]
         private readonly ObservableCollection<Component> _components = new ObservableCollection<Component>();
 
-        public ReadOnlyObservableCollection<Component> Components { get; private set; }
+        public ReadOnlyObservableCollection<Component> Components { get; private set; } = null!;
+
+        // ── Constructors ──
 
         /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
         private GameObject()
         {
         }
 
-        public GameObject(Scene scene) 
+        public GameObject(Scene scene)
         {
             Debug.Assert(scene != null);
             ParentScene = scene;
             Components = new ReadOnlyObservableCollection<Component>(_components);
         }
 
+        // ── Deserialization ──
+
+        /// <summary>Re-wraps the component collection after loading.</summary>
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
             if (_components != null)
                 Components = new ReadOnlyObservableCollection<Component>(_components);
         }
-
     }
 }

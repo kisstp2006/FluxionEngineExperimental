@@ -2,10 +2,13 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using FluxionEditor.Foundation;
-using System;
 
 namespace FluxionEditor.Views
 {
+    /// <summary>
+    /// Main application window. Handles project open/close flow and
+    /// synchronizes <see cref="Application.Current"/> DataContext.
+    /// </summary>
     public partial class MainWindow : Window
     {
         private bool _isProjectManagerDialogOpen;
@@ -17,11 +20,12 @@ namespace FluxionEditor.Views
             Closing += OnMainWindowClosing;
         }
 
+        // ── Lifecycle ──────────────────────────────────────────
+
         private void OnMainWindowLoaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            Loaded -= OnMainWindowLoaded; //We olnly need this once (TODO: Make it arg and project state aware)
-            OpenProjectManagerDialog(0);
-
+            Loaded -= OnMainWindowLoaded; // Run once
+            OpenProjectManagerDialog();
         }
 
         private void OnMainWindowClosing(object? sender, WindowClosingEventArgs e)
@@ -30,7 +34,13 @@ namespace FluxionEditor.Views
             Project.Current?.Unload();
         }
 
-        private async void OpenProjectManagerDialog(int wichPage=0)
+        // ── Project open flow ───────────────────────────────────
+
+        /// <summary>
+        /// Shows the project manager dialog. If the user cancels,
+        /// the application shuts down.
+        /// </summary>
+        private async void OpenProjectManagerDialog()
         {
             if (_isProjectManagerDialogOpen)
                 return;
@@ -39,12 +49,12 @@ namespace FluxionEditor.Views
 
             try
             {
-                ProjectManagerDialog projectManagerDialog = new ProjectManagerDialog();
-
-                var project = await projectManagerDialog.ShowDialog<Project?>(this);
+                var dialog = new ProjectManagerDialog();
+                var project = await dialog.ShowDialog<Project?>(this);
 
                 if (project == null)
                 {
+                    // User cancelled — exit the app
                     if (Application.Current?.ApplicationLifetime
                         is IClassicDesktopStyleApplicationLifetime desktop)
                     {

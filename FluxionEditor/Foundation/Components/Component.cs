@@ -1,18 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace FluxionEditor.Foundation.Components
 {
+    /// <summary>
+    /// Base class for all components that can be attached to a <see cref="GameObject"/>.
+    /// </summary>
     [DataContract]
     public class Component : ViewModelBase
     {
-        public GameObject Owner { get; private set; }
+        // ── Owner ──
+
+        public GameObject Owner { get; private set; } = null!;
+
+        // ── State ──
 
         [DataMember]
         public bool IsEnabled { get; set; } = true;
+
+        // ── Constructors ──
 
         /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
         public Component()

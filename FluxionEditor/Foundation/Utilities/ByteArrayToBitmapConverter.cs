@@ -6,6 +6,9 @@ using System.IO;
 
 namespace FluxionEditor.Foundation.Utilities
 {
+    /// <summary>
+    /// Converts a <c>byte[]</c> to an Avalonia <see cref="Bitmap"/> for use in image bindings.
+    /// </summary>
     public class ByteArrayToBitmapConverter : IValueConverter
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)

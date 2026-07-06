@@ -1,8 +1,5 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
-using System;
 
 namespace FluxionEditor.Editor;
 
@@ -11,12 +8,13 @@ public partial class SceneEditorView : UserControl
     public SceneEditorView()
     {
         InitializeComponent();
-        Loaded += OnSceneEditorViewLoaded;
+        Loaded += OnLoaded;
     }
 
-    private void OnSceneEditorViewLoaded(object? sender, RoutedEventArgs e)
+    /// <summary>Auto-focus the editor on load so key bindings work immediately.</summary>
+    private void OnLoaded(object? sender, RoutedEventArgs e)
     {
-        Loaded -= OnSceneEditorViewLoaded;
+        Loaded -= OnLoaded;
         Focus();
     }
 }

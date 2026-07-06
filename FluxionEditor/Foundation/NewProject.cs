@@ -1,19 +1,17 @@
-﻿using FluxionEditor.ViewModels;
+﻿using FluxionEditor.Foundation.Utilities;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.IO;
-using System.Text;
-using System.Diagnostics;
-using System.Runtime.Serialization;
-using FluxionEditor.Foundation.Utilities;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
-
+using System.Runtime.Serialization;
 
 namespace FluxionEditor.Foundation
 {
+    /// <summary>
+    /// Metadata for a project template (read from ProjectTemplates folder).
+    /// </summary>
     [DataContract]
     public class ProjectTemplate
     {
@@ -23,10 +21,10 @@ namespace FluxionEditor.Foundation
         [DataMember]
         public string ProjectFile { get; set; }
 
-        // TODO: public string Description { get; set; }
-
         [DataMember]
         public List<string> Folders { get; set; }
+
+        // ── Visual assets (loaded from disk, not serialized) ──
 
         public byte[] Icon { get; set; }
         public string IconFilePath { get; set; }
@@ -35,33 +33,41 @@ namespace FluxionEditor.Foundation
         public string ScreenshotFilePath { get; set; }
 
         public string ProjectFilePath { get; set; }
-
-
-
     }
 
+    /// <summary>
+    /// ViewModel for the "Create Project" flow. Validates paths and
+    /// creates the project directory structure on disk.
+    /// </summary>
     class NewProject : ViewModelBase
     {
-        private readonly string _templatePaths = @"..\..\FluxionEditor\ProjectTemplates"; //TODO DONT HARDCODE THIS PATH, USE RELATIVE PATHS OR CONFIGURATION FILES
+        // TODO: Don't hardcode this path — use relative paths or configuration
+        private readonly string _templatePaths = @"..\..\FluxionEditor\ProjectTemplates";
+
+        // ── Project name ──
 
         private string _projectName = "Fluxion Game";
-        public string ProjectName { 
-            get { return _projectName; } 
-            set { if (_projectName != value) 
-                { 
+        public string ProjectName
+        {
+            get => _projectName;
+            set
+            {
+                if (_projectName != value)
+                {
                     _projectName = value;
                     ValidateProjectPath();
                     OnPropertyChanged(nameof(ProjectName));
-                } 
-            } 
+                }
+            }
         }
 
+        // ── Project path ──
 
         private string _projectPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\FluxionProject\";
 
         public string ProjectPath
         {
-            get { return _projectPath; }
+            get => _projectPath;
             set
             {
                 if (_projectPath != value)
@@ -72,13 +78,17 @@ namespace FluxionEditor.Foundation
             }
         }
 
+        // ── Templates ──
+
         private ObservableCollection<ProjectTemplate> _projectTemplates = new ObservableCollection<ProjectTemplate>();
         public ReadOnlyObservableCollection<ProjectTemplate> ProjectTemplates { get; }
+
+        // ── Validation ──
 
         private bool _isValidProjectPath;
         public bool IsValidProjectPath
         {
-            get { return _isValidProjectPath; }
+            get => _isValidProjectPath;
             set
             {
                 if (_isValidProjectPath != value)
@@ -89,11 +99,10 @@ namespace FluxionEditor.Foundation
             }
         }
 
-
         private string _errorMessage;
         public string ErrorMessage
         {
-            get { return _errorMessage; }
+            get => _errorMessage;
             set
             {
                 if (_errorMessage != value)
@@ -104,42 +113,41 @@ namespace FluxionEditor.Foundation
             }
         }
 
+        // ── Validation logic ──
 
+        /// <summary>
+        /// Checks whether the current project name + path combination is valid
+        /// and updates <see cref="IsValidProjectPath"/> and <see cref="ErrorMessage"/>.
+        /// </summary>
         private bool ValidateProjectPath()
         {
-             
             var path = ProjectPath;
-            if (!path.EndsWith(Path.DirectorySeparatorChar.ToString())) path += Path.DirectorySeparatorChar;
+            if (!path.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                path += Path.DirectorySeparatorChar;
 
             path += $@"{ProjectName}" + Path.DirectorySeparatorChar;
 
             IsValidProjectPath = false;
 
-            if(string.IsNullOrWhiteSpace(ProjectName.Trim()))
+            if (string.IsNullOrWhiteSpace(ProjectName.Trim()))
             {
                 ErrorMessage = "Project name cannot be empty or white space.";
-                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
-                
             }
-            else if(ProjectName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
+            else if (ProjectName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
             {
-                ErrorMessage = "Project name cannot be incorrect character(s).";
-                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
+                ErrorMessage = "Project name contains invalid characters.";
             }
             else if (string.IsNullOrWhiteSpace(ProjectPath.Trim()))
             {
                 ErrorMessage = "Project path cannot be empty or white space.";
-                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
             }
             else if (ProjectPath.IndexOfAny(Path.GetInvalidPathChars()) != -1)
             {
-                ErrorMessage = "Project path cannot be incorrect character(s).";
-                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
+                ErrorMessage = "Project path contains invalid characters.";
             }
             else if (Directory.Exists(path))
             {
                 ErrorMessage = "Project path already exists.";
-                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
             }
             else
             {
@@ -150,10 +158,17 @@ namespace FluxionEditor.Foundation
             return IsValidProjectPath;
         }
 
+        // ── Project creation ──
 
+        /// <summary>
+        /// Creates the project directory structure on disk based on the
+        /// selected <paramref name="template"/>.
+        /// </summary>
+        /// <returns>The full project path, or an empty string on failure.</returns>
         public string CreateProject(ProjectTemplate template)
         {
             Debug.Assert(template != null, "ProjectTemplate cannot be null.");
+
             ValidateProjectPath();
             if (!IsValidProjectPath)
             {
@@ -161,18 +176,18 @@ namespace FluxionEditor.Foundation
                 return "";
             }
 
-            if (!Path.EndsInDirectorySeparator(ProjectPath)) 
-               ProjectPath += Path.DirectorySeparatorChar;
-            
+            if (!Path.EndsInDirectorySeparator(ProjectPath))
+                ProjectPath += Path.DirectorySeparatorChar;
+
             var path = $@"{ProjectPath}{ProjectName}" + Path.DirectorySeparatorChar;
 
             try
             {
+                // Create main project directory
                 if (!Directory.Exists(path))
-                {
                     Directory.CreateDirectory(path);
-                }
 
+                // Create template-defined subfolders
                 if (template.Folders != null)
                 {
                     foreach (var folder in template.Folders)
@@ -182,38 +197,40 @@ namespace FluxionEditor.Foundation
                     }
                 }
 
-                    var dirinfo = new DirectoryInfo(path + @".Fluxion\");
-                    dirinfo.Attributes |= FileAttributes.Hidden;
+                // Create hidden .Fluxion folder for metadata
+                var dirinfo = new DirectoryInfo(path + @".Fluxion\");
+                if (!dirinfo.Exists)
+                    dirinfo.Create();
+                dirinfo.Attributes |= FileAttributes.Hidden;
 
-                    if (!string.IsNullOrEmpty(template.IconFilePath) && File.Exists(template.IconFilePath))
-                    {
-                        File.Copy(template.IconFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "icon.png")));
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"Skipping icon copy: file not found '{template.IconFilePath}'");
-                    }
+                // Copy icon
+                if (!string.IsNullOrEmpty(template.IconFilePath) && File.Exists(template.IconFilePath))
+                {
+                    File.Copy(template.IconFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "icon.png")));
+                }
+                else
+                {
+                    Debug.WriteLine($"Skipping icon copy: file not found '{template.IconFilePath}'");
+                }
 
-                    if (!string.IsNullOrEmpty(template.ScreenshotFilePath) && File.Exists(template.ScreenshotFilePath))
-                    {
-                        File.Copy(template.ScreenshotFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "screenshot.png")));
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"Skipping screenshot copy: file not found '{template.ScreenshotFilePath}'");
-                    }
+                // Copy screenshot
+                if (!string.IsNullOrEmpty(template.ScreenshotFilePath) && File.Exists(template.ScreenshotFilePath))
+                {
+                    File.Copy(template.ScreenshotFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "screenshot.png")));
+                }
+                else
+                {
+                    Debug.WriteLine($"Skipping screenshot copy: file not found '{template.ScreenshotFilePath}'");
+                }
 
-                    
+                // Generate project file from template
                 var projectXMLFile = File.ReadAllText(template.ProjectFilePath);
                 projectXMLFile = string.Format(projectXMLFile, ProjectName, ProjectPath);
 
-                var projectPath = Path.GetFullPath(Path.Combine(path,$"{ProjectName}{Project.Extension }"));
-                File.WriteAllText(projectPath, projectXMLFile);
-
+                var projectFilePath = Path.GetFullPath(Path.Combine(path, $"{ProjectName}{Project.Extension}"));
+                File.WriteAllText(projectFilePath, projectXMLFile);
 
                 return path;
-                
-
             }
             catch (Exception ex)
             {
@@ -223,55 +240,42 @@ namespace FluxionEditor.Foundation
             }
         }
 
+        // ── Constructor ──
 
         public NewProject()
         {
             ProjectTemplates = new ReadOnlyObservableCollection<ProjectTemplate>(_projectTemplates);
+
             try
             {
                 var templateFiles = Directory.GetFiles(_templatePaths, "template.xml", SearchOption.AllDirectories);
-
                 Debug.Assert(templateFiles.Any(), "No project templates found in the specified path.");
 
-                foreach (var Files in templateFiles)
+                foreach (var file in templateFiles)
                 {
-                   var template =  Serializer.FromFile<ProjectTemplate>(Files);
+                    var template = Serializer.FromFile<ProjectTemplate>(file);
                     if (template == null) continue;
-                    template.IconFilePath = System.IO.Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Files),"icon.png"));
-                    if (!string.IsNullOrEmpty(template.IconFilePath) && File.Exists(template.IconFilePath))
-                    {
-                        template.Icon = File.ReadAllBytes(template.IconFilePath);
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"Icon not found for template '{template.ProjectType}': {template.IconFilePath}");
-                    }
-                    template.ScreenshotFilePath = System.IO.Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Files), "screenshot.png"));
-                    if (!string.IsNullOrEmpty(template.ScreenshotFilePath) && File.Exists(template.ScreenshotFilePath))
-                    {
-                        template.Screenshot = File.ReadAllBytes(template.ScreenshotFilePath);
-                    }
-                    else
-                    {
-                        Debug.WriteLine($"Screenshot not found for template '{template.ProjectType}': {template.ScreenshotFilePath}");
-                    }
-                    template.ProjectFilePath = System.IO.Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Files), template.ProjectFile));
 
-                    Debug.WriteLine($"Loaded template: {template.ProjectType}");
+                    // Load icon
+                    template.IconFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file), "icon.png"));
+                    if (File.Exists(template.IconFilePath))
+                        template.Icon = File.ReadAllBytes(template.IconFilePath);
+
+                    // Load screenshot
+                    template.ScreenshotFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file), "screenshot.png"));
+                    if (File.Exists(template.ScreenshotFilePath))
+                        template.Screenshot = File.ReadAllBytes(template.ScreenshotFilePath);
+
+                    template.ProjectFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file), template.ProjectFile));
+
                     _projectTemplates.Add(template);
                 }
-                ValidateProjectPath();
             }
             catch (Exception ex)
             {
                 Debug.WriteLine($"Error loading project templates: {ex.Message}");
                 MessageBox.Error($"Error loading project templates: {ex.Message}", "Error");
-
-                //TODO: log error
             }
-
         }
-
     }
-
 }
