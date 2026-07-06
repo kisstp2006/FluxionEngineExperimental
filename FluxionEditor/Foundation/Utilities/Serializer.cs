@@ -13,6 +13,7 @@ namespace FluxionEditor.Foundation.Utilities
 
         public static void ToFile<T>(T instance, string filePath)
         {
+            Debug.Assert(!string.IsNullOrEmpty(filePath), "filePath cannot be null or empty.");
             try
             {
                 using var fs = new FileStream(filePath, FileMode.Create);
@@ -21,7 +22,7 @@ namespace FluxionEditor.Foundation.Utilities
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.WriteLine($"Failed to serialize to '{filePath}': {ex.Message}");
                 MessageBox.Error(ex.Message);
 
 
@@ -42,7 +43,7 @@ namespace FluxionEditor.Foundation.Utilities
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.WriteLine($"Failed to deserialize '{filePath}': {ex.Message}");
                 MessageBox.Error(ex.Message);
 
 

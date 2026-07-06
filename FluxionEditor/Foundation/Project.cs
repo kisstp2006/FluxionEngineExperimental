@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -24,6 +25,8 @@ namespace FluxionEditor.Foundation
 
         public Project(string name, string path)
         {
+            Debug.Assert(!string.IsNullOrEmpty(name), "Project name cannot be null or empty.");
+            Debug.Assert(!string.IsNullOrEmpty(path), "Project path cannot be null or empty.");
             Name = name;
             Path = path;
         

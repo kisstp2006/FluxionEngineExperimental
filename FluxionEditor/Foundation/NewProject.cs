@@ -118,23 +118,28 @@ namespace FluxionEditor.Foundation
             if(string.IsNullOrWhiteSpace(ProjectName.Trim()))
             {
                 ErrorMessage = "Project name cannot be empty or white space.";
+                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
                 
             }
             else if(ProjectName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1)
             {
                 ErrorMessage = "Project name cannot be incorrect character(s).";
+                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
             }
             else if (string.IsNullOrWhiteSpace(ProjectPath.Trim()))
             {
                 ErrorMessage = "Project path cannot be empty or white space.";
+                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
             }
             else if (ProjectPath.IndexOfAny(Path.GetInvalidPathChars()) != -1)
             {
                 ErrorMessage = "Project path cannot be incorrect character(s).";
+                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
             }
             else if (Directory.Exists(path))
             {
                 ErrorMessage = "Project path already exists.";
+                Debug.WriteLine($"Project validation failed: {ErrorMessage}");
             }
             else
             {
@@ -148,9 +153,11 @@ namespace FluxionEditor.Foundation
 
         public string CreateProject(ProjectTemplate template)
         {
+            Debug.Assert(template != null, "ProjectTemplate cannot be null.");
             ValidateProjectPath();
             if (!IsValidProjectPath)
             {
+                Debug.WriteLine("CreateProject aborted: project path is not valid.");
                 return "";
             }
 
@@ -166,23 +173,42 @@ namespace FluxionEditor.Foundation
                     Directory.CreateDirectory(path);
                 }
 
-                foreach (var folder in template.Folders)
+                if (template.Folders != null)
+                {
+                    foreach (var folder in template.Folders)
                     {
                         var folderPath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(path), folder));
                         Directory.CreateDirectory(folderPath);
                     }
+                }
 
                     var dirinfo = new DirectoryInfo(path + @".Fluxion\");
                     dirinfo.Attributes |= FileAttributes.Hidden;
-                    File.Copy(template.IconFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "icon.png")));
-                    File.Copy(template.IconFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "screenshot.png")));
+
+                    if (!string.IsNullOrEmpty(template.IconFilePath) && File.Exists(template.IconFilePath))
+                    {
+                        File.Copy(template.IconFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "icon.png")));
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"Skipping icon copy: file not found '{template.IconFilePath}'");
+                    }
+
+                    if (!string.IsNullOrEmpty(template.ScreenshotFilePath) && File.Exists(template.ScreenshotFilePath))
+                    {
+                        File.Copy(template.ScreenshotFilePath, Path.GetFullPath(Path.Combine(dirinfo.FullName, "screenshot.png")));
+                    }
+                    else
+                    {
+                        Debug.WriteLine($"Skipping screenshot copy: file not found '{template.ScreenshotFilePath}'");
+                    }
 
                     var project = new Project(ProjectName, path);
 
-                    Serializer.ToFile(project,template.ProjectFilePath);
+                    Serializer.ToFile(project,path+"ProjectName"+Project.Extension);
 
 
-                return "";
+                return path;
                 
 
             }
@@ -213,12 +239,21 @@ namespace FluxionEditor.Foundation
                     {
                         template.Icon = File.ReadAllBytes(template.IconFilePath);
                     }
+                    else
+                    {
+                        Debug.WriteLine($"Icon not found for template '{template.ProjectType}': {template.IconFilePath}");
+                    }
                     template.ScreenshotFilePath = System.IO.Path.GetFullPath(Path.Combine(Path.GetDirectoryName(Files), "screenshot.png"));
                     if (!string.IsNullOrEmpty(template.ScreenshotFilePath) && File.Exists(template.ScreenshotFilePath))
                     {
                         template.Screenshot = File.ReadAllBytes(template.ScreenshotFilePath);
                     }
+                    else
+                    {
+                        Debug.WriteLine($"Screenshot not found for template '{template.ProjectType}': {template.ScreenshotFilePath}");
+                    }
 
+                    Debug.WriteLine($"Loaded template: {template.ProjectType}");
                     _projectTemplates.Add(template);
                 }
                 ValidateProjectPath();
