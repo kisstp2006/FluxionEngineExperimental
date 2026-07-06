@@ -9,8 +9,8 @@
              x:DataType="foundation:Project"
              Background="Blue">
     <UserControl.KeyBindings>
-        <KeyBinding Gesture="Ctrl+Z" Command="{Binding Undo}"/>
-        <KeyBinding Gesture="Ctrl+Y" Command="{Binding Redo}"/>
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}"/>
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}"/>
     </UserControl.KeyBindings>
 
 
@@ -35,9 +35,9 @@
 
             <MenuItem Header="_Edit">
                 <MenuItem Header="_Undo" InputGesture="Ctrl+Z"
-                          Command="{Binding Undo}"/>
+                          Command="{Binding UndoCommand}"/>
                 <MenuItem Header="_Redo" InputGesture="Ctrl+Y"
-                          Command="{Binding Redo}"/>
+                          Command="{Binding RedoCommand}"/>
                 <Separator/>
                 <MenuItem Header="Cu_t" InputGesture="Ctrl+X"/>
                 <MenuItem Header="_Copy" InputGesture="Ctrl+C"/>

@@ -58,8 +58,8 @@ namespace FluxionEditor.Foundation
         public ICommand RemoveScene { get; private set; }
 
 
-        public ICommand Undo { get; private set; }
-        public ICommand Redo { get; private set; }
+        public ICommand UndoCommand { get; private set; }
+        public ICommand RedoCommand { get; private set; }
 
 
         private void RemoveSceneInternal(Scene scene)
@@ -140,8 +140,8 @@ namespace FluxionEditor.Foundation
                 redoCmd.NotifyCanExecuteChanged();
             }, x => UndoRedo.RedoStack.Count > 0);
 
-            Undo = undoCmd;
-            Redo = redoCmd;
+            UndoCommand = undoCmd;
+            RedoCommand = redoCmd;
 
         }
 
