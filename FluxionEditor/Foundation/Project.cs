@@ -27,7 +27,8 @@ namespace FluxionEditor.Foundation
         private ObservableCollection<Scene> _scenes  = new ObservableCollection<Scene>();
         public ReadOnlyObservableCollection<Scene> Scenes { get; private set; }
 
-        public UndoRedo UndoRedo { get; } = new UndoRedo();
+        private UndoRedo? _undoRedo;
+        public UndoRedo UndoRedo => _undoRedo ??= new UndoRedo();
 
         private Scene activeScene;
         public Scene ActiveScene
@@ -94,13 +95,13 @@ namespace FluxionEditor.Foundation
                 OnPropertyChanged(nameof(Scenes));
             }
 
-            ActiveScene = Scenes.FirstOrDefault(x => x.IsActive);
+            ActiveScene = Scenes?.FirstOrDefault(x => x.IsActive);
 
             AddScene = new RelayCommand<object>(x =>
             {
-                AddSceneInternal($"New Scene {Scenes.Count}");
+                AddSceneInternal($"New Scene {Scenes?.Count ?? 0}");
                 var newScene = _scenes.Last();
-                var sceneIndex = _scenes.Count()-1;
+                var sceneIndex = _scenes.Count - 1;
                 UndoRedo.Add(new UndoRedoCommand(
                     $"Add new scene {newScene.Name}",
                     execute: () => AddSceneInternal(newScene.Name),
@@ -110,6 +111,7 @@ namespace FluxionEditor.Foundation
 
             RemoveScene = new RelayCommand<Scene>(x =>
             {
+                if (x == null) return;
                 var sceneIndex = _scenes.IndexOf(x);
                 RemoveSceneInternal(x);
 
@@ -118,7 +120,7 @@ namespace FluxionEditor.Foundation
                     execute: () => RemoveSceneInternal(x),
                     undo: () => _scenes.Insert(sceneIndex, x)
                 ));
-            },x=>!x.IsActive);
+            }, x => x != null && !x.IsActive);
 
 
             RelayCommand<object> undoCmd = null!;
