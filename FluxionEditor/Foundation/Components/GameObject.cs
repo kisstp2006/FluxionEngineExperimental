@@ -62,6 +62,8 @@ namespace FluxionEditor.Foundation.Components
         // ── Commands ──
 
         public ICommand RenameCommand { get; private set; }
+        public ICommand CancelCommand { get; private set; }
+
         public ICommand IsEnabledCommand { get; private set; }
 
         // ── Constructors ──

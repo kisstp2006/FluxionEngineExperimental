@@ -5,6 +5,7 @@
              xmlns:components="using:FluxionEditor.Foundation.Components"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.InspectorView"
+             xmlns:resources="using:FluxionEditor.Foundation.Resources"
              x:DataType="components:GameObject">
 
     <StackPanel>
@@ -32,7 +33,9 @@
             <TextBox Text="{Binding Name}"
                      Margin="0,0,0,8"
                      VerticalAlignment="Center"
-                     Grid.Column="1"/>
+                     Grid.Column="1" 
+                     resources:TextBoxCommand.Command="{Binding RenameCommand}"
+                     resources:TextBoxCommand.EscCommand="{Binding CancelCommand}"/>
 
             <StackPanel Orientation="Horizontal" Grid.Column="2">
                 <TextBlock Margin="5,0,0,0" VerticalAlignment="Center">Enabled</TextBlock>
