@@ -87,8 +87,15 @@
                                   ResizeDirection="Rows"
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"/>
-
-                    <editor:UndoRedoList Grid.Row="2" />
+                    <TabControl  Grid.Row="2">
+                        <TabItem>
+                            <editor:UndoRedoList />        
+                        </TabItem>
+                        <TabItem>
+                            <editor:LogView/>
+                        </TabItem>
+                    </TabControl>
+                    
                 </Grid>
 
                 <GridSplitter Grid.Column="1"

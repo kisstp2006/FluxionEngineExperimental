@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 namespace FluxionEditor.Foundation.Utilities
 {
-    enum SeverityLevel
+    public enum SeverityLevel
     {
         Info    = 0x01,
         Warning = 0x02,
@@ -15,7 +15,7 @@ namespace FluxionEditor.Foundation.Utilities
         All     = Info | Warning | Error
     }
 
-    class MessageLog
+    public class MessageLog
     {
         public DateTime Time { get; }
         public SeverityLevel Level { get; }
@@ -39,7 +39,7 @@ namespace FluxionEditor.Foundation.Utilities
     /// Static, thread-safe logger with bitmask filtering and text search.
     /// Use <c>{x:Static utilities:Logger.FilteredMessages}</c> for UI binding.
     /// </summary>
-    static class Logger
+    public static class Logger
     {
         // ── Messages ──
 
