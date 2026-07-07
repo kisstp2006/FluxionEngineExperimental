@@ -63,12 +63,6 @@ namespace FluxionEditor.Foundation.Components
 
         public ReadOnlyObservableCollection<Component> Components { get; private set; } = null!;
 
-        // ── Commands ──
-
-        public ICommand RenameCommand { get; private set; }
-        public ICommand CancelEditCommand { get; private set; }
-        public ICommand IsEnabledCommand { get; private set; }
-
         // ── Constructors ──
 
         /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
@@ -92,33 +86,6 @@ namespace FluxionEditor.Foundation.Components
         {
             Components = new ReadOnlyObservableCollection<Component>(_components);
             OnPropertyChanged(nameof(Components));
-
-            RenameCommand = new RelayCommand<string>(x =>
-            {
-                var oldName = Name;
-                Name = x;
-                ParentScene.Project?.UndoRedo.Add(new UndoRedoCommand(
-                    $"Rename {oldName} to {x}",
-                    nameof(Name), this, oldName, x));
-            }, x => x != _name);
-
-            // Escape simply resets the TextBox by forcing the OneWay binding to refresh
-            CancelEditCommand = new RelayCommand(() =>
-                OnPropertyChanged(nameof(Name)));
-
-            IsEnabledCommand = new RelayCommand<bool>(x =>
-            {
-                var oldValue = IsEnabled;
-                IsEnabled = x;
-                ParentScene.Project?.UndoRedo.Add(new UndoRedoCommand(
-                    $"{(x ? "Enable" : "Disable")} {Name}",
-                    nameof(IsEnabled), this, oldValue, x));
-            });
-
-
-            // Escape simply resets the TextBox by forcing the OneWay binding to refresh
-            CancelEditCommand = new RelayCommand(() =>
-                OnPropertyChanged(nameof(Name)));
         }
     }
 

@@ -33,7 +33,7 @@
             <Border Background="DimGray" Width="480" Height="250" Margin="5,0,0,0"
                     x:CompileBindings="False">
                 <Border.Background>
-                    <ImageBrush Source="{Binding SelectedItem.Screenshot, Converter={StaticResource ByteToBitmapConverter}, ElementName=ProjectsListBox}" />
+                    <ImageBrush Source="{Binding SelectedItem, Converter={StaticResource ByteToBitmapConverter}, ElementName=ProjectsListBox}" />
                 </Border.Background>
             </Border>
         </StackPanel>

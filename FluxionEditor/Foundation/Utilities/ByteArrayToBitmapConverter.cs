@@ -13,6 +13,11 @@ namespace FluxionEditor.Foundation.Utilities
     {
         public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
+            // Accept a ProjectData directly so bindings don't need to traverse
+            // a possibly-null SelectedItem chain (SelectedItem.Screenshot).
+            if (value is ProjectData projectData)
+                value = projectData.Screenshot;
+
             if (value is byte[] bytes && bytes.Length > 0)
             {
                 using var stream = new MemoryStream(bytes);

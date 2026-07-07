@@ -8,7 +8,8 @@
              x:Class="FluxionEditor.InspectorView"
              x:DataType="components:MSGameObject">
 
-    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" IsVisible="{Binding !!}">
+    <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled"
+                  IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}}">
         <StackPanel>
             <Border Height="40">
                   <ToggleButton HorizontalAlignment="Center" VerticalAlignment="Center" Content="Add Component">
