@@ -43,6 +43,7 @@ namespace fluxion::ecs {
 			assert(!transforms[index].is_valid());
 			transforms[index] = transform::create_transform(*info.transform, new_gameobject);
 
+			if (!transforms[index].is_valid())return {};
 
 			return new_gameobject;
 		}
