@@ -220,8 +220,8 @@ namespace FluxionEditor.Foundation.Components
 
                 Project.Current?.UndoRedo.Add(new UndoRedoCommand(
                     $"Rename selection to {x}",
-                    execute: () => oldNames.ForEach(p => p.g.Name = x),
-                    undo: () => oldNames.ForEach(p => p.g.Name = p.Name)));
+                    execute: () => { oldNames.ForEach(p => p.g.Name = x); Refresh(); },
+                    undo: () => { oldNames.ForEach(p => p.g.Name = p.Name); Refresh(); }));
             }, x => x != _name);
 
             // Escape simply resets the TextBox by forcing the OneWay binding to refresh
@@ -235,8 +235,8 @@ namespace FluxionEditor.Foundation.Components
 
                 Project.Current?.UndoRedo.Add(new UndoRedoCommand(
                     $"{(x ? "Enable" : "Disable")} selection",
-                    execute: () => oldValues.ForEach(p => p.g.IsEnabled = x),
-                    undo: () => oldValues.ForEach(p => p.g.IsEnabled = p.IsEnabled)));
+                    execute: () => { oldValues.ForEach(p => p.g.IsEnabled = x); Refresh(); },
+                    undo: () => { oldValues.ForEach(p => p.g.IsEnabled = p.IsEnabled); Refresh(); }));
             });
         }
     }
