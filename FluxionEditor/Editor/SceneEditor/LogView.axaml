@@ -5,18 +5,58 @@
              xmlns:utilities="using:FluxionEditor.Foundation.Utilities"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.LogView">
+
+    <UserControl.Resources>
+        <utilities:SeverityToBrushConverter x:Key="LevelToBrushConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="DockPanel.logRow">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="DockPanel.logRow:pointerover">
+            <Setter Property="Background" Value="#33555555"/>
+        </Style>
+    </UserControl.Styles>
+
     <Grid>
-        <ItemsControl ItemsSource="{x:Static utilities:Logger.Messages}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <TextBlock Text="{Binding Log}"/>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{x:Static utilities:Logger.Messages}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <DockPanel Classes="logRow"
+                                   ToolTip.Tip="{Binding MetaData}"
+                                   Margin="2,1">
+                            <!-- Color-coded time -->
+                            <TextBlock Text="{Binding Time, StringFormat={}{0:HH:mm:ss}}"
+                                       Foreground="{Binding Level, Converter={StaticResource LevelToBrushConverter}}"
+                                       Margin="4,1"
+                                       FontFamily="Consolas"
+                                       FontSize="12"
+                                       VerticalAlignment="Top"/>
+                            <!-- Level tag (same color) -->
+                            <TextBlock Text="{Binding Level}"
+                                       Foreground="{Binding Level, Converter={StaticResource LevelToBrushConverter}}"
+                                       Margin="2,1"
+                                       FontFamily="Consolas"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Top"/>
+                            <!-- Message with wrapping -->
+                            <TextBlock Text="{Binding Log}"
+                                       Foreground="{Binding Level, Converter={StaticResource LevelToBrushConverter}}"
+                                       Margin="6,1"
+                                       TextWrapping="Wrap"
+                                       VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>
