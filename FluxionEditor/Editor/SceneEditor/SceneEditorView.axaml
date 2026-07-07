@@ -88,10 +88,10 @@
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"/>
                     <TabControl  Grid.Row="2">
-                        <TabItem>
-                            <editor:UndoRedoList />        
+                        <TabItem Header="Undo / Redo">
+                            <editor:UndoRedoList />
                         </TabItem>
-                        <TabItem>
+                        <TabItem Header="Log">
                             <editor:LogView/>
                         </TabItem>
                     </TabControl>

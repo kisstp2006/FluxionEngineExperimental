@@ -24,7 +24,8 @@ namespace FluxionEditor
             var name = param.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
             var type = Type.GetType(name);
 
-            if (type != null)
+            // Only instantiate if the resolved type is actually a Control
+            if (type != null && typeof(Control).IsAssignableFrom(type))
                 return (Control)Activator.CreateInstance(type)!;
 
             return new TextBlock { Text = "Not Found: " + name };

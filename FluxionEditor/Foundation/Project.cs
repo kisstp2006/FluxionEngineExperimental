@@ -98,6 +98,7 @@ namespace FluxionEditor.Foundation
 
         public void Unload()
         {
+            UndoRedo.Reset();
             // TODO: clean up resources, close open file handles
         }
 
