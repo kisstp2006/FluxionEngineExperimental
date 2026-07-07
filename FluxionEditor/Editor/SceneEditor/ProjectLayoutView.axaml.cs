@@ -27,13 +27,8 @@ public partial class ProjectLayoutView : UserControl
 
     private void OnGameObject_list_Selection_Changed(object? sender, SelectionChangedEventArgs e)
     {
-        InspectorView.Instance.DataContext = null;
+        
         var listBox = sender as ListBox;
-        if (e.AddedItems.Count > 0)
-        {
-            InspectorView.Instance.DataContext = (sender as ListBox).SelectedItems[0];
-        }
-
         var newSelectedGameObject = listBox?.SelectedItems.Cast<GameObject>().ToList();
         var previousSelectedGameObject = newSelectedGameObject
             ?.Except(e.AddedItems.Cast<GameObject>())
@@ -45,6 +40,13 @@ public partial class ProjectLayoutView : UserControl
             execute: () => RestoreSelection(listBox!, newSelectedGameObject),
             undo: () => RestoreSelection(listBox!, previousSelectedGameObject)));
 
+
+        MSGameObject mSGameObject = null;
+        if (newSelectedGameObject.Any())
+        {
+            mSGameObject = new MSGameObject(newSelectedGameObject);
+        }
+        InspectorView.Instance.DataContext = mSGameObject;
     }
 
     /// <summary>

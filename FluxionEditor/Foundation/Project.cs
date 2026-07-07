@@ -15,7 +15,7 @@ namespace FluxionEditor.Foundation
     /// Contains scenes, undo/redo history, and top-level editor commands.
     /// </summary>
     [DataContract(Name = "Game")]
-    public class Project : ViewModelBase
+    class Project : ViewModelBase
     {
         // ── File metadata ──────────────────────────────────────────
 

@@ -40,7 +40,7 @@ namespace FluxionEditor.Foundation
         /// Not serialized — re-linked by <see cref="Project"/>
         /// after deserialization.
         /// </summary>
-        public Project? Project { get; internal set; }
+        internal Project? Project { get; set; }
 
         // ── Active state ────────────────────────────────────────────
 
@@ -137,7 +137,7 @@ namespace FluxionEditor.Foundation
         {
         }
 
-        public Scene(Project project, string name)
+        internal Scene(Project project, string name)
         {
             Debug.Assert(project != null, "Project cannot be null");
             Name = name;

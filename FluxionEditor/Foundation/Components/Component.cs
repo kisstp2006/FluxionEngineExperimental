@@ -6,8 +6,13 @@ namespace FluxionEditor.Foundation.Components
     /// <summary>
     /// Base class for all components that can be attached to a <see cref="GameObject"/>.
     /// </summary>
+    /// 
+
+    interface IMSComponent { }
+
+
     [DataContract]
-    public class Component : ViewModelBase
+    abstract public class Component : ViewModelBase
     {
         // ── Owner ──
         [DataMember]
@@ -31,4 +36,8 @@ namespace FluxionEditor.Foundation.Components
             Owner = owner;
         }
     }
+
+    abstract class MSComponent<T> :ViewModelBase, IMSComponent where T : Component 
+    { }
+
 }

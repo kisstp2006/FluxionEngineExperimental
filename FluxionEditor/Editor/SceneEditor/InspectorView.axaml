@@ -6,7 +6,7 @@
              xmlns:resources="using:FluxionEditor.Foundation.Resources"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.InspectorView"
-             x:DataType="components:GameObject">
+             x:DataType="components:MSGameObject">
 
     <ScrollViewer VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Disabled" IsVisible="{Binding !!}">
         <StackPanel>

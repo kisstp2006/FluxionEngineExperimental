@@ -118,7 +118,7 @@ namespace FluxionEditor.Foundation
         /// Opens the project described by <paramref name="projectData"/>.
         /// Updates the last-modified timestamp and persists the project list.
         /// </summary>
-        public static Project Open(ProjectData projectData)
+        internal static Project Open(ProjectData projectData)
         {
             ReadProjectData();
 
