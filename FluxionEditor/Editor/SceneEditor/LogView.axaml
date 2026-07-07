@@ -20,7 +20,22 @@
     </UserControl.Styles>
 
     <Grid>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <Border Grid.Row="0" Height="32" Background="#2D2D30">
+            <StackPanel Margin="4,0" Orientation="Horizontal">
+                <Button Content="Clear" Margin=" 1,0" Click="On_Clear_Button_CLick"></Button>
+                <CheckBox Content="Info" IsChecked="True" Margin="1,0" ToolTip.Tip="Toggle Information messages"></CheckBox>
+                <CheckBox Content="Warn" IsChecked="True" Margin="1,0" ToolTip.Tip="Toggle Warning messages"></CheckBox>
+                <CheckBox Content="Error" IsChecked="True" Margin="1,0" ToolTip.Tip="Toggle Error messages"></CheckBox>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
             <ItemsControl ItemsSource="{x:Static utilities:Logger.Messages}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
