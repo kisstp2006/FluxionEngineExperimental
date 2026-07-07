@@ -28,6 +28,7 @@ namespace FluxionEditor.Foundation.Utilities
         public MessageLog(SeverityLevel level, string log, string file, string caller, int line)
         {
             Time = DateTime.Now;
+            Level = level;
             Log = log;
             File = System.IO.Path.GetFileName(file);
             Caller = caller;

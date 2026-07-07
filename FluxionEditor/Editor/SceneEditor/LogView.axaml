@@ -28,22 +28,22 @@
         <!-- Toolbar -->
         <Border Grid.Row="0" Height="32" Background="#2D2D30">
             <StackPanel Margin="4,0" Orientation="Horizontal">
-                <Button Content="Clear" Margin=" 1,0" Click="On_Clear_Button_CLick"></Button>
-                <CheckBox Content="Info" IsChecked="True" Margin="1,0" ToolTip.Tip="Toggle Information messages"></CheckBox>
-                <CheckBox Content="Warn" IsChecked="True" Margin="1,0" ToolTip.Tip="Toggle Warning messages"></CheckBox>
-                <CheckBox Content="Error" IsChecked="True" Margin="1,0" ToolTip.Tip="Toggle Error messages"></CheckBox>
+                <Button Content="Clear" Margin="1,0" Click="OnClearButtonClick"/>
+                <CheckBox x:Name="InfoCheckBox"    Content="Info"  IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
+                <CheckBox x:Name="WarningCheckBox" Content="Warn"  IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
+                <CheckBox x:Name="ErrorCheckBox"   Content="Error" IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
             </StackPanel>
         </Border>
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-            <ItemsControl ItemsSource="{x:Static utilities:Logger.Messages}">
+            <ItemsControl x:Name="LogItemsControl">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
                         <VirtualizingStackPanel/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="utilities:MessageLog">
                         <DockPanel Classes="logRow"
                                    ToolTip.Tip="{Binding MetaData}"
                                    Margin="2,1">
