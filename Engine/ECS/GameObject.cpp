@@ -55,6 +55,8 @@ namespace fluxion::ecs {
 			assert(is_alive(gameobject));
 			if (is_alive(gameobject))
 			{
+				transform::remove_transform(transforms[index]);
+				transforms[index] = {}; // reset the slot so is_alive() reports dead and create can reuse it
 				free_ids.push_back(id);
 			}
 
@@ -65,9 +67,10 @@ namespace fluxion::ecs {
 			assert(gameobject.is_valid());
 			const game_object_id id{ gameobject.get_id() };
 			const id::id_type index{ id::index(id) };
-			assert(index <generations.size());
-			assert(generations[index] == id::generation(id));
-			return (generations[index] == id::generation(id));
+			assert(index < generations.size());
+			// Alive = generation matches AND the transform slot is in use
+			// (every game object must have a transform for now).
+			return (generations[index] == id::generation(id) && transforms[index].is_valid());
 
 
 		}
