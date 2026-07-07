@@ -3,7 +3,7 @@
 namespace fluxion::ecs {
 
 	namespace {
-		utl::vector<common::id::generation_type> generations;
+		utl::vector<id::generation_type> generations;
 		utl::deque<game_object_id> free_ids;
 	}
 
@@ -11,8 +11,9 @@ namespace fluxion::ecs {
 
 		game_object_id create_game_object(const game_object_info& info)
 		{
-			assert(info.transform);
-			return game_object_id{};
+			assert(info.transform); //ALL game objects must have a transform component (fo now)
+			if (!info.transform) return game_object_id{};
+			return game_object_id{ id::invalid_id };
 		}
 
 		void remove_game_object(game_object_id id)

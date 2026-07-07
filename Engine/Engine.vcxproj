@@ -25,6 +25,7 @@
     <ClInclude Include="ECS\Components\Transform.h" />
     <ClInclude Include="ECS\ECSCommon.h" />
     <ClInclude Include="ECS\GameObject.h" />
+    <ClInclude Include="EngineAPI\GameObject.h" />
     <ClInclude Include="Utilities\Utilities.h" />
   </ItemGroup>
   <ItemGroup>
