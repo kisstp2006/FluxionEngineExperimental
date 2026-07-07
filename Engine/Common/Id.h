@@ -12,7 +12,7 @@ namespace fluxion::common::id {
 		constexpr id_type generation_mask{ (id_type(1) << generation_bits) - 1 };
 	} //internal namespace
 	constexpr id_type invalid_id{ (id_type)-1 };
-
+	constexpr flu32 min_deleted_elements{ 1024 };
 
 	using generation_type = std::conditional_t<internal::generation_bits <= 16, std::conditional_t<internal::generation_bits <= 8, flu8, flu16>, flu32>;
 	static_assert(sizeof(generation_type) * 8 >= internal::generation_bits);

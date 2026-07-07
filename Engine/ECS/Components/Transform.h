@@ -1,8 +1,8 @@
 #pragma once
 #include "ECS/ECSCommon.h"
 
+
 namespace fluxion::ecs::transform {
-	DEFINE_TYPED_ID(transform_id);
 
 	struct init_info
 	{
@@ -11,7 +11,7 @@ namespace fluxion::ecs::transform {
 		flf32 scale[3]{ 1.f, 1.f, 1.f };
 	};
 
-	transform_id create_transform(const init_info& info, game_object_id gameobject_id);
+	component create_transform(const init_info& info, game_object::game_object gameobject);
 
-	void remove_transform(transform_id id);
+	void remove_transform(component c);
 }
