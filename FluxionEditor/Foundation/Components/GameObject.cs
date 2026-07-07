@@ -98,6 +98,16 @@ namespace FluxionEditor.Foundation.Components
                     nameof(Name), this, oldName, x));
             }, x => x != _name);
 
+            RenameCommand = new RelayCommand<bool>(x =>
+            {
+                var oldValue = _isEnabled;
+                _isEnabled = x;
+                ParentScene.Project?.UndoRedo.Add(new UndoRedoCommand(
+                    $" {Name}changed from {oldValue} to {x}",
+                    nameof(oldValue), this, oldValue, x));
+            });
+
+
             // Escape simply resets the TextBox by forcing the OneWay binding to refresh
             CancelEditCommand = new RelayCommand(() =>
                 OnPropertyChanged(nameof(Name)));
