@@ -61,8 +61,8 @@ namespace FluxionEditor.Foundation.Components
 
         // ── Commands ──
 
-        public ICommand RenameCommand { get; private set; }        public ICommand CancelEditCommand { get; private set; }        public ICommand CancelCommand { get; private set; }
-
+        public ICommand RenameCommand { get; private set; }
+        public ICommand CancelEditCommand { get; private set; }
         public ICommand IsEnabledCommand { get; private set; }
 
         // ── Constructors ──
@@ -98,13 +98,17 @@ namespace FluxionEditor.Foundation.Components
                     nameof(Name), this, oldName, x));
             }, x => x != _name);
 
-            RenameCommand = new RelayCommand<bool>(x =>
+            // Escape simply resets the TextBox by forcing the OneWay binding to refresh
+            CancelEditCommand = new RelayCommand(() =>
+                OnPropertyChanged(nameof(Name)));
+
+            IsEnabledCommand = new RelayCommand<bool>(x =>
             {
-                var oldValue = _isEnabled;
-                _isEnabled = x;
+                var oldValue = IsEnabled;
+                IsEnabled = x;
                 ParentScene.Project?.UndoRedo.Add(new UndoRedoCommand(
-                    $" {Name}changed from {oldValue} to {x}",
-                    nameof(oldValue), this, oldValue, x));
+                    $"{(x ? "Enable" : "Disable")} {Name}",
+                    nameof(IsEnabled), this, oldValue, x));
             });
 
 
