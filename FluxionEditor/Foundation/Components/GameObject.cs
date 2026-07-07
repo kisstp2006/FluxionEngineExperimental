@@ -61,8 +61,7 @@ namespace FluxionEditor.Foundation.Components
 
         // ── Commands ──
 
-        public ICommand RenameCommand { get; private set; }
-        public ICommand CancelCommand { get; private set; }
+        public ICommand RenameCommand { get; private set; }        public ICommand CancelEditCommand { get; private set; }        public ICommand CancelCommand { get; private set; }
 
         public ICommand IsEnabledCommand { get; private set; }
 
@@ -98,6 +97,10 @@ namespace FluxionEditor.Foundation.Components
                     $"Rename {oldName} to {x}",
                     nameof(Name), this, oldName, x));
             }, x => x != _name);
+
+            // Escape simply resets the TextBox by forcing the OneWay binding to refresh
+            CancelEditCommand = new RelayCommand(() =>
+                OnPropertyChanged(nameof(Name)));
         }
     }
 }

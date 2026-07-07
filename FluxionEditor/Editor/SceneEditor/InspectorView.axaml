@@ -3,9 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:components="using:FluxionEditor.Foundation.Components"
+             xmlns:resources="using:FluxionEditor.Foundation.Resources"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.InspectorView"
-             xmlns:resources="using:FluxionEditor.Foundation.Resources"
              x:DataType="components:GameObject">
 
     <StackPanel>
@@ -30,12 +30,12 @@
 
 
             <TextBlock Text="Name:" Grid.Column="0" Margin="5,0,0,0" VerticalAlignment="Center"/>
-            <TextBox Text="{Binding Name}"
+            <TextBox Text="{Binding Name, Mode=OneWay}"
                      Margin="0,0,0,8"
                      VerticalAlignment="Center"
-                     Grid.Column="1" 
+                     Grid.Column="1"
                      resources:TextBoxCommand.Command="{Binding RenameCommand}"
-                     resources:TextBoxCommand.EscCommand="{Binding CancelCommand}"/>
+                     resources:TextBoxCommand.EscCommand="{Binding CancelEditCommand}"/>
 
             <StackPanel Orientation="Horizontal" Grid.Column="2">
                 <TextBlock Margin="5,0,0,0" VerticalAlignment="Center">Enabled</TextBlock>
