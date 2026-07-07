@@ -23,9 +23,8 @@ namespace FluxionEditor.Foundation.Utilities
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Failed to serialize to '{filePath}': {ex.Message}");
+                Logger.Log(SeverityLevel.Error, $"Failed to serialize to '{filePath}': {ex.Message}");
                 MessageBox.Error(ex.Message);
-                // TODO: Log to file
             }
         }
 
@@ -40,9 +39,8 @@ namespace FluxionEditor.Foundation.Utilities
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Failed to deserialize '{filePath}': {ex.Message}");
+                Logger.Log(SeverityLevel.Error, $"Failed to deserialize '{filePath}': {ex.Message}");
                 MessageBox.Error(ex.Message);
-                // TODO: Log to file
                 return default;
             }
         }

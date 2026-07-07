@@ -150,6 +150,10 @@ namespace FluxionEditor.Foundation.Utilities
             [CallerMemberName] string caller = "",
             [CallerLineNumber] int line = 0)
         {
+#if DEBUG
+            // Also write to Visual Studio / Rider output window in debug builds
+            System.Diagnostics.Debug.WriteLine($"[{type}] {message} ({System.IO.Path.GetFileName(file)}:{caller}:{line})");
+#endif
             await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
             {
                 _messages.Add(new MessageLog(type, message, file, caller, line));

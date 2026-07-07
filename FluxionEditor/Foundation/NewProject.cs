@@ -44,6 +44,15 @@ namespace FluxionEditor.Foundation
         // TODO: Don't hardcode this path — use relative paths or configuration
         private readonly string _templatePaths = @"..\..\FluxionEditor\ProjectTemplates";
 
+        // Flag this during development
+        private static bool _hardcodedPathWarned;
+        private void WarnHardcodedPath()
+        {
+            if (_hardcodedPathWarned) return;
+            _hardcodedPathWarned = true;
+            Logger.Log(SeverityLevel.Warning, $"Using hardcoded template path: {_templatePaths}");
+        }
+
         // ── Project name ──
 
         private string _projectName = "Fluxion Game";
@@ -172,7 +181,7 @@ namespace FluxionEditor.Foundation
             ValidateProjectPath();
             if (!IsValidProjectPath)
             {
-                Debug.WriteLine("CreateProject aborted: project path is not valid.");
+                Logger.Log(SeverityLevel.Warning, "CreateProject aborted: project path is not valid.");
                 return "";
             }
 
@@ -210,7 +219,7 @@ namespace FluxionEditor.Foundation
                 }
                 else
                 {
-                    Debug.WriteLine($"Skipping icon copy: file not found '{template.IconFilePath}'");
+                    Logger.Log(SeverityLevel.Warning, $"Skipping icon copy: file not found '{template.IconFilePath}'");
                 }
 
                 // Copy screenshot
@@ -220,7 +229,7 @@ namespace FluxionEditor.Foundation
                 }
                 else
                 {
-                    Debug.WriteLine($"Skipping screenshot copy: file not found '{template.ScreenshotFilePath}'");
+                    Logger.Log(SeverityLevel.Warning, $"Skipping screenshot copy: file not found '{template.ScreenshotFilePath}'");
                 }
 
                 // Generate project file from template
@@ -234,7 +243,7 @@ namespace FluxionEditor.Foundation
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error creating project: {ex.Message}");
+                Logger.Log(SeverityLevel.Error, $"Error creating project: {ex.Message}");
                 MessageBox.Error($"Error creating project: {ex.Message}", "Error");
                 return "";
             }
@@ -244,6 +253,7 @@ namespace FluxionEditor.Foundation
 
         public NewProject()
         {
+            WarnHardcodedPath();
             ProjectTemplates = new ReadOnlyObservableCollection<ProjectTemplate>(_projectTemplates);
 
             try
@@ -273,7 +283,7 @@ namespace FluxionEditor.Foundation
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error loading project templates: {ex.Message}");
+                Logger.Log(SeverityLevel.Error, $"Error loading project templates: {ex.Message}");
                 MessageBox.Error($"Error loading project templates: {ex.Message}", "Error");
             }
         }

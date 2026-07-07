@@ -75,7 +75,7 @@ namespace FluxionEditor.Foundation
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Logger.Log(SeverityLevel.Error, $"OpenProject static init failed: {ex.Message}");
             }
         }
 
@@ -102,7 +102,7 @@ namespace FluxionEditor.Foundation
             }
             catch (Exception ex)
             {
-                Debug.WriteLine($"Error reading project data: {ex.Message}");
+                Logger.Log(SeverityLevel.Error, $"Error reading project data: {ex.Message}");
             }
         }
 

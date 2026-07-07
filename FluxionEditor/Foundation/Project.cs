@@ -98,6 +98,7 @@ namespace FluxionEditor.Foundation
 
         public void Unload()
         {
+            Logger.Log(SeverityLevel.Info, $"Unloading project '{Name}'");
             UndoRedo.Reset();
             // TODO: clean up resources, close open file handles
         }
@@ -105,7 +106,7 @@ namespace FluxionEditor.Foundation
         /// <summary>Saves the project to its <see cref="FullPath"/> on disk.</summary>
         public static void Save(Project project)
         {
-            Debug.WriteLine($"Saving project {project.Name} to {project.FullPath}");
+            Logger.Log(SeverityLevel.Info, $"Saving project '{project.Name}' to {project.FullPath}");
             Serializer.ToFile(project, project.FullPath);
         }
 
