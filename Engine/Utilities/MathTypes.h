@@ -53,6 +53,7 @@ namespace fluxion::math {
 	// Plain storage types with the same size, alignment and row-major
 	// layout as the DirectXMath ones, so component data stays
 	// bit-identical across platforms.
+	//TODO: replacethem with something more professional like glm
 	struct v2 { flf32 x, y; };
 	struct alignas(16) v2a { flf32 x, y; };
 	struct v3 { flf32 x, y, z; };
