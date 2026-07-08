@@ -4,19 +4,17 @@
         xmlns:local="using:FluxionEditor"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        d:DesignWidth="800"
-        d:DesignHeight="500"
+        d:DesignWidth="800" d:DesignHeight="500"
         x:Class="FluxionEditor.ProjectManagerDialog"
-        Title="ProjectManager"
-        Width="800"
-        Height="600"
+        Title="Project Manager"
+        Width="800" Height="600"
         CanResize="False"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Background="{StaticResource Editor.Window.GrayBrush1}">
 
     <Border CornerRadius="4"
-            Background="{StaticResource Editor.Window.GrayBrush3}"
-            Padding="20"
-            Margin="20">
+            Background="{StaticResource Editor.Window.GrayBrush2}"
+            Padding="20" Margin="20">
         <Grid ClipToBounds="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -26,20 +24,18 @@
             <!-- Tab toggles -->
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
-                        Margin="0,0,0,10">
+                        Margin="0,0,0,16">
                 <ToggleButton x:Name="OpenProjectBtn"
-                              FontSize="22"
-                              FontFamily="Default"
-                              Margin="25,0,0,0"
+                              FontSize="18"
+                              Margin="12,0"
                               Click="ToggleView"
                               IsChecked="true">
                     Open Project
                 </ToggleButton>
 
                 <ToggleButton x:Name="CreateProjectBtn"
-                              FontSize="22"
-                              FontFamily="Default"
-                              Margin="25,0,0,0"
+                              FontSize="18"
+                              Margin="12,0"
                               Click="ToggleView"
                               IsChecked="false">
                     Create Project
@@ -51,7 +47,6 @@
                     Width="800"
                     ClipToBounds="True"
                     HorizontalAlignment="Left">
-                <!-- Content is 1600px wide, the Border clips it -->
                 <StackPanel Orientation="Horizontal"
                             x:Name="ManagerContent">
                     <local:OpenProjectView x:Name="openProjectView"/>

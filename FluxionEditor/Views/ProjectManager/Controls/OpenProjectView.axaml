@@ -12,34 +12,44 @@
         <utilities:ByteArrayToBitmapConverter x:Key="ByteToBitmapConverter"/>
     </UserControl.Resources>
 
-    <StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+    <StackPanel Background="{StaticResource Editor.Window.GrayBrush2}">
+        <!-- Project list + preview -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
             <ListBox Width="200" Height="250"
                      ItemsSource="{x:Static foundation:OpenProject.Projects}"
                      x:Name="ProjectsListBox"
                      SelectedIndex="0"
-                     DoubleTapped="OnProjectDoubleTapped">
-               
+                     DoubleTapped="OnProjectDoubleTapped"
+                     Background="{StaticResource Editor.Window.GrayBrush3}"
+                     Foreground="{StaticResource Editor.FontBrush}">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="foundation:ProjectData">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding Icon, Converter={StaticResource ByteToBitmapConverter}}"
-                                   Width="32" Height="32" Margin="0,0,5,0" />
-                            <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                                   Width="32" Height="32" Margin="0,0,5,0"/>
+                            <TextBlock Text="{Binding Name}"
+                                       Foreground="{StaticResource Editor.FontBrush}"
+                                       VerticalAlignment="Center"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <Border Background="DimGray" Width="480" Height="250" Margin="5,0,0,0"
+            <!-- Preview image -->
+            <Border Width="480" Height="250" Margin="5,0,0,0"
+                    Background="{StaticResource Editor.Window.GrayBrush3}"
                     x:CompileBindings="False">
                 <Border.Background>
-                    <ImageBrush Source="{Binding SelectedItem, Converter={StaticResource ByteToBitmapConverter}, ElementName=ProjectsListBox}" />
+                    <ImageBrush Source="{Binding SelectedItem.Screenshot, Converter={StaticResource ByteToBitmapConverter}, ElementName=ProjectsListBox}"/>
                 </Border.Background>
             </Border>
         </StackPanel>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,30,0,0">
-            <Button Width="100" IsDefault="True" Click="OnOpenButtonClick">Open</Button>
-            <Button Width="100" Margin="30,0,0,0" IsCancel="True">Exit</Button>
+
+        <!-- Action buttons -->
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Button Width="100" IsDefault="True"
+                    Click="OnOpenButtonClick">Open</Button>
+            <Button Width="100" Margin="20,0,0,0"
+                    IsCancel="True">Exit</Button>
         </StackPanel>
     </StackPanel>
 </UserControl>

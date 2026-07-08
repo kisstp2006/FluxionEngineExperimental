@@ -70,4 +70,90 @@
         </Setter>
     </Style>
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Global Text Styles                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+    </Style>
+
+    <Style Selector="TextBox">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+        <Setter Property="CaretBrush" Value="{StaticResource Editor.FontBrush}"/>
+        <Setter Property="SelectionBrush" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+        <Setter Property="SelectionForegroundBrush" Value="White"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.Window.GrayBrush5}"/>
+        <Setter Property="Padding" Value="4,3"/>
+    </Style>
+    <Style Selector="TextBox:focus">
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Button                                                  -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="Button">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.Window.GrayBrush5}"/>
+        <Setter Property="Padding" Value="10,4"/>
+    </Style>
+    <Style Selector="Button:pointerover">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush5}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.BlueBrush}"/>
+    </Style>
+    <Style Selector="Button:pressed">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+    </Style>
+    <Style Selector="Button:disabled">
+        <Setter Property="Foreground" Value="{StaticResource Editor.Disabled.FontBrush}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- ListBox + ListBoxItem                                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="ListBox">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush2}"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.Window.GrayBrush5}"/>
+        <Setter Property="BorderThickness" Value="1"/>
+    </Style>
+
+    <Style Selector="ListBoxItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+        <Setter Property="Padding" Value="6,3"/>
+    </Style>
+    <Style Selector="ListBoxItem:selected">
+        <Setter Property="Background" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style Selector="ListBoxItem:pointerover">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
+    </Style>
+    <Style Selector="ListBoxItem:selected:pointerover">
+        <Setter Property="Background" Value="{StaticResource Editor.BlueBrush}"/>
+    </Style>
+    <Style Selector="ListBoxItem:selected:focus">
+        <Setter Property="Background" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- ScrollViewer / ScrollBar                                -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="ScrollBar">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush2}"/>
+    </Style>
+    <Style Selector="ScrollBar /template/ RepeatButton#PART_LineUpButton,
+                     ScrollBar /template/ RepeatButton#PART_LineDownButton">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+    </Style>
+
 </Styles>
