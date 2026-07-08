@@ -74,5 +74,17 @@ namespace fluxion::ecs {
 
 
 		}
+
+		transform::component
+			game_object::transform() const 
+		{
+			assert(is_alive(*this));
+			assert(is_valid());
+			const id::id_type index{ id::index(_id) };
+			
+
+
+			return transforms[index];
+		}
 	}
 }
