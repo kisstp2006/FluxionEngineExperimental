@@ -46,9 +46,9 @@ namespace FluxionEditor.Foundation.Components
                     if (isActive)
                     {
                         GameObjectId = EngineAPI.CreateGameObject(this);
-                        Debug.Assert(ID.isValid(GameObjectId));
+                        Debug.Assert(ID.IsValid(GameObjectId));
                     }
-                    else if (ID.isValid(GameObjectId))
+                    else if (ID.IsValid(GameObjectId))
                     {
                         EngineAPI.RemoveGameObject(this);
                         GameObjectId = ID.INVALID_ID;

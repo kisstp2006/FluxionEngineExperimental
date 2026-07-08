@@ -1,10 +1,14 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using FluxionEditor.ViewModels;
 using FluxionEditor.Views;
 
 namespace FluxionEditor
 {
+    /// <summary>
+    /// Avalonia application root. Bootstraps the main window and ViewModel.
+    /// </summary>
     public partial class App : Application
     {
         public override void Initialize()
@@ -12,6 +16,9 @@ namespace FluxionEditor
             AvaloniaXamlLoader.Load(this);
         }
 
+        /// <summary>
+        /// Creates the <see cref="MainWindow"/> and assigns its initial DataContext.
+        /// </summary>
         public override void OnFrameworkInitializationCompleted()
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)

@@ -5,14 +5,15 @@ namespace FluxionEditor
 {
     internal sealed class Program
     {
-        // Initialization code. Don't use any Avalonia, third-party APIs or any
-        // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
-        // yet and stuff might break.
+        /// <summary>
+        /// Application entry point. Do not use Avalonia APIs or
+        /// SynchronizationContext before AppMain is called.
+        /// </summary>
         [STAThread]
         public static void Main(string[] args) => BuildAvaloniaApp()
             .StartWithClassicDesktopLifetime(args);
 
-        // Avalonia configuration, don't remove; also used by visual designer.
+        /// <summary>Avalonia configuration — also used by the visual designer.</summary>
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()

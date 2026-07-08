@@ -1,24 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
+﻿using System.Numerics;
 using System.Runtime.Serialization;
-using System.Text;
 
 namespace FluxionEditor.Foundation.Components
 {
+    /// <summary>
+    /// Transform component attached to every <see cref="GameObject"/>.
+    /// Stores position, rotation, and scale in 3D space.
+    /// </summary>
     [DataContract]
     public class Transform : Component
     {
+        // ── Constructors ────────────────────────────────────────────
+
         /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
-        public Transform() 
-        { 
+        public Transform()
+        {
         }
 
+        /// <summary>Creates a Transform attached to the given <paramref name="owner"/>.</summary>
         public Transform(GameObject owner) : base(owner)
         {
         }
 
+        // ── Position ────────────────────────────────────────────────
+
         private Vector3 _position;
+
         [DataMember]
         public Vector3 Position
         {
@@ -33,7 +40,10 @@ namespace FluxionEditor.Foundation.Components
             }
         }
 
+        // ── Rotation ────────────────────────────────────────────────
+
         private Vector3 _rotation;
+
         [DataMember]
         public Vector3 Rotation
         {
@@ -48,8 +58,10 @@ namespace FluxionEditor.Foundation.Components
             }
         }
 
+        // ── Scale ───────────────────────────────────────────────────
 
         private Vector3 _scale;
+
         [DataMember]
         public Vector3 Scale
         {
