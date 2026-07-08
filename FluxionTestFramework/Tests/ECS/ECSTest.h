@@ -91,4 +91,13 @@ private:
 	flu32 added{ 0 };
 	flu32 removed{ 0 };
 	flu32 num_game_objects{ 0 };
+
+	void print_results() const
+	{
+		std::cout << "══════════════════════════════\n";
+		std::cout << "  Game Objects created : " << added << "\n";
+		std::cout << "  Game Objects removed : " << removed << "\n";
+		std::cout << "  Game Objects alive   : " << num_game_objects << "\n";
+		std::cout << "══════════════════════════════\n";
+	}
 };
