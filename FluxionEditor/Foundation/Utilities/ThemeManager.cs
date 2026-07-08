@@ -24,7 +24,7 @@ namespace FluxionEditor.Foundation.Utilities
     public sealed class ThemeManager : ViewModelBase
     {
         /// <summary>Theme used when no saved preference exists yet.</summary>
-        public const EditorTheme DefaultTheme = EditorTheme.Dark;
+        public const EditorTheme DefaultTheme = EditorTheme.Light;
 
         private static readonly string _settingsFilePath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

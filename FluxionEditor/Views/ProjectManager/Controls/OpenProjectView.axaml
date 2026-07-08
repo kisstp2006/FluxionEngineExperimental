@@ -31,15 +31,19 @@
                     </DataTemplate>
                 </ListBox.ItemTemplate>
             </ListBox>
-            <!-- Preview image -->
+            <!-- Preview image: outer border = themed panel surface,
+                 inner border = the screenshot itself (kept separate so the
+                 DynamicResource background can't overwrite the ImageBrush) -->
             <Border Width="480" Height="250" Margin="5,0,0,0"
                     Background="{DynamicResource Editor.Window.GrayBrush3}"
                     BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
                     BorderThickness="1"
                     x:CompileBindings="False">
-                <Border.Background>
-                    <ImageBrush Source="{Binding SelectedItem.Screenshot, Converter={StaticResource ByteToBitmapConverter}, ElementName=ProjectsListBox}"/>
-                </Border.Background>
+                <Border>
+                    <Border.Background>
+                        <ImageBrush Source="{Binding SelectedItem.Screenshot, Converter={StaticResource ByteToBitmapConverter}, ElementName=ProjectsListBox}"/>
+                    </Border.Background>
+                </Border>
             </Border>
         </StackPanel>
 
