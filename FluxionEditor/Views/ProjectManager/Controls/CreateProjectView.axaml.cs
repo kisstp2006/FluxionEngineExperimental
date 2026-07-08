@@ -14,7 +14,7 @@ public partial class CreateProjectView : UserControl
         InitializeComponent();
     }
 
-    private void CreateButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnCreateButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         var vm = DataContext as NewProject;
         var projectPath = vm?.CreateProject(TemplateList.SelectedItem as ProjectTemplate);
@@ -32,7 +32,7 @@ public partial class CreateProjectView : UserControl
         (TopLevel.GetTopLevel(this) as Window)?.Close(project);
     }
 
-    private void ExitButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnExitButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         (TopLevel.GetTopLevel(this) as Window)?.Close(null);
     }

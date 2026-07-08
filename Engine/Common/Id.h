@@ -19,7 +19,7 @@ namespace fluxion::common::id {
 	static_assert(sizeof(id_type) - sizeof(generation_type) > 0);
 
 
-	constexpr bool isValid(id_type id) {
+	constexpr bool is_valid(id_type id) {
 		return id != invalid_id;
 	}
 

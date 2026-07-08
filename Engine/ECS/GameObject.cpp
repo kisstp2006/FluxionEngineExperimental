@@ -36,16 +36,16 @@ namespace fluxion::ecs {
 				transforms.emplace_back();
 			}
 
-			const game_object new_gameobject{ id };
+			const game_object new_game_object{ id };
 			const id::id_type index{ id::index(id) };
 
-			// FOr now we need to create a transform component with every gameobject
+			// For now we need to create a transform component with every game object
 			assert(!transforms[index].is_valid());
-			transforms[index] = transform::create_transform(*info.transform, new_gameobject);
+			transforms[index] = transform::create_transform(*info.transform, new_game_object);
 
-			if (!transforms[index].is_valid())return {};
+			if (!transforms[index].is_valid()) return {};
 
-			return new_gameobject;
+			return new_game_object;
 		}
 
 		void remove_game_object(game_object gameobject)

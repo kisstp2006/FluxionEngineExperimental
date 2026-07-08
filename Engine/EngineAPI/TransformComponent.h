@@ -11,7 +11,7 @@ namespace fluxion::ecs::transform
 		constexpr explicit component(transform_id id) : _id{ id } {};
 		constexpr component() : _id{ id::invalid_id } {};
 		constexpr transform_id get_id()const { return _id; }
-		constexpr bool is_valid() const { return id::isValid(_id); }
+		constexpr bool is_valid() const { return id::is_valid(_id); }
 		
 		math::v3 position() const;
 		math::v4 rotation() const;

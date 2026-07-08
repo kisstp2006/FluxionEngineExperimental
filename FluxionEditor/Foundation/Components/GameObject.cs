@@ -1,4 +1,4 @@
-﻿using FluxionEditor.Foundation.Utilities;
+using FluxionEditor.Foundation.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -92,6 +92,7 @@ namespace FluxionEditor.Foundation.Components
     abstract class MSObject : ViewModelBase
     {
         // ── Identity ──
+
         private bool _enableUpdates = true;
         private bool? _isEnabled = true;
 
@@ -128,7 +129,7 @@ namespace FluxionEditor.Foundation.Components
         private readonly ObservableCollection<IMSComponent> _components = new ObservableCollection<IMSComponent>();
         public ReadOnlyObservableCollection<IMSComponent> Components { get; }
 
-        public List<GameObject> selectedGameObjects { get; }
+        public List<GameObject> SelectedGameObjects { get; }
 
         // ── Commands ──
 
@@ -136,20 +137,27 @@ namespace FluxionEditor.Foundation.Components
         public ICommand CancelEditCommand { get; private set; }
         public ICommand IsEnabledCommand { get; private set; }
 
-
+        /// <summary>
+        /// Propagates a changed property to every selected game object.
+        /// </summary>
         protected virtual bool UpdateGameObjects(string propertyName)
         {
-            switch (propertyName) { 
-                case nameof(IsEnabled): selectedGameObjects.ForEach(x =>x.IsEnabled = IsEnabled.Value); return true;
-                case nameof(Name): selectedGameObjects.ForEach(x =>x.Name = Name); return true;
+            switch (propertyName)
+            {
+                case nameof(IsEnabled): SelectedGameObjects.ForEach(x => x.IsEnabled = IsEnabled.Value); return true;
+                case nameof(Name): SelectedGameObjects.ForEach(x => x.Name = Name); return true;
             }
             return false;
         }
 
-        public static float? GetMixedValues(List<GameObject> gameObjects, Func<GameObject,float> getProperty)
+        // ── Mixed value helpers ──
+        // Return the shared value, or null when the selection disagrees.
+
+        public static float? GetMixedValues(List<GameObject> gameObjects, Func<GameObject, float> getProperty)
         {
             var value = getProperty(gameObjects.First());
-            foreach (var gameObject in gameObjects.Skip(1)) {
+            foreach (var gameObject in gameObjects.Skip(1))
+            {
                 if (!value.IsTheSameAs(getProperty(gameObject)))
                 {
                     return null;
@@ -157,6 +165,7 @@ namespace FluxionEditor.Foundation.Components
             }
             return value;
         }
+
         public static bool? GetMixedValues(List<GameObject> gameObjects, Func<GameObject, bool> getProperty)
         {
             var value = getProperty(gameObjects.First());
@@ -183,13 +192,14 @@ namespace FluxionEditor.Foundation.Components
             return value;
         }
 
+        /// <summary>
+        /// Recomputes the mixed values shown in the inspector from the
+        /// actual state of the selected game objects.
+        /// </summary>
         protected virtual bool UpdateMSGameObjects()
         {
-            IsEnabled = GetMixedValues(selectedGameObjects,new Func<GameObject, bool>(x => x.IsEnabled));
-
-            Name = GetMixedValues(selectedGameObjects, new Func<GameObject, string>(x => x.Name));
-
-
+            IsEnabled = GetMixedValues(SelectedGameObjects, new Func<GameObject, bool>(x => x.IsEnabled));
+            Name = GetMixedValues(SelectedGameObjects, new Func<GameObject, string>(x => x.Name));
             return true;
         }
 
@@ -197,7 +207,7 @@ namespace FluxionEditor.Foundation.Components
         {
             _enableUpdates = false;
             UpdateMSGameObjects();
-            _enableUpdates=true;
+            _enableUpdates = true;
         }
 
         public MSObject(List<GameObject> gameObjects)
@@ -206,16 +216,16 @@ namespace FluxionEditor.Foundation.Components
             Debug.Assert(gameObjects.Count > 0);
 
             Components = new ReadOnlyObservableCollection<IMSComponent>(_components);
-            selectedGameObjects = gameObjects;
+            SelectedGameObjects = gameObjects;
 
             PropertyChanged += (s, e) =>
             {
-                if(_enableUpdates) UpdateGameObjects(e.PropertyName);
+                if (_enableUpdates) UpdateGameObjects(e.PropertyName);
             };
 
             RenameCommand = new RelayCommand<string>(x =>
             {
-                var oldNames = selectedGameObjects.Select(g => (g, g.Name)).ToList();
+                var oldNames = SelectedGameObjects.Select(g => (g, g.Name)).ToList();
                 Name = x; // propagates to all selected objects via UpdateGameObjects
 
                 Project.Current?.UndoRedo.Add(new UndoRedoCommand(
@@ -230,7 +240,7 @@ namespace FluxionEditor.Foundation.Components
 
             IsEnabledCommand = new RelayCommand<bool>(x =>
             {
-                var oldValues = selectedGameObjects.Select(g => (g, g.IsEnabled)).ToList();
+                var oldValues = SelectedGameObjects.Select(g => (g, g.IsEnabled)).ToList();
                 IsEnabled = x; // propagates to all selected objects via UpdateGameObjects
 
                 Project.Current?.UndoRedo.Add(new UndoRedoCommand(
@@ -240,6 +250,7 @@ namespace FluxionEditor.Foundation.Components
             });
         }
     }
+
     class MSGameObject : MSObject
     {
         public MSGameObject(List<GameObject> gameObjects) : base(gameObjects)

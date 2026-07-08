@@ -15,7 +15,7 @@ namespace fluxion::ecs::game_object {
 		constexpr explicit game_object(fluxion::ecs::game_object_id id) : _id{ id } {};
 		constexpr game_object() : _id{ id::invalid_id } {};
 		constexpr game_object_id get_id()const { return _id; }
-		constexpr bool is_valid() const { return id::isValid(_id); }
+		constexpr bool is_valid() const { return id::is_valid(_id); }
 
 		transform::component transform() const;
 

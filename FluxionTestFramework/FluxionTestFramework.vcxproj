@@ -148,7 +148,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Test.hpp" />
+    <ClInclude Include="Test.h" />
     <ClInclude Include="Tests\ECS\ECSTest.h" />
   </ItemGroup>
   <ItemGroup>

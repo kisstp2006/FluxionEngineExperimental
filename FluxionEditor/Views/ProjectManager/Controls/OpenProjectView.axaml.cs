@@ -18,7 +18,7 @@ public partial class OpenProjectView : UserControl
         OpenSelectedProject();
     }
 
-    private void OpenButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnOpenButtonClick(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         OpenSelectedProject();
     }

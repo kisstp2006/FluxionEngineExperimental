@@ -17,7 +17,7 @@ public partial class ProjectLayoutView : UserControl
         InitializeComponent();
     }
 
-    private void On_AddGameObject_Button_Clicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    private void OnAddGameObjectButtonClicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
         var btn = sender as Button;
         var vm = btn?.DataContext as Scene;
@@ -25,7 +25,7 @@ public partial class ProjectLayoutView : UserControl
         vm.AddGameObjectCommand.Execute(new GameObject(vm) { Name = "GameObject" });
     }
 
-    private void OnGameObject_list_Selection_Changed(object? sender, SelectionChangedEventArgs e)
+    private void OnGameObjectListSelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
         
         var listBox = sender as ListBox;
@@ -41,12 +41,12 @@ public partial class ProjectLayoutView : UserControl
             undo: () => RestoreSelection(listBox!, previousSelectedGameObject)));
 
 
-        MSGameObject mSGameObject = null;
+        MSGameObject msGameObject = null;
         if (newSelectedGameObject.Any())
         {
-            mSGameObject = new MSGameObject(newSelectedGameObject);
+            msGameObject = new MSGameObject(newSelectedGameObject);
         }
-        InspectorView.Instance.DataContext = mSGameObject;
+        InspectorView.Instance.DataContext = msGameObject;
     }
 
     /// <summary>
