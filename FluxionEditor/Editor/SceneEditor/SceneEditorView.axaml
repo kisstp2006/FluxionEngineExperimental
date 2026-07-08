@@ -77,15 +77,14 @@
 
                     <Grid Grid.Row="0" Background="{StaticResource Editor.Window.GrayBrush2}">
                         <TextBlock Text="Scene Viewport"
-                                   Foreground="{StaticResource Editor.FontBrush}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="14"
-                                   FontWeight="Bold"/>
+                                   FontWeight="Bold"
+                                   Foreground="{StaticResource Editor.Disabled.FontBrush}"/>
                     </Grid>
 
                     <GridSplitter Grid.Row="1"
-                                  Background="{StaticResource Editor.Window.GrayBrush5}"
                                   ResizeDirection="Rows"
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"/>
@@ -101,7 +100,6 @@
                 </Grid>
 
                 <GridSplitter Grid.Column="1"
-                              Background="{StaticResource Editor.Window.GrayBrush5}"
                               ResizeDirection="Columns"
                               HorizontalAlignment="Stretch"
                               VerticalAlignment="Stretch"/>
@@ -117,7 +115,6 @@
                     <editor:ProjectLayoutView Grid.Row="0" />
 
                     <GridSplitter Grid.Row="1"
-                                  Background="{StaticResource Editor.Window.GrayBrush5}"
                                   ResizeDirection="Rows"
                                   HorizontalAlignment="Stretch"
                                   VerticalAlignment="Stretch"/>

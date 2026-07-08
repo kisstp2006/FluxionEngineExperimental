@@ -62,6 +62,18 @@
     </Style>
     <Style Selector="ToggleButton:checked:pointerover">
         <Setter Property="Background" Value="{StaticResource Editor.BlueBrush}"/>
+    </Style>
+    <!-- Template-part overrides so Fluent's own state colors don't win -->
+    <Style Selector="ToggleButton:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+    </Style>
+    <Style Selector="ToggleButton:checked /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style Selector="ToggleButton:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Editor.BlueBrush}"/>
     </Style>    <!-- ═══════════════════════════════════════════════════════ -->
     <!-- Text Drop Shadow                                       -->
     <!-- ═══════════════════════════════════════════════════════ -->
@@ -127,10 +139,22 @@
         <Setter Property="MinHeight" Value="0"/>
     </Style>
     <Style Selector="TabItem:selected">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
         <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
     </Style>
     <Style Selector="TabItem:pointerover">
         <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
+    </Style>
+    <!-- Template-part overrides so Fluent's own state colors don't win -->
+    <Style Selector="TabItem:selected /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+    </Style>
+    <Style Selector="TabItem:pointerover /template/ Border#PART_LayoutRoot">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
+    </Style>
+    <!-- Blue indicator under the selected panel tab -->
+    <Style Selector="TabItem /template/ Border#PART_SelectedPipe">
+        <Setter Property="Background" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
     </Style>
     <Style Selector="TabStrip">
         <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush2}"/>
@@ -161,7 +185,7 @@
     </Style>
 
     <Style Selector="TextBox">
-        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
         <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
         <Setter Property="CaretBrush" Value="{StaticResource Editor.FontBrush}"/>
         <Setter Property="SelectionBrush" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
@@ -171,6 +195,20 @@
         <Setter Property="Padding" Value="4,3"/>
     </Style>
     <Style Selector="TextBox:focus">
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+    </Style>
+    <Style Selector="TextBox:disabled">
+        <Setter Property="Foreground" Value="{StaticResource Editor.Disabled.FontBrush}"/>
+    </Style>
+    <!-- Fluent applies hover/focus backgrounds on the template border directly,
+         which would flash the light theme colors — override the template part. -->
+    <Style Selector="TextBox:pointerover /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.Window.GrayBrush6}"/>
+    </Style>
+    <Style Selector="TextBox:focus /template/ Border#PART_BorderElement">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
     </Style>
 
@@ -198,6 +236,22 @@
     </Style>
     <Style Selector="Button /template/ ContentPresenter#PART_ContentPresenter">
         <Setter Property="MinHeight" Value="0"/>
+    </Style>
+    <!-- Fluent sets hover/pressed colors on the content presenter directly —
+         override the template part so the editor palette wins. -->
+    <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush5}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.BlueBrush}"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+    </Style>
+    <Style Selector="Button:pressed /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.Window.GrayBrush5}"/>
+    </Style>
+    <Style Selector="Button:disabled /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.Window.GrayBrush4}"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.Disabled.FontBrush}"/>
     </Style>
 
     <!-- ═══════════════════════════════════════════════════════ -->
@@ -229,6 +283,40 @@
     </Style>
     <Style Selector="ListBoxItem:selected:focus">
         <Setter Property="Background" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+    </Style>
+    <!-- Template-part overrides so Fluent's own state colors don't win -->
+    <Style Selector="ListBoxItem:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+    </Style>
+    <Style Selector="ListBoxItem:selected /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style Selector="ListBoxItem:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{StaticResource Editor.BlueBrush}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- GridSplitter — dark seams between panels                -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="GridSplitter">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush1}"/>
+    </Style>
+    <Style Selector="GridSplitter:pointerover">
+        <Setter Property="Background" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- CheckBox                                                -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="CheckBox">
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+    </Style>
+    <Style Selector="CheckBox:disabled">
+        <Setter Property="Foreground" Value="{StaticResource Editor.Disabled.FontBrush}"/>
     </Style>
 
     <!-- ═══════════════════════════════════════════════════════ -->

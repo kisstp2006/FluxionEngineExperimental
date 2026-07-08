@@ -34,6 +34,8 @@
             <!-- Preview image -->
             <Border Width="480" Height="250" Margin="5,0,0,0"
                     Background="{StaticResource Editor.Window.GrayBrush3}"
+                    BorderBrush="{StaticResource Editor.Window.GrayBrush4}"
+                    BorderThickness="1"
                     x:CompileBindings="False">
                 <Border.Background>
                     <ImageBrush Source="{Binding SelectedItem.Screenshot, Converter={StaticResource ByteToBitmapConverter}, ElementName=ProjectsListBox}"/>

@@ -6,14 +6,16 @@
         mc:Ignorable="d"
         d:DesignWidth="800" d:DesignHeight="500"
         x:Class="FluxionEditor.ProjectManagerDialog"
+        Classes="FluxionWindow"
         Title="Project Manager"
         Width="800" Height="600"
         CanResize="False"
-        WindowStartupLocation="CenterScreen"
-        Background="{StaticResource Editor.Window.GrayBrush1}">
+        WindowStartupLocation="CenterScreen">
 
     <Border CornerRadius="4"
             Background="{StaticResource Editor.Window.GrayBrush2}"
+            BorderBrush="{StaticResource Editor.Window.GrayBrush4}"
+            BorderThickness="1"
             Padding="20" Margin="20">
         <Grid ClipToBounds="True">
             <Grid.RowDefinitions>

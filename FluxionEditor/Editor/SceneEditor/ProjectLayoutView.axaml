@@ -54,6 +54,8 @@
                             <StackPanel Margin="8,4">
                                 <ListBox IsEnabled="{Binding IsActive}"
                                          ItemsSource="{Binding GameObjects}"
+                                         Background="{StaticResource Editor.Window.GrayBrush2}"
+                                         BorderBrush="{StaticResource Editor.Window.GrayBrush4}"
                                          SelectionChanged="OnGameObjectListSelectionChanged"
                                          SelectionMode="Multiple">
                                     <ListBox.ItemTemplate>

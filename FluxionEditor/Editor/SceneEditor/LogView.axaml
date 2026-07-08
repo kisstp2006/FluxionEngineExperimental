@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:utilities="using:FluxionEditor.Foundation.Utilities"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="FluxionEditor.LogView">
+             x:Class="FluxionEditor.LogView"
+             Background="{StaticResource Editor.Window.GrayBrush3}">
 
     <UserControl.Resources>
         <utilities:SeverityToBrushConverter x:Key="LevelToBrushConverter"/>
@@ -15,7 +16,7 @@
             <Setter Property="Background" Value="Transparent"/>
         </Style>
         <Style Selector="DockPanel.logRow:pointerover">
-            <Setter Property="Background" Value="#33555555"/>
+            <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
         </Style>
     </UserControl.Styles>
 
@@ -25,8 +26,11 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <!-- Toolbar -->
-        <Border Grid.Row="0" Height="32" Background="{StaticResource Editor.Window.GrayBrush2}">
+        <!-- Toolbar — slightly darker strip inset into the panel -->
+        <Border Grid.Row="0" Height="32"
+                Background="{StaticResource Editor.Window.GrayBrush2}"
+                BorderBrush="{StaticResource Editor.Window.GrayBrush4}"
+                BorderThickness="0,0,0,1">
             <StackPanel Margin="4,0" Orientation="Horizontal">
                 <Button Content="Clear" Margin="1,0" Click="OnClearButtonClick"/>
                 <CheckBox x:Name="InfoCheckBox"    Content="Info"  IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
