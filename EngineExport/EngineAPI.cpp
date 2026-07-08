@@ -13,30 +13,45 @@ namespace {
 
 	struct transform_component
 	{
-		flu32 position[3];
-		flu32 rotation[3];
-		flu32 scale[3];
+		flf32 position[3];
+		flf32 rotation[3];
+		flf32 scale[3];
 
-
-		ecs::transform::init_info to_init_info() {
-			using namespace DirectX;
+		ecs::transform::init_info to_init_info() const
+		{
 			ecs::transform::init_info info;
 
-			memcpy(&info.position[0],&position[0],sizeof(flu32)*_countof(position));
-			memcpy(&info.scale[0], &scale[0], sizeof(flu32) * _countof(scale));
-			XMFLOAT3A rot{ &rotation[0] };
-			XMVECTOR quat{ XMQuaternionRotationRollPitchYawFromVector(XMLoadFloat3A(&rot)) };
+			memcpy(&info.position[0], &position[0], sizeof(info.position));
+			memcpy(&info.scale[0], &scale[0], sizeof(info.scale));
 
+			// The editor sends Euler angles; the engine stores a quaternion.
+			const math::v4 quat{ math::quat_from_euler(math::v3{ &rotation[0] }) };
+			memcpy(&info.rotation[0], &quat.x, sizeof(info.rotation));
 
+			return info;
 		}
 	};
 
-	struct gane_object_descriptor
+	struct game_object_descriptor
 	{
 		transform_component transform;
 	};
+
+} // anonymous namespace
+
+EDITOR_INTERFACE id::id_type CreateGameObject(game_object_descriptor* e)
+{
+	assert(e);
+	game_object_descriptor& desc{ *e };
+	ecs::transform::init_info transform_info{ desc.transform.to_init_info() };
+	ecs::game_object::game_object_info info{ &transform_info };
+
+	return ecs::game_object::create_game_object(info).get_id();
 }
 
-EDITOR_INTERFACE id::id_type CreateGameObject(game_object_descriptor* e) {
-
+EDITOR_INTERFACE void RemoveGameObject(id::id_type id)
+{
+	assert(id::is_valid(id));
+	ecs::game_object::remove_game_object(
+		ecs::game_object::game_object{ ecs::game_object_id{ id } });
 }

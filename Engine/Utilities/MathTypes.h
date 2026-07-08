@@ -1,5 +1,6 @@
 #pragma once
 #include "Common/CustomTypes.h"
+#include <cmath>
 
 // ── Platform detection ─────────────────────────────────────────────
 // Each platform gets an explicit slot so a specialized math backend
@@ -120,5 +121,36 @@ namespace fluxion::math {
 					m[r][c] = a[r * 4 + c];
 		}
 	};
+#endif
+
+	// ── Functions ──────────────────────────────────────────────────
+	// Engine code must use these instead of calling DirectXMath (or any
+	// other backend) directly, so the backend stays swappable.
+
+	// Euler angles (pitch = x, yaw = y, roll = z, in radians) -> quaternion.
+#if defined(FLUXION_MATH_DIRECTXMATH)
+	inline v4 quat_from_euler(const v3& angles)
+	{
+		v4 quat;
+		DirectX::XMStoreFloat4(&quat,
+			DirectX::XMQuaternionRotationRollPitchYaw(angles.x, angles.y, angles.z));
+		return quat;
+	}
+#else
+	inline v4 quat_from_euler(const v3& angles)
+	{
+		// Mirrors XMQuaternionRotationRollPitchYaw so every platform
+		// produces identical quaternions.
+		const flf32 sp{ sinf(angles.x * 0.5f) }, cp{ cosf(angles.x * 0.5f) };
+		const flf32 sy{ sinf(angles.y * 0.5f) }, cy{ cosf(angles.y * 0.5f) };
+		const flf32 sr{ sinf(angles.z * 0.5f) }, cr{ cosf(angles.z * 0.5f) };
+
+		return v4{
+			cr * sp * cy + sr * cp * sy,
+			cr * cp * sy - sr * sp * cy,
+			sr * cp * cy - cr * sp * sy,
+			cr * cp * cy + sr * sp * sy
+		};
+	}
 #endif
 }
