@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace FluxionEditor.Foundation.Utilities
+using FluxionEditor.Foundation.Utilities;
+
+namespace FluxionEditor.Foundation.Themes
 {
     /// <summary>The selectable editor themes. Each maps to a theme variant in EditorColors.axaml.</summary>
     public enum EditorTheme
@@ -18,13 +20,13 @@ namespace FluxionEditor.Foundation.Utilities
     /// persists the choice so the editor starts with the last used theme,
     /// and is bindable so UI can be attached later, e.g.:
     ///
-    ///   &lt;ComboBox ItemsSource="{Binding Themes, Source={x:Static utilities:ThemeManager.Instance}}"
-    ///             SelectedItem="{Binding CurrentTheme, Source={x:Static utilities:ThemeManager.Instance}}"/&gt;
+    ///   &lt;ComboBox ItemsSource="{Binding Themes, Source={x:Static themes:ThemeManager.Instance}}"
+    ///             SelectedItem="{Binding CurrentTheme, Source={x:Static themes:ThemeManager.Instance}}"/&gt;
     /// </summary>
     public sealed class ThemeManager : ViewModelBase
     {
         /// <summary>Theme used when no saved preference exists yet.</summary>
-        public const EditorTheme DefaultTheme = EditorTheme.Light;
+        public const EditorTheme DefaultTheme = EditorTheme.Dark;
 
         private static readonly string _settingsFilePath = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),

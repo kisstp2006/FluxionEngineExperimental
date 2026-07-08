@@ -1,7 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using FluxionEditor.Foundation.Utilities;
+using FluxionEditor.Foundation.Themes;
 using FluxionEditor.ViewModels;
 using FluxionEditor.Views;
 
