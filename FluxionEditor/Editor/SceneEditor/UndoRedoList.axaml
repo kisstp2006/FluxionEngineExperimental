@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:foundation="using:FluxionEditor.Foundation"
+             xmlns:utilities="using:FluxionEditor.Foundation.Utilities"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:DataType="foundation:Project"
+             x:Class="FluxionEditor.UndoRedoList">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*">
+
+        <!-- ===== UNDO STACK ===== -->
+        <TextBlock Grid.Row="0"
+                   Text="Undo"
+                   FontWeight="Bold"
+                   Margin="8,4"/>
+        <ListBox Grid.Row="1"
+                 ItemsSource="{Binding UndoRedo.UndoStack}"
+                 MinHeight="100"
+                 MaxHeight="200"
+                 Margin="4,0">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="utilities:IUndoRedo">
+                    <TextBlock Text="{Binding Name}"
+                               Margin="4,2"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- ===== REDO STACK ===== -->
+        <TextBlock Grid.Row="2"
+                   Text="Redo"
+                   FontWeight="Bold"
+                   Margin="8,4"/>
+        <ListBox Grid.Row="3"
+                 ItemsSource="{Binding UndoRedo.RedoStack}"
+                 MinHeight="100"
+                 MaxHeight="200"
+                 Margin="4,0">
+            <ListBox.ItemTemplate>
+                <DataTemplate x:DataType="utilities:IUndoRedo">
+                    <TextBlock Text="{Binding Name}"
+                               Margin="4,2"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+    </Grid>
+</UserControl>

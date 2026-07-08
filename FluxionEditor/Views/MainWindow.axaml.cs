@@ -1,9 +1,14 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
+using FluxionEditor.Foundation;
 
 namespace FluxionEditor.Views
 {
+    /// <summary>
+    /// Main application window. Handles project open/close flow and
+    /// synchronizes <see cref="Application.Current"/> DataContext.
+    /// </summary>
     public partial class MainWindow : Window
     {
         private bool _isProjectManagerDialogOpen;
@@ -12,16 +17,30 @@ namespace FluxionEditor.Views
         {
             InitializeComponent();
             Loaded += OnMainWindowLoaded;
+            Closing += OnMainWindowClosing;
         }
+
+        // ── Lifecycle ──────────────────────────────────────────
 
         private void OnMainWindowLoaded(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
         {
-            Loaded -= OnMainWindowLoaded; //We olnly need this once (TODO: Make it arg and project state aware)
-            OpenProjectManagerDialog(0);
-
+            Loaded -= OnMainWindowLoaded; // Run once
+            OpenProjectManagerDialog();
         }
 
-        private async void OpenProjectManagerDialog(int wichPage=0)
+        private void OnMainWindowClosing(object? sender, WindowClosingEventArgs e)
+        {
+            Closing -= OnMainWindowClosing;
+            Project.Current?.Unload();
+        }
+
+        // ── Project open flow ───────────────────────────────────
+
+        /// <summary>
+        /// Shows the project manager dialog. If the user cancels,
+        /// the application shuts down.
+        /// </summary>
+        private async void OpenProjectManagerDialog()
         {
             if (_isProjectManagerDialogOpen)
                 return;
@@ -30,12 +49,12 @@ namespace FluxionEditor.Views
 
             try
             {
-                ProjectManagerDialog projectManagerDialog = new ProjectManagerDialog();
+                var dialog = new ProjectManagerDialog();
+                var project = await dialog.ShowDialog<Project?>(this);
 
-                bool result = await projectManagerDialog.ShowDialog<bool>(this);
-
-                if (!result)
+                if (project == null)
                 {
+                    // User cancelled — exit the app
                     if (Application.Current?.ApplicationLifetime
                         is IClassicDesktopStyleApplicationLifetime desktop)
                     {
@@ -44,16 +63,15 @@ namespace FluxionEditor.Views
                 }
                 else
                 {
-                    // Project selected / created successfully
+                    Project.Current?.Unload();
+                    DataContext = project;
+                    Application.Current!.DataContext = project;
                 }
             }
             finally
             {
                 _isProjectManagerDialogOpen = false;
             }
-
-            
-           
         }
     }
 }

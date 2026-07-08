@@ -1,50 +1,59 @@
-using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Media;
+using FluxionEditor.Foundation;
+using System;
+using System.Linq;
 
 namespace FluxionEditor;
 
+/// <summary>
+/// Dialog that lets the user choose between opening an existing project
+/// or creating a new one. Uses a sliding panel for the two views.
+/// </summary>
 public partial class ProjectManagerDialog : Window
 {
     public ProjectManagerDialog()
     {
         InitializeComponent();
 
-        // Set the default selected view to "Open Project".
-        openProjectBtn.IsChecked = true;
-        createProjectBtn.IsChecked = false;
+        Loaded += OnLoaded;
 
-        // Start with the first panel visible.
-        managerContent.RenderTransform = new TranslateTransform(0, 0);
+        // Default to the "Open Project" view
+        OpenProjectBtn.IsChecked = true;
+        CreateProjectBtn.IsChecked = false;
+        ManagerContent.RenderTransform = new TranslateTransform(0, 0);
     }
 
+    private void OnLoaded(object? sender, RoutedEventArgs e)
+    {
+        Loaded -= OnLoaded;
+        if (!OpenProject.Projects.Any())
+        {
+            
+            
+            ToggleView(CreateProjectBtn, new RoutedEventArgs());
+        }
+    }
+
+    /// <summary>
+    /// Switches between the "Open Project" and "Create Project" panels
+    /// by sliding the content horizontally.
+    /// </summary>
     private void ToggleView(object? sender, RoutedEventArgs e)
     {
         switch (sender)
         {
-            case Button btn when btn == openProjectBtn:
-                // Select the Open Project tab and deselect the Create Project tab.
-                openProjectBtn.IsChecked = true;
-                createProjectBtn.IsChecked = false;
-
-                // Move the content back to the first panel.
-                managerContent.RenderTransform = new TranslateTransform(0, 0);
+            case Button btn when btn == OpenProjectBtn:
+                OpenProjectBtn.IsChecked = true;
+                CreateProjectBtn.IsChecked = false;
+                ManagerContent.RenderTransform = new TranslateTransform(0, 0);
                 break;
 
-            case Button btn when btn == createProjectBtn:
-                // Select the Create Project tab and deselect the Open Project tab.
-                openProjectBtn.IsChecked = false;
-                createProjectBtn.IsChecked = true;
-
-                // Move the content to the second panel.
-                // The previous issue was here: this movement should not depend
-                // on the previous checked state of the other button.
-                managerContent.RenderTransform = new TranslateTransform(-800, 0);
-                break;
-
-            default:
-                // Ignore clicks from unknown controls.
+            case Button btn when btn == CreateProjectBtn:
+                OpenProjectBtn.IsChecked = false;
+                CreateProjectBtn.IsChecked = true;
+                ManagerContent.RenderTransform = new TranslateTransform(-800, 0);
                 break;
         }
     }

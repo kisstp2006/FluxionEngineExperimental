@@ -1,11 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Data.Core;
-using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
-using FluxionEditor.ViewModels;
 using FluxionEditor.Views;
-using System.Linq;
 
 namespace FluxionEditor
 {
@@ -20,10 +16,9 @@ namespace FluxionEditor
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
+                // DataContext is set to the opened Project by MainWindow
+                // after the project manager dialog closes.
+                desktop.MainWindow = new MainWindow();
             }
 
             base.OnFrameworkInitializationCompleted();

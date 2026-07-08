@@ -8,8 +8,17 @@
     <Application.DataTemplates>
         <local:ViewLocator/>
     </Application.DataTemplates>
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
   
     <Application.Styles>
         <FluentTheme />
+        <StyleInclude Source="avares://FluxionEditor/Foundation/Resources/EditorResourceDictionary.axaml"/>
     </Application.Styles>
 </Application>

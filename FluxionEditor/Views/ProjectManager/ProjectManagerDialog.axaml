@@ -9,7 +9,7 @@
         x:Class="FluxionEditor.ProjectManagerDialog"
         Title="ProjectManager"
         Width="800"
-        Height="500"
+        Height="600"
         CanResize="False"
         WindowStartupLocation="CenterScreen">
 
@@ -22,7 +22,7 @@
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     Margin="0,20,0,20">
-            <ToggleButton x:Name="openProjectBtn"
+            <ToggleButton x:Name="OpenProjectBtn"
                           FontSize="22"
                           FontFamily="Default"
                           Margin="25,0,0,0"
@@ -31,7 +31,7 @@
                 Open Project
             </ToggleButton>
 
-            <ToggleButton x:Name="createProjectBtn"
+            <ToggleButton x:Name="CreateProjectBtn"
                           FontSize="22"
                           FontFamily="Default"
                           Margin="25,0,0,0"
@@ -49,11 +49,11 @@
 
             <!-- Ez lehet 1600 széles, de a Border levágja. -->
             <StackPanel Orientation="Horizontal"
-                        x:Name="managerContent">
-                <local:OpenProjectView>
+                        x:Name="ManagerContent">
+                <local:OpenProjectView x:Name="openProjectView">
                     
                 </local:OpenProjectView>
-                <local:CreateProjectView>
+                <local:CreateProjectView x:Name="createProjectView">
                     
                 </local:CreateProjectView>
             </StackPanel>

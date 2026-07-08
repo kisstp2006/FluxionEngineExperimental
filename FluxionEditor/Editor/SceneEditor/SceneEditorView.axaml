@@ -1,0 +1,127 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:editor="using:FluxionEditor"
+             xmlns:foundation="using:FluxionEditor.Foundation"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluxionEditor.Editor.SceneEditorView"
+             x:DataType="foundation:Project"
+             Focusable="True"
+             Background="Blue">
+    <UserControl.KeyBindings>
+        <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}"/>
+        <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}"/>
+        <KeyBinding Gesture="Ctrl+S" Command="{Binding SaveCommand}"/>
+    </UserControl.KeyBindings>
+
+
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- ===== MENU BAR ===== -->
+        <Menu Grid.Row="0" Background="#2D2D30" Foreground="White">
+            <MenuItem Header="_File">
+                <MenuItem Header="_New Project" InputGesture="Ctrl+N"/>
+                <MenuItem Header="_Open Project" InputGesture="Ctrl+O"/>
+                <Separator/>
+                <MenuItem Header="_Save" InputGesture="Ctrl+S" Command="{Binding SaveCommand}"  />
+                <MenuItem Header="Save _As..." InputGesture="Ctrl+Shift+S"/>
+                <Separator/>
+                <MenuItem Header="E_xit" InputGesture="Alt+F4"/>
+            </MenuItem>
+
+            <MenuItem Header="_Edit">
+                <MenuItem Header="_Undo" InputGesture="Ctrl+Z"
+                          Command="{Binding UndoCommand}"/>
+                <MenuItem Header="_Redo" InputGesture="Ctrl+Y"
+                          Command="{Binding RedoCommand}"/>
+                <Separator/>
+                <MenuItem Header="Cu_t" InputGesture="Ctrl+X"/>
+                <MenuItem Header="_Copy" InputGesture="Ctrl+C"/>
+                <MenuItem Header="_Paste" InputGesture="Ctrl+V"/>
+                <MenuItem Header="_Delete" InputGesture="Delete"/>
+            </MenuItem>
+
+            <MenuItem Header="_View">
+                <MenuItem Header="_Scene Viewport"/>
+                <MenuItem Header="_Project Layout"/>
+                <Separator/>
+                <MenuItem Header="_Fullscreen" InputGesture="F11"/>
+            </MenuItem>
+
+            <MenuItem Header="_Help">
+                <MenuItem Header="_About Fluxion Editor"/>
+                <MenuItem Header="_Documentation" InputGesture="F1"/>
+            </MenuItem>
+        </Menu>
+
+        <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition MinWidth="100"/>
+                    <ColumnDefinition Width="5"/>
+                    <ColumnDefinition MinWidth="100"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ===== LEFT COLUMN = Viewport ===== -->
+                <Grid Grid.Column="0" Background="Red">
+                    <Grid.RowDefinitions>
+                        <RowDefinition MinHeight="50"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition MinHeight="50"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Background="DarkRed">
+                        <TextBlock Text="Scene Viewport"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Foreground="White"/>
+                    </Grid>
+
+                    <GridSplitter Grid.Row="1"
+                                  Background="Gray"
+                                  ResizeDirection="Rows"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+                    <TabControl  Grid.Row="2">
+                        <TabItem Header="Undo / Redo">
+                            <editor:UndoRedoList />
+                        </TabItem>
+                        <TabItem Header="Log">
+                            <editor:LogView/>
+                        </TabItem>
+                    </TabControl>
+                    
+                </Grid>
+
+                <GridSplitter Grid.Column="1"
+                              Background="Gray"
+                              ResizeDirection="Columns"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch"/>
+
+                <!-- ===== RIGHT COLUMN = Project Layout ===== -->
+                <Grid Grid.Column="2" Background="Black">
+                    <Grid.RowDefinitions>
+                        <RowDefinition MinHeight="50"/>
+                        <RowDefinition Height="5"/>
+                        <RowDefinition MinHeight="50"/>
+                    </Grid.RowDefinitions>
+
+                    <editor:ProjectLayoutView Grid.Row="0" />
+
+                    <GridSplitter Grid.Row="1"
+                                  Background="Gray"
+                                  ResizeDirection="Rows"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"/>
+
+                    <editor:InspectorView Grid.Row="2" />
+                </Grid>
+            </Grid>
+    </Grid>
+</UserControl>

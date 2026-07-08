@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:foundation="using:FluxionEditor.Foundation"
+             xmlns:components="using:FluxionEditor.Foundation.Components"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluxionEditor.ProjectLayoutView"
+             x:DataType="foundation:Project"
+             x:Name="Root">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Button Grid.Row="0"
+                Width="150"
+                HorizontalAlignment="Left"
+                Margin="20,0,0,0"
+                VerticalContentAlignment="Center"
+                HorizontalContentAlignment="Center"
+                Command="{Binding AddSceneCommand}">
+            Add new scene
+        </Button>
+
+        <ScrollViewer Grid.Row="1"
+                      HorizontalScrollBarVisibility="Auto"
+                      VerticalScrollBarVisibility="Visible">
+            <ItemsControl ItemsSource="{Binding Scenes}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="foundation:Scene">
+                        <Expander IsExpanded="{Binding IsActive, Mode=OneWay}"
+                                  Margin="8"
+                                  MinWidth="200"
+                                  HorizontalContentAlignment="Stretch">
+                            <Expander.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}"
+                                               VerticalAlignment="Center"/>
+                                    <Button Command="{Binding DataContext.RemoveSceneCommand, ElementName=Root}"
+                                            CommandParameter="{Binding}">Remove Scene</Button>
+                                    <Button IsEnabled="{Binding IsActive}"
+                                            Command="{Binding AddGameObjectCommand}">Add GameObject</Button>
+                                </StackPanel>
+                            </Expander.Header>
+                            <StackPanel Margin="8,4">
+                                <ListBox IsEnabled="{Binding IsActive}"
+                                         ItemsSource="{Binding GameObjects}"
+                                         SelectionChanged="OnGameObject_list_Selection_Changed"
+                                         SelectionMode="Multiple">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate x:DataType="components:GameObject">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Name}"
+                                                           VerticalAlignment="Center"/>
+                                                <Button Command="{Binding ParentScene.RemoveGameObjectCommand}"
+                                                        CommandParameter="{Binding}">Remove</Button>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </StackPanel>
+                        </Expander>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

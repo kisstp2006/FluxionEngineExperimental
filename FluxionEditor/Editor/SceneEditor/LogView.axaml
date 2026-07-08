@@ -1,0 +1,77 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:utilities="using:FluxionEditor.Foundation.Utilities"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="FluxionEditor.LogView">
+
+    <UserControl.Resources>
+        <utilities:SeverityToBrushConverter x:Key="LevelToBrushConverter"/>
+    </UserControl.Resources>
+
+    <UserControl.Styles>
+        <Style Selector="DockPanel.logRow">
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <Style Selector="DockPanel.logRow:pointerover">
+            <Setter Property="Background" Value="#33555555"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="32"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <!-- Toolbar -->
+        <Border Grid.Row="0" Height="32" Background="#2D2D30">
+            <StackPanel Margin="4,0" Orientation="Horizontal">
+                <Button Content="Clear" Margin="1,0" Click="OnClearButtonClick"/>
+                <CheckBox x:Name="InfoCheckBox"    Content="Info"  IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
+                <CheckBox x:Name="WarningCheckBox" Content="Warn"  IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
+                <CheckBox x:Name="ErrorCheckBox"   Content="Error" IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
+            </StackPanel>
+        </Border>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl x:Name="LogItemsControl">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="utilities:MessageLog">
+                        <DockPanel Classes="logRow"
+                                   ToolTip.Tip="{Binding MetaData}"
+                                   Margin="2,1">
+                            <!-- Color-coded time -->
+                            <TextBlock Text="{Binding Time, StringFormat={}{0:HH:mm:ss}}"
+                                       Foreground="{Binding Level, Converter={StaticResource LevelToBrushConverter}}"
+                                       Margin="4,1"
+                                       FontFamily="Consolas"
+                                       FontSize="12"
+                                       VerticalAlignment="Top"/>
+                            <!-- Level tag (same color) -->
+                            <TextBlock Text="{Binding Level}"
+                                       Foreground="{Binding Level, Converter={StaticResource LevelToBrushConverter}}"
+                                       Margin="2,1"
+                                       FontFamily="Consolas"
+                                       FontSize="11"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Top"/>
+                            <!-- Message with wrapping -->
+                            <TextBlock Text="{Binding Log}"
+                                       Foreground="{Binding Level, Converter={StaticResource LevelToBrushConverter}}"
+                                       Margin="6,1"
+                                       TextWrapping="Wrap"
+                                       VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
