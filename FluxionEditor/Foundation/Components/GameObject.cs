@@ -1,3 +1,4 @@
+using Avalonia.Controls.Primitives;
 using FluxionEditor.Foundation.Utilities;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,49 @@ namespace FluxionEditor.Foundation.Components
     [KnownType(typeof(Transform))] // Include new component types here for serialization
     public class GameObject : ViewModelBase
     {
+        public int gameObjectId = ID.INVALID_ID;
+        public int EntityId
+        {
+            get => gameObjectId;
+            set
+            {
+                if (gameObjectId != value)
+                {
+                    gameObjectId = value;
+                    OnPropertyChanged(nameof(EntityId));
+                }
+
+
+            }
+        }
+
+        public bool isActive;
+        public bool IsActive
+        {
+            get => isActive;
+            set
+            {
+                if (isActive != value)
+                {
+                    if(IsActive)
+                    {
+                        EntityId = EngineAPI.CreateGameObject(this);
+                        Debug.Assert(ID.isValid(gameObjectId));
+                    }
+                    else
+                    {
+                        EngineAPI.RemoveGameObject(this);
+                    }
+                    isActive = value;
+                    
+                }
+
+
+            }
+        }
+
+
+
         // ── Identity ──
 
         private bool _isEnabled = true;

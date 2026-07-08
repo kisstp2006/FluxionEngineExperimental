@@ -1,5 +1,10 @@
+#pragma comment(lib,"engine.lib")
+
+
 // dllmain.cpp : Defines the entry point for the DLL application.
-#include "pch.h"
+#include <windows.h>
+#include <crtdbg.h>
+#define WIN32_LEAN_AND_LEAN
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -12,6 +17,8 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 #if _DEBUG
         _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
+        break;
+
     case DLL_THREAD_ATTACH:
     case DLL_THREAD_DETACH:
     case DLL_PROCESS_DETACH:
