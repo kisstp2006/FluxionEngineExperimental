@@ -1,11 +1,26 @@
-<Styles 
-        xmlns="https://github.com/avaloniaui"
+<Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:resources="using:FluxionEditor.Foundation.Resources">
 
+    <!--
+        TextBox with Enter-key command support.
+        Usage:
+          <TextBox Classes="EnterCommand"
+                   Text="{Binding Name}"
+                   resources:TextBoxCommand.Command="{Binding RenameCommand}"/>
+    -->
     <Style Selector="TextBox.EnterCommand">
         <Setter Property="resources:TextBoxCommand.CommandParameter"
                 Value="{Binding Text, RelativeSource={RelativeSource Self}}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Window Style                                           -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="Window.FluxionWindow">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush1}"/>
+        <Setter Property="BorderBrush" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
     </Style>
 
 </Styles>
