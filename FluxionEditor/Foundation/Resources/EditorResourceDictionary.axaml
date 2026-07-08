@@ -46,8 +46,12 @@
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
         <Setter Property="BorderThickness" Value="0"/>
-        <Setter Property="Padding" Value="12,6"/>
-        <Setter Property="FontSize" Value="35"/>
+        <Setter Property="Padding" Value="10,3"/>
+        <Setter Property="FontSize" Value="13"/>
+        <Setter Property="MinHeight" Value="24"/>
+    </Style>
+    <Style Selector="ToggleButton /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="MinHeight" Value="0"/>
     </Style>
     <Style Selector="ToggleButton:pointerover">
         <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
@@ -104,6 +108,51 @@
     </Style>
 
     <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- TabControl + TabItem                                     -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="TabControl">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+    </Style>
+    <Style Selector="TabItem">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.Disabled.FontBrush}"/>
+        <Setter Property="Padding" Value="10,3"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="FontSize" Value="12"/>
+        <Setter Property="MinHeight" Value="24"/>
+    </Style>
+    <Style Selector="TabItem /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="MinHeight" Value="0"/>
+    </Style>
+    <Style Selector="TabItem:selected">
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+    </Style>
+    <Style Selector="TabItem:pointerover">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
+    </Style>
+    <Style Selector="TabStrip">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush2}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Expander                                                 -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="Expander">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius" Value="4"/>
+        <Setter Property="Padding" Value="8,6"/>
+    </Style>
+    <Style Selector="Expander /template/ ToggleButton#PART_toggle">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
     <!-- Global Text Styles                                      -->
     <!-- ═══════════════════════════════════════════════════════ -->
 
@@ -134,7 +183,8 @@
         <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
         <Setter Property="BorderThickness" Value="1"/>
         <Setter Property="BorderBrush" Value="{StaticResource Editor.Window.GrayBrush5}"/>
-        <Setter Property="Padding" Value="10,4"/>
+        <Setter Property="Padding" Value="8,3"/>
+        <Setter Property="MinHeight" Value="24"/>
     </Style>
     <Style Selector="Button:pointerover">
         <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush5}"/>
@@ -146,13 +196,16 @@
     <Style Selector="Button:disabled">
         <Setter Property="Foreground" Value="{StaticResource Editor.Disabled.FontBrush}"/>
     </Style>
+    <Style Selector="Button /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="MinHeight" Value="0"/>
+    </Style>
 
     <!-- ═══════════════════════════════════════════════════════ -->
     <!-- ListBox + ListBoxItem                                   -->
     <!-- ═══════════════════════════════════════════════════════ -->
 
     <Style Selector="ListBox">
-        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush2}"/>
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
         <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource Editor.Window.GrayBrush5}"/>
         <Setter Property="BorderThickness" Value="1"/>

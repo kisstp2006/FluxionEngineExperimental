@@ -7,7 +7,8 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.ProjectLayoutView"
              x:DataType="foundation:Project"
-             x:Name="Root">
+             x:Name="Root"
+             Background="{StaticResource Editor.Window.GrayBrush2}">
 
     <Grid>
         <Grid.RowDefinitions>

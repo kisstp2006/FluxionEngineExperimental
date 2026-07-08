@@ -19,16 +19,13 @@
                      ItemsSource="{x:Static foundation:OpenProject.Projects}"
                      x:Name="ProjectsListBox"
                      SelectedIndex="0"
-                     DoubleTapped="OnProjectDoubleTapped"
-                     Background="{StaticResource Editor.Window.GrayBrush3}"
-                     Foreground="{StaticResource Editor.FontBrush}">
+                     DoubleTapped="OnProjectDoubleTapped">
                 <ListBox.ItemTemplate>
                     <DataTemplate x:DataType="foundation:ProjectData">
                         <StackPanel Orientation="Horizontal">
                             <Image Source="{Binding Icon, Converter={StaticResource ByteToBitmapConverter}}"
                                    Width="32" Height="32" Margin="0,0,5,0"/>
                             <TextBlock Text="{Binding Name}"
-                                       Foreground="{StaticResource Editor.FontBrush}"
                                        VerticalAlignment="Center"/>
                         </StackPanel>
                     </DataTemplate>

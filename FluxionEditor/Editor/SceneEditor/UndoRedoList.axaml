@@ -6,7 +6,8 @@
              xmlns:utilities="using:FluxionEditor.Foundation.Utilities"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="foundation:Project"
-             x:Class="FluxionEditor.UndoRedoList">
+             x:Class="FluxionEditor.UndoRedoList"
+             Background="{StaticResource Editor.Window.GrayBrush2}">
 
     <Grid RowDefinitions="Auto,Auto,Auto,*">
 

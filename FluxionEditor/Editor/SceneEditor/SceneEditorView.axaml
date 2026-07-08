@@ -68,17 +68,20 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- ===== LEFT COLUMN = Viewport ===== -->
-                <Grid Grid.Column="0" Background="{StaticResource Editor.Window.GrayBrush2}">
+                <Grid Grid.Column="0" Background="{StaticResource Editor.Window.GrayBrush1}">
                     <Grid.RowDefinitions>
                         <RowDefinition MinHeight="50"/>
                         <RowDefinition Height="5"/>
                         <RowDefinition MinHeight="50"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Background="{StaticResource Editor.Window.GrayBrush3}">
+                    <Grid Grid.Row="0" Background="{StaticResource Editor.Window.GrayBrush2}">
                         <TextBlock Text="Scene Viewport"
+                                   Foreground="{StaticResource Editor.FontBrush}"
                                    HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
+                                   VerticalAlignment="Center"
+                                   FontSize="14"
+                                   FontWeight="Bold"/>
                     </Grid>
 
                     <GridSplitter Grid.Row="1"

@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
 
         <!-- Toolbar -->
-        <Border Grid.Row="0" Height="32" Background="#2D2D30">
+        <Border Grid.Row="0" Height="32" Background="{StaticResource Editor.Window.GrayBrush2}">
             <StackPanel Margin="4,0" Orientation="Horizontal">
                 <Button Content="Clear" Margin="1,0" Click="OnClearButtonClick"/>
                 <CheckBox x:Name="InfoCheckBox"    Content="Info"  IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
