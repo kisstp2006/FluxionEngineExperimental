@@ -19,13 +19,16 @@ namespace {
 
 		ecs::transform::init_info to_init_info() const
 		{
-			ecs::transform::init_info info;
+			ecs::transform::init_info info{};
 
 			memcpy(&info.position[0], &position[0], sizeof(info.position));
-			memcpy(&info.scale[0], &scale[0], sizeof(info.scale));
+			memcpy(&info.scale[0],    &scale[0],    sizeof(info.scale));
 
-			// The editor sends Euler angles; the engine stores a quaternion.
-			const math::v4 quat{ math::quat_from_euler(math::v3{ &rotation[0] }) };
+			// The editor sends Euler angles, the engine stores a quaternion.
+			const math::v4 quat = math::quat_from_euler(
+				math::v3{ rotation[0], rotation[1], rotation[2] }
+			);
+
 			memcpy(&info.rotation[0], &quat.x, sizeof(info.rotation));
 
 			return info;
