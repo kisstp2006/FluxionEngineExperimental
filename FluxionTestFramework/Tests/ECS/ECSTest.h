@@ -33,6 +33,7 @@ public:
 				remove_random();
 				num_game_objects = (flu32)game_objects.size();
 			}
+			print_results();
 		} while (getchar() != 'q');
 
 		return true;
@@ -79,6 +80,7 @@ private:
 			if (gameobject.is_valid()) {
 				game_object_ns::remove_game_object(gameobject);
 				game_objects.erase(game_objects.begin() + index);
+				++removed;
 				assert(!game_object_ns::is_alive(gameobject));
 			}
 			--count;
@@ -94,10 +96,10 @@ private:
 
 	void print_results() const
 	{
-		std::cout << "══════════════════════════════\n";
+		std::cout << "--------------------------------------\n";
 		std::cout << "  Game Objects created : " << added << "\n";
 		std::cout << "  Game Objects removed : " << removed << "\n";
 		std::cout << "  Game Objects alive   : " << num_game_objects << "\n";
-		std::cout << "══════════════════════════════\n";
+		std::cout << "--------------------------------------\n";
 	}
 };
