@@ -9,8 +9,18 @@
         x:Class="FluxionEditor.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="FluxionEditor"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        ExtendClientAreaToDecorationsHint="True"
+        ExtendClientAreaTitleBarHeightHint="-1">
 
-    <editor:SceneEditorView />
+    <DockPanel>
+        <!-- Spacer for title bar area (system title + buttons remain native) -->
+        <Border DockPanel.Dock="Top"
+                Height="32"
+                Background="{StaticResource Editor.Window.GrayBrush2}"/>
+
+        <!-- Main content -->
+        <editor:SceneEditorView/>
+    </DockPanel>
 
 </Window>

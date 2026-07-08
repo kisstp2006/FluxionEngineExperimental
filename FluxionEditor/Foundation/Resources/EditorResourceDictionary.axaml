@@ -23,4 +23,19 @@
         <Setter Property="BorderBrush" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
     </Style>
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Title Bar Buttons                                      -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="Button.titleBar">
+        <Setter Property="Background" Value="Transparent"/>
+    </Style>
+    <Style Selector="Button.titleBar:pointerover">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush4}"/>
+    </Style>
+    <Style Selector="Button.close:pointerover">
+        <Setter Property="Background" Value="{StaticResource Editor.RedBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+
 </Styles>
