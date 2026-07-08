@@ -39,6 +39,9 @@ namespace {
 	{
 		transform_component transform;
 	};
+	ecs::game_object::game_object gameobject_from_id(id::id_type id) {
+		return ecs::game_object::game_object{ ecs::game_object_id{ id } };
+	}
 
 } // anonymous namespace
 
@@ -55,6 +58,5 @@ EDITOR_INTERFACE id::id_type CreateGameObject(game_object_descriptor* e)
 EDITOR_INTERFACE void RemoveGameObject(id::id_type id)
 {
 	assert(id::is_valid(id));
-	ecs::game_object::remove_game_object(
-		ecs::game_object::game_object{ ecs::game_object_id{ id } });
+	ecs::game_object::remove_game_object(gameobject_from_id(id));
 }

@@ -6,6 +6,7 @@
   </Configurations>
   <Project Path="Engine/Engine.vcxproj" Id="7143fbd3-2c65-4a75-b433-25bc665152f8" />
   <Project Path="EngineExport/EngineExport.vcxproj" Id="ca02bf12-7805-46de-9539-e6d32ce6e91a" />
+  <Project Path="EngineWrapper/EngineWrapper.csproj" Id="06b51399-75bc-43db-ba8e-14b61bae1d29" />
   <Project Path="FluxionEditor/FluxionEditor.csproj" Id="5d970013-25d2-4fe4-9c17-de44a027d151" />
   <Project Path="FluxionTestFramework/FluxionTestFramework.vcxproj" Id="196a430f-e97d-4c8f-a0b5-3b0bcc07076d" />
 </Solution>

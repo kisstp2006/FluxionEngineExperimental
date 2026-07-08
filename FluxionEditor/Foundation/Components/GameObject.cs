@@ -107,6 +107,8 @@ namespace FluxionEditor.Foundation.Components
 
         public ReadOnlyObservableCollection<Component> Components { get; private set; } = null!;
 
+        public Component GetComponent(Type type) => Components.FirstOrDefault(c=>c.GetType() == type);
+
         // ── Constructors ──
 
         /// <summary>Parameterless constructor required by DataContractSerializer.</summary>
