@@ -133,6 +133,16 @@ namespace FluxionEditor.Foundation.Components
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
+            // The constructor doesn't run during deserialization, so the field
+            // initializer may not either — guard against a null collection.
+            _components ??= new ObservableCollection<Component>();
+
+            // Every game object must have a Transform. New objects get one from
+            // the constructor; deserialized (or older/partial) data may be missing
+            // it, so ensure it exists exactly once here.
+            if (!_components.Any(c => c is Transform))
+                _components.Add(new Transform(this));
+
             Components = new ReadOnlyObservableCollection<Component>(_components);
             OnPropertyChanged(nameof(Components));
         }
