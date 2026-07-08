@@ -8,7 +8,7 @@
         x:Class="FluxionEditor.ProjectManagerDialog"
         Classes="FluxionWindow"
         Title="Project Manager"
-        Width="800" Height="600"
+        Width="882" Height="600"
         CanResize="False"
         WindowStartupLocation="CenterScreen">
 
@@ -19,6 +19,7 @@
             Padding="20" Margin="20">
         <Grid ClipToBounds="True">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
@@ -44,8 +45,14 @@
                 </ToggleButton>
             </StackPanel>
 
-            <!-- Viewport — only 800px wide area visible -->
+            <!-- Separator line under the tab options -->
             <Border Grid.Row="1"
+                    Height="1"
+                    Background="{StaticResource Editor.Window.GrayBrush5}"
+                    Margin="10,0,10,16"/>
+
+            <!-- Viewport — only 800px wide area visible -->
+            <Border Grid.Row="2"
                     Width="800"
                     ClipToBounds="True"
                     HorizontalAlignment="Left">
