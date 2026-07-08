@@ -38,7 +38,7 @@ namespace FluxionEditor.Foundation
         public static void RemoveGameObject(GameObject gameObject)
         {
             Debug.Assert(gameObject != null);
-            EngineWrapper.EngineAPI.RemoveGameObject(gameObject.EntityId);
+            EngineWrapper.EngineAPI.RemoveGameObject(gameObject.GameObjectId);
         }
     }
 }

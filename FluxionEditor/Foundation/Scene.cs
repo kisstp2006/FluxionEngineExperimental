@@ -88,7 +88,7 @@ namespace FluxionEditor.Foundation
         private void RemoveGameObjectInternal(GameObject gameObject)
         {
             Debug.Assert(_gameObjects.Contains(gameObject));
-            gameObject.isActive=false;
+            gameObject.IsActive = false;
             _gameObjects.Remove(gameObject);
         }
 
@@ -108,10 +108,9 @@ namespace FluxionEditor.Foundation
             GameObjects = new ReadOnlyObservableCollection<GameObject>(_gameObjects);
             OnPropertyChanged(nameof(GameObjects));
 
-            foreach (GameObject gameObject in GameObjects) 
-            { 
-                gameObject.isActive = IsActive;
-            
+            foreach (GameObject gameObject in GameObjects)
+            {
+                gameObject.IsActive = IsActive;
             }
 
 

@@ -19,7 +19,7 @@ namespace FluxionEditor.Foundation.Components
     public class GameObject : ViewModelBase
     {
         public int gameObjectId = ID.INVALID_ID;
-        public int EntityId
+        public int GameObjectId
         {
             get => gameObjectId;
             set
@@ -27,7 +27,7 @@ namespace FluxionEditor.Foundation.Components
                 if (gameObjectId != value)
                 {
                     gameObjectId = value;
-                    OnPropertyChanged(nameof(EntityId));
+                    OnPropertyChanged(nameof(GameObjectId));
                 }
 
 
@@ -42,16 +42,18 @@ namespace FluxionEditor.Foundation.Components
             {
                 if (isActive != value)
                 {
-                    if(IsActive)
+                    isActive = value;
+                    if (isActive)
                     {
-                        EntityId = EngineAPI.CreateGameObject(this);
-                        Debug.Assert(ID.isValid(gameObjectId));
+                        GameObjectId = EngineAPI.CreateGameObject(this);
+                        Debug.Assert(ID.isValid(GameObjectId));
                     }
-                    else
+                    else if (ID.isValid(GameObjectId))
                     {
                         EngineAPI.RemoveGameObject(this);
+                        GameObjectId = ID.INVALID_ID;
                     }
-                    isActive = value;
+                    OnPropertyChanged(nameof(IsActive));
                     
                 }
 
