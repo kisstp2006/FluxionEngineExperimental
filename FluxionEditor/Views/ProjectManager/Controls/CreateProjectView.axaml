@@ -17,7 +17,7 @@
         <foundation:NewProject/>
     </UserControl.DataContext>
 
-    <StackPanel Background="{StaticResource Editor.Window.GrayBrush2}">
+    <StackPanel Background="{DynamicResource Editor.Window.GrayBrush2}">
         <!-- Template list + preview -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,8,0,0">
             <ListBox Width="200" Height="250"
@@ -37,8 +37,8 @@
             </ListBox>
             <!-- Preview image -->
             <Border Width="480" Height="250" Margin="5,0,0,0"
-                    Background="{StaticResource Editor.Window.GrayBrush3}"
-                    BorderBrush="{StaticResource Editor.Window.GrayBrush4}"
+                    Background="{DynamicResource Editor.Window.GrayBrush3}"
+                    BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
                     BorderThickness="1"
                     x:CompileBindings="False">
                 <Border.Background>
@@ -78,7 +78,7 @@
                     Click="OnExitButtonClick">Exit</Button>
         </StackPanel>
         <TextBlock Text="{Binding ErrorMessage}"
-                   Foreground="{StaticResource Editor.RedBrush}"
+                   Foreground="{DynamicResource Editor.RedBrush}"
                    HorizontalAlignment="Center"
                    Margin="0,10,0,0"/>
     </StackPanel>

@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:DataType="foundation:Project"
              x:Class="FluxionEditor.UndoRedoList"
-             Background="{StaticResource Editor.Window.GrayBrush3}">
+             Background="{DynamicResource Editor.Window.GrayBrush3}">
 
     <Grid RowDefinitions="Auto,Auto,Auto,*">
 
@@ -18,8 +18,8 @@
                    Margin="8,4"/>
         <ListBox Grid.Row="1"
                  ItemsSource="{Binding UndoRedo.UndoStack}"
-                 Background="{StaticResource Editor.Window.GrayBrush2}"
-                 BorderBrush="{StaticResource Editor.Window.GrayBrush4}"
+                 Background="{DynamicResource Editor.Window.GrayBrush2}"
+                 BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
                  MinHeight="100"
                  MaxHeight="200"
                  Margin="4,0">
@@ -38,8 +38,8 @@
                    Margin="8,4"/>
         <ListBox Grid.Row="3"
                  ItemsSource="{Binding UndoRedo.RedoStack}"
-                 Background="{StaticResource Editor.Window.GrayBrush2}"
-                 BorderBrush="{StaticResource Editor.Window.GrayBrush4}"
+                 Background="{DynamicResource Editor.Window.GrayBrush2}"
+                 BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
                  MinHeight="100"
                  MaxHeight="200"
                  Margin="4,0">

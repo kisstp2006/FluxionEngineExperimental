@@ -19,7 +19,7 @@
              Darkest layer: window chrome sits behind everything. -->
         <Border DockPanel.Dock="Top"
                 Height="32"
-                Background="{StaticResource Editor.Window.GrayBrush1}"/>
+                Background="{DynamicResource Editor.Window.GrayBrush1}"/>
 
         <!-- Main content -->
         <editor:SceneEditorView/>

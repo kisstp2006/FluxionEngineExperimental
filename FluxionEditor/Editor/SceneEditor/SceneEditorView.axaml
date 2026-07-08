@@ -8,7 +8,7 @@
              x:Class="FluxionEditor.Editor.SceneEditorView"
              x:DataType="foundation:Project"
              Focusable="True"
-             Background="{StaticResource Editor.Window.GrayBrush1}">
+             Background="{DynamicResource Editor.Window.GrayBrush1}">
     <UserControl.KeyBindings>
         <KeyBinding Gesture="Ctrl+Z" Command="{Binding UndoCommand}"/>
         <KeyBinding Gesture="Ctrl+Y" Command="{Binding RedoCommand}"/>
@@ -68,20 +68,20 @@
                 </Grid.ColumnDefinitions>
 
                 <!-- ===== LEFT COLUMN = Viewport ===== -->
-                <Grid Grid.Column="0" Background="{StaticResource Editor.Window.GrayBrush1}">
+                <Grid Grid.Column="0" Background="{DynamicResource Editor.Window.GrayBrush1}">
                     <Grid.RowDefinitions>
                         <RowDefinition MinHeight="50"/>
                         <RowDefinition Height="5"/>
                         <RowDefinition MinHeight="50"/>
                     </Grid.RowDefinitions>
 
-                    <Grid Grid.Row="0" Background="{StaticResource Editor.Window.GrayBrush2}">
+                    <Grid Grid.Row="0" Background="{DynamicResource Editor.Window.GrayBrush2}">
                         <TextBlock Text="Scene Viewport"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    FontSize="14"
                                    FontWeight="Bold"
-                                   Foreground="{StaticResource Editor.Disabled.FontBrush}"/>
+                                   Foreground="{DynamicResource Editor.Disabled.FontBrush}"/>
                     </Grid>
 
                     <GridSplitter Grid.Row="1"
@@ -105,7 +105,7 @@
                               VerticalAlignment="Stretch"/>
 
                 <!-- ===== RIGHT COLUMN = Project Layout ===== -->
-                <Grid Grid.Column="2" Background="{StaticResource Editor.Window.GrayBrush2}">
+                <Grid Grid.Column="2" Background="{DynamicResource Editor.Window.GrayBrush2}">
                     <Grid.RowDefinitions>
                         <RowDefinition MinHeight="50"/>
                         <RowDefinition Height="5"/>

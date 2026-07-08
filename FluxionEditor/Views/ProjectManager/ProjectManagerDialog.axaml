@@ -13,8 +13,8 @@
         WindowStartupLocation="CenterScreen">
 
     <Border CornerRadius="4"
-            Background="{StaticResource Editor.Window.GrayBrush2}"
-            BorderBrush="{StaticResource Editor.Window.GrayBrush4}"
+            Background="{DynamicResource Editor.Window.GrayBrush2}"
+            BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
             BorderThickness="1"
             Padding="20" Margin="20">
         <Grid ClipToBounds="True">
@@ -48,7 +48,7 @@
             <!-- Separator line under the tab options -->
             <Border Grid.Row="1"
                     Height="1"
-                    Background="{StaticResource Editor.Window.GrayBrush5}"
+                    Background="{DynamicResource Editor.Window.GrayBrush5}"
                     Margin="10,0,10,16"/>
 
             <!-- Viewport — only 800px wide area visible -->

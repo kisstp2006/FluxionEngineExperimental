@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.InspectorView"
              x:DataType="components:MSGameObject"
-             Background="{StaticResource Editor.Window.GrayBrush2}">
+             Background="{DynamicResource Editor.Window.GrayBrush2}">
 
     <ScrollViewer VerticalScrollBarVisibility="Visible"
                   HorizontalScrollBarVisibility="Disabled"

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using FluxionEditor.Foundation.Utilities;
 using FluxionEditor.ViewModels;
 using FluxionEditor.Views;
 
@@ -21,6 +22,9 @@ namespace FluxionEditor
         /// </summary>
         public override void OnFrameworkInitializationCompleted()
         {
+            // Apply the saved startup theme before any window is created.
+            ThemeManager.Instance.Initialize();
+
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // DataContext is set to the opened Project by MainWindow
