@@ -1,47 +1,42 @@
-﻿using EngineWrapper.EngineAPIStructs;
-
-using System;
-using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Text;
-
-namespace EngineWrapper.EngineAPIStructs
-{
-    [StructLayout(LayoutKind.Sequential)]
-    class Transform
-    {
-        public Vector3 Position;
-        public Vector3 Rotation;
-        public Vector3 Scale = Vector3.One;
-
-    }
-
-
-    [StructLayout(LayoutKind.Sequential)]
-    internal class GameEntityDescriptor
-    {
-        public Transform transform= new Transform();
-    }
-}
 
 namespace EngineWrapper
 {
-    static class EngineAPI
+    // ── Descriptors ─────────────────────────────────────────────────
+    // Plain-data mirrors of the C++ structs in EngineExport/EngineAPI.cpp.
+    // Layout must match the native side field for field (3 x Vector3 = 9 floats).
+
+    [StructLayout(LayoutKind.Sequential)]
+    public class TransformDescriptor
     {
-        private const string _dllName= "EngineExport.dll";
-
-        [DllImport(_dllName)]
-        private static extern int CreateGameObject(GameEntityDescriptor desc);
-        public static int CreateGameObject(GameObject gameObject)
-        {
-            GameEntityDescriptor desc = new GameEntityDescriptor();
-
-            {
-                var c = gameObject.GetComponent<GameEntityDescriptor>();
-            }
-        }
+        public Vector3 Position;
+        public Vector3 Rotation; // Euler angles in radians
+        public Vector3 Scale = Vector3.One;
     }
 
-    
+    [StructLayout(LayoutKind.Sequential)]
+    public class GameObjectDescriptor
+    {
+        public TransformDescriptor Transform = new TransformDescriptor();
+    }
+
+    // ── Native entry points ─────────────────────────────────────────
+
+    /// <summary>
+    /// Thin P/Invoke layer over EngineExport.dll. Knows nothing about
+    /// editor types — callers convert their data into descriptors.
+    /// </summary>
+    public static class EngineAPI
+    {
+        private const string _dllName = "EngineExport.dll";
+
+        /// <summary>Creates a game object in the engine and returns its id.</summary>
+        [DllImport(_dllName)]
+        public static extern int CreateGameObject(GameObjectDescriptor desc);
+
+        /// <summary>Removes the game object with the given engine id.</summary>
+        [DllImport(_dllName)]
+        public static extern void RemoveGameObject(int id);
+    }
 }

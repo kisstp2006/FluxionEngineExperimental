@@ -71,15 +71,24 @@ namespace FluxionEditor.Foundation
 
         // ── Internal helpers ────────────────────────────────────────
 
-        private void AddGameObjectInternal(GameObject gameObject)
+        private void AddGameObjectInternal(GameObject gameObject,int index= -1)
         {
             Debug.Assert(!_gameObjects.Contains(gameObject));
-            _gameObjects.Add(gameObject);
+            gameObject.IsActive=IsActive;
+            if (index == -1) 
+            {     
+                _gameObjects.Add(gameObject);
+            }
+            else
+            {
+                _gameObjects.Insert(index, gameObject);
+            }
         }
 
         private void RemoveGameObjectInternal(GameObject gameObject)
         {
             Debug.Assert(_gameObjects.Contains(gameObject));
+            gameObject.isActive=false;
             _gameObjects.Remove(gameObject);
         }
 
@@ -99,6 +108,14 @@ namespace FluxionEditor.Foundation
             GameObjects = new ReadOnlyObservableCollection<GameObject>(_gameObjects);
             OnPropertyChanged(nameof(GameObjects));
 
+            foreach (GameObject gameObject in GameObjects) 
+            { 
+                gameObject.isActive = IsActive;
+            
+            }
+
+
+
             // ── Add GameObject command ──
 
             AddGameObjectCommand = new RelayCommand<object>(_ =>
@@ -109,7 +126,7 @@ namespace FluxionEditor.Foundation
 
                 Project?.UndoRedo.Add(new UndoRedoCommand(
                     $"Add {newObj.Name} to {Name}",
-                    execute: () => _gameObjects.Insert(gameObjectIndex, newObj),
+                    execute: () => AddGameObjectInternal(newObj, gameObjectIndex),
                     undo: () => RemoveGameObjectInternal(newObj)
                 ));
             });
@@ -125,7 +142,7 @@ namespace FluxionEditor.Foundation
                 Project?.UndoRedo.Add(new UndoRedoCommand(
                     $"Remove {x.Name} from {Name}",
                     execute: () => RemoveGameObjectInternal(x),
-                    undo: () => _gameObjects.Insert(gameObjectIndex, x)
+                    undo: () => AddGameObjectInternal(x, gameObjectIndex)
                 ));
             }, x => x != null);
         }
