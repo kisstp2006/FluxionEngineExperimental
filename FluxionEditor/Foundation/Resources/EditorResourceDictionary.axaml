@@ -38,4 +38,36 @@
         <Setter Property="Foreground" Value="White"/>
     </Style>
 
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- ToggleButton – dark tab-style look                     -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="ToggleButton">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Foreground" Value="{StaticResource Editor.FontBrush}"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="Padding" Value="12,6"/>
+        <Setter Property="FontSize" Value="35"/>
+    </Style>
+    <Style Selector="ToggleButton:pointerover">
+        <Setter Property="Background" Value="{StaticResource Editor.Window.GrayBrush3}"/>
+    </Style>
+    <Style Selector="ToggleButton:checked">
+        <Setter Property="Background" Value="{StaticResource Editor.Selected.BackgroundBrush}"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style Selector="ToggleButton:checked:pointerover">
+        <Setter Property="Background" Value="{StaticResource Editor.BlueBrush}"/>
+    </Style>    <!-- ═══════════════════════════════════════════════════════ -->
+    <!-- Text Drop Shadow                                       -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="TextBlock.shadow">
+        <Setter Property="Effect">
+            <DropShadowEffect BlurRadius="3"
+                              Opacity="0.4"
+                              Color="Black"/>
+        </Setter>
+    </Style>
+
 </Styles>

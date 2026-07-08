@@ -13,50 +13,51 @@
         CanResize="False"
         WindowStartupLocation="CenterScreen">
 
-    <Grid ClipToBounds="True">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <Border CornerRadius="4"
+            Background="{StaticResource Editor.Window.GrayBrush3}"
+            Padding="20"
+            Margin="20">
+        <Grid ClipToBounds="True">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Margin="0,20,0,20">
-            <ToggleButton x:Name="OpenProjectBtn"
-                          FontSize="22"
-                          FontFamily="Default"
-                          Margin="25,0,0,0"
-                          Click="ToggleView"
-                          IsChecked="true">
-                Open Project
-            </ToggleButton>
-
-            <ToggleButton x:Name="CreateProjectBtn"
-                          FontSize="22"
-                          FontFamily="Default"
-                          Margin="25,0,0,0"
-                          Click="ToggleView"
-                          IsChecked="false">
-                Create Project
-            </ToggleButton>
-        </StackPanel>
-
-        <!-- Ez a viewport. Csak 800 széles részt enged látszani. -->
-        <Border Grid.Row="1"
-                Width="800"
-                ClipToBounds="True"
-                HorizontalAlignment="Left">
-
-            <!-- Ez lehet 1600 széles, de a Border levágja. -->
+            <!-- Tab toggles -->
             <StackPanel Orientation="Horizontal"
-                        x:Name="ManagerContent">
-                <local:OpenProjectView x:Name="openProjectView">
-                    
-                </local:OpenProjectView>
-                <local:CreateProjectView x:Name="createProjectView">
-                    
-                </local:CreateProjectView>
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,10">
+                <ToggleButton x:Name="OpenProjectBtn"
+                              FontSize="22"
+                              FontFamily="Default"
+                              Margin="25,0,0,0"
+                              Click="ToggleView"
+                              IsChecked="true">
+                    Open Project
+                </ToggleButton>
+
+                <ToggleButton x:Name="CreateProjectBtn"
+                              FontSize="22"
+                              FontFamily="Default"
+                              Margin="25,0,0,0"
+                              Click="ToggleView"
+                              IsChecked="false">
+                    Create Project
+                </ToggleButton>
             </StackPanel>
-        </Border>
-    </Grid>
+
+            <!-- Viewport — only 800px wide area visible -->
+            <Border Grid.Row="1"
+                    Width="800"
+                    ClipToBounds="True"
+                    HorizontalAlignment="Left">
+                <!-- Content is 1600px wide, the Border clips it -->
+                <StackPanel Orientation="Horizontal"
+                            x:Name="ManagerContent">
+                    <local:OpenProjectView x:Name="openProjectView"/>
+                    <local:CreateProjectView x:Name="createProjectView"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Border>
 </Window>
