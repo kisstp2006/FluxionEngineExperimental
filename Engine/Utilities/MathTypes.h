@@ -50,27 +50,75 @@ namespace fluxion::math {
 	using m4x4 = DirectX::XMFLOAT4X4;
 	using m4x4a = DirectX::XMFLOAT4X4A;
 #elif defined(FLUXION_MATH_GENERIC)
-	// Plain storage types with the same size, alignment and row-major
-	// layout as the DirectXMath ones, so component data stays
-	// bit-identical across platforms.
+	// Plain storage types with the same size, alignment, row-major layout
+	// and constructor set as the DirectXMath ones, so component data and
+	// engine code stay identical across platforms.
 	//TODO: replacethem with something more professional like glm
-	struct v2 { flf32 x, y; };
-	struct alignas(16) v2a { flf32 x, y; };
-	struct v3 { flf32 x, y, z; };
-	struct alignas(16) v3a { flf32 x, y, z; };
-	struct v4 { flf32 x, y, z, w; };
-	struct alignas(16) v4a { flf32 x, y, z, w; };
 
-	struct u32v2 { flu32 x, y; };
-	struct u32v3 { flu32 x, y, z; };
-	struct u32v4 { flu32 x, y, z, w; };
+	// Generates the member set of a 2/3/4 component vector type.
+#define FLUXION_VEC2_BODY(name, T)                                              \
+		T x, y;                                                                 \
+		name() = default;                                                       \
+		constexpr name(T _x, T _y) : x{ _x }, y{ _y } {}                        \
+		constexpr explicit name(const T* a) : x{ a[0] }, y{ a[1] } {}
+#define FLUXION_VEC3_BODY(name, T)                                              \
+		T x, y, z;                                                              \
+		name() = default;                                                       \
+		constexpr name(T _x, T _y, T _z) : x{ _x }, y{ _y }, z{ _z } {}         \
+		constexpr explicit name(const T* a) : x{ a[0] }, y{ a[1] }, z{ a[2] } {}
+#define FLUXION_VEC4_BODY(name, T)                                              \
+		T x, y, z, w;                                                           \
+		name() = default;                                                       \
+		constexpr name(T _x, T _y, T _z, T _w)                                  \
+			: x{ _x }, y{ _y }, z{ _z }, w{ _w } {}                             \
+		constexpr explicit name(const T* a)                                     \
+			: x{ a[0] }, y{ a[1] }, z{ a[2] }, w{ a[3] } {}
 
-	struct s32v2 { fls32 x, y; };
-	struct s32v3 { fls32 x, y, z; };
-	struct s32v4 { fls32 x, y, z, w; };
+	struct v2 { FLUXION_VEC2_BODY(v2, flf32) };
+	struct alignas(16) v2a { FLUXION_VEC2_BODY(v2a, flf32) };
+	struct v3 { FLUXION_VEC3_BODY(v3, flf32) };
+	struct alignas(16) v3a { FLUXION_VEC3_BODY(v3a, flf32) };
+	struct v4 { FLUXION_VEC4_BODY(v4, flf32) };
+	struct alignas(16) v4a { FLUXION_VEC4_BODY(v4a, flf32) };
 
-	struct m3x3 { flf32 m[3][3]; };
-	struct m4x4 { flf32 m[4][4]; };
-	struct alignas(16) m4x4a { flf32 m[4][4]; };
+	struct u32v2 { FLUXION_VEC2_BODY(u32v2, flu32) };
+	struct u32v3 { FLUXION_VEC3_BODY(u32v3, flu32) };
+	struct u32v4 { FLUXION_VEC4_BODY(u32v4, flu32) };
+
+	struct s32v2 { FLUXION_VEC2_BODY(s32v2, fls32) };
+	struct s32v3 { FLUXION_VEC3_BODY(s32v3, fls32) };
+	struct s32v4 { FLUXION_VEC4_BODY(s32v4, fls32) };
+
+#undef FLUXION_VEC2_BODY
+#undef FLUXION_VEC3_BODY
+#undef FLUXION_VEC4_BODY
+
+	struct m3x3 {
+		flf32 m[3][3];
+		m3x3() = default;
+		explicit m3x3(const flf32* a) {
+			for (int r = 0; r < 3; ++r)
+				for (int c = 0; c < 3; ++c)
+					m[r][c] = a[r * 3 + c];
+		}
+	};
+	struct m4x4 {
+		flf32 m[4][4];
+		m4x4() = default;
+		explicit m4x4(const flf32* a) {
+			for (int r = 0; r < 4; ++r)
+				for (int c = 0; c < 4; ++c)
+					m[r][c] = a[r * 4 + c];
+		}
+	};
+	struct alignas(16) m4x4a {
+		flf32 m[4][4];
+		m4x4a() = default;
+		explicit m4x4a(const flf32* a) {
+			for (int r = 0; r < 4; ++r)
+				for (int c = 0; c < 4; ++c)
+					m[r][c] = a[r * 4 + c];
+		}
+	};
 #endif
 }
