@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:components="using:FluxionEditor.Foundation.Components"
              xmlns:resources="using:FluxionEditor.Foundation.Resources"
-             xmlns:numeric="using:FluxionEditor.Editor.CustomControls.Numeric"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.InspectorView"
              x:DataType="components:MSGameObject"
@@ -55,31 +54,6 @@
                               CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"/>
                 </StackPanel>
             </Grid>
-
-            <!-- NumberBox presets — Unity-style row layout -->
-            <Border Background="{DynamicResource Editor.Window.GrayBrush3}"
-                    CornerRadius="4" Padding="8" Margin="0,8,0,0">
-                <StackPanel Spacing="6">
-                    <TextBlock Text="NumberBox presets"
-                               FontSize="11" FontWeight="Bold"/>
-
-                    <!-- Single — label left, input right -->
-                    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-                        <TextBlock Text="Value X" Width="65" FontSize="12"
-                                   VerticalAlignment="Center" TextAlignment="Right"/>
-                        <numeric:NumberBox Label="Value" Value="42"/>
-                    </StackPanel>
-
-                    <!-- Vector2 — label + X Y -->
-                    <numeric:Vector2Input Header="Value X" X="1" Y="2"/>
-
-                    <!-- Vector3 — label + X Y Z -->
-                    <numeric:Vector3Input Header="Value X" X="1" Y="2" Z="0"/>
-
-                    <!-- Vector4 — label + X Y Z W -->
-                    <numeric:Vector4Input Header="Value X" X="1" Y="2" Z="0" W="1"/>
-                </StackPanel>
-            </Border>
 
             <!-- Components list -->
             <TextBlock VerticalAlignment="Center" Text="Components:"/>
