@@ -4,21 +4,24 @@
              x:Class="FluxionEditor.Editor.CustomControls.Numeric.Vector3Input"
              x:Name="Root">
 
-    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-        <!-- Property name on the left -->
-        <TextBlock Text="{Binding Header, ElementName=Root}"
+    <!-- Header takes only what it needs (Auto); the fields split the rest
+         evenly (*), so they stretch to fill all available width. -->
+    <Grid VerticalAlignment="Center" ColumnDefinitions="Auto,*,*,*">
+        <TextBlock Grid.Column="0"
+                   Text="{Binding Header, ElementName=Root}"
                    Width="65"
+                   Margin="0,0,6,0"
                    VerticalAlignment="Center"
                    TextAlignment="Right"
                    FontSize="12"
                    IsVisible="{Binding Header, ElementName=Root, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
-        <numeric:NumberBox Label="X"
+        <numeric:NumberBox Grid.Column="1" Label="X" Margin="0,0,6,0"
                            Value="{Binding X, ElementName=Root}"/>
-        <numeric:NumberBox Label="Y"
+        <numeric:NumberBox Grid.Column="2" Label="Y" Margin="0,0,6,0"
                            Value="{Binding Y, ElementName=Root}"/>
-        <numeric:NumberBox Label="Z"
+        <numeric:NumberBox Grid.Column="3" Label="Z"
                            Value="{Binding Z, ElementName=Root}"/>
-    </StackPanel>
+    </Grid>
 
 </UserControl>

@@ -17,7 +17,16 @@ namespace fluxion::ecs {
 	}
 	namespace script {     
 		class game_object_script : public game_object::game_object {
+		public:
+			virtual void start() {
 
+			}
+			virtual void update(float dt) {
+
+			}
+			virtual void update() {
+
+			}
 		};
 	}
 }
