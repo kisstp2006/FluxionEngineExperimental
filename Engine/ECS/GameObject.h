@@ -16,6 +16,8 @@ namespace fluxion::ecs {
 		bool is_alive(game_object gameobject);
 	}
 	namespace script {     
-		
+		class game_object_script : public game_object::game_object {
+
+		};
 	}
 }
