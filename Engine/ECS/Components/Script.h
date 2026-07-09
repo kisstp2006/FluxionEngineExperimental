@@ -1,7 +1,8 @@
 #pragma once
-// GameObject.h (not just ECSCommon.h) because init_info below stores a
-// detail::script_creator, which is declared there in fluxion::ecs::script::detail.
-#include "ECS/GameObject.h"
+// EngineAPI/GameObject.h because init_info below stores a detail::script_creator,
+// which is declared there in fluxion::ecs::script::detail (alongside the
+// game_object class and game_object_script).
+#include "EngineAPI/GameObject.h"
 
 
 namespace fluxion::ecs::script {
