@@ -1,0 +1,22 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:numeric="using:FluxionEditor.Editor.CustomControls.Numeric"
+             x:Class="FluxionEditor.Editor.CustomControls.Numeric.Vector2Input"
+             x:Name="Root">
+
+    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
+        <!-- Property name on the left -->
+        <TextBlock Text="{Binding Header, ElementName=Root}"
+                   Width="65"
+                   VerticalAlignment="Center"
+                   TextAlignment="Right"
+                   FontSize="12"
+                   IsVisible="{Binding Header, ElementName=Root, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+
+        <numeric:NumberBox Label="X"
+                           Value="{Binding X, ElementName=Root}"/>
+        <numeric:NumberBox Label="Y"
+                           Value="{Binding Y, ElementName=Root}"/>
+    </StackPanel>
+
+</UserControl>

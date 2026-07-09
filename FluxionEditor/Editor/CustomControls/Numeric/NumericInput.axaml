@@ -1,0 +1,55 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:numeric="using:FluxionEditor.Editor.CustomControls.Numeric">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  NumberBox  default style + template                    -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="numeric|NumberBox">
+        <Setter Property="MinWidth" Value="46"/>
+        <Setter Property="MinHeight" Value="20"/>
+        <Setter Property="Cursor" Value="SizeWestEast"/>
+
+        <Setter Property="Template">
+            <ControlTemplate>
+                <Border Background="{DynamicResource Editor.Window.GrayBrush3}"
+                        BorderBrush="{DynamicResource Editor.Window.GrayBrush5}"
+                        BorderThickness="1"
+                        CornerRadius="2"
+                        Padding="4,1">
+                    <StackPanel>
+                        <!-- Tiny axis label above (X, Y, Z, W) — centered -->
+                        <TextBlock x:Name="PART_Label"
+                                   Text="{TemplateBinding Label}"
+                                   FontSize="9"
+                                   Foreground="{DynamicResource Editor.Disabled.FontBrush}"
+                                   HorizontalAlignment="Center"
+                                   IsVisible="{TemplateBinding Label, Converter={x:Static ObjectConverters.IsNotNull}}"/>
+
+                        <Panel>
+                            <!-- Display value — visible by default, centered -->
+                            <TextBlock x:Name="PART_textBlock"
+                                       Text="{TemplateBinding Value}"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center"
+                                       FontSize="12"/>
+
+                            <!-- Edit field — hidden until click -->
+                            <TextBox x:Name="PART_textBox"
+                                     Text="{TemplateBinding Value, Mode=TwoWay}"
+                                     IsVisible="False"
+                                     HorizontalAlignment="Stretch"
+                                     HorizontalContentAlignment="Center"
+                                     VerticalContentAlignment="Center"
+                                     FontSize="12"
+                                     Padding="0"
+                                     BorderThickness="0"/>
+                        </Panel>
+                    </StackPanel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+</Styles>
