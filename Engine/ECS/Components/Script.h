@@ -1,7 +1,7 @@
 #pragma once
 // EngineAPI/GameObject.h because init_info below stores a detail::script_creator,
 // which is declared there in fluxion::ecs::script::detail (alongside the
-// game_object class and game_object_script).
+// game_object class and game_object_scripts).
 #include "EngineAPI/GameObject.h"
 
 
