@@ -27,7 +27,7 @@ namespace fluxion::ecs {
 			if (free_ids.size() > id::min_deleted_elements) 
 			{
 				id = free_ids.front();
-				assert(!is_alive(game_object{ id }));
+				assert(!is_alive(id));
 				free_ids.pop_front();
 				id = game_object_id{ id::new_generation(id) };
 				++generations[id::index(id)];
@@ -60,12 +60,11 @@ namespace fluxion::ecs {
 			return new_game_object;
 		}
 
-		void remove_game_object(game_object_id gameobject)
+		void remove_game_object(game_object_id id)
 		{
-			const game_object_id id{gameobject.get_id()};
 			const id::id_type index{ id::index(id) };
-			assert(is_alive(gameobject));
-			if (is_alive(gameobject))
+			assert(is_alive(id));
+			if (is_alive(id))
 			{
 				transform::remove(transforms[index]);
 				transforms[index] = {}; // reset the slot so is_alive() reports dead and create can reuse it
@@ -74,23 +73,20 @@ namespace fluxion::ecs {
 
 		}
 
-		bool is_alive(game_object_id gameobject)
+		bool is_alive(game_object_id id)
 		{
-			assert(id::is_valid());
-			const game_object_id id{ gameobject.get_id() };
+			assert(id::is_valid(id));
 			const id::id_type index{ id::index(id) };
 			assert(index < generations.size());
 			// Alive = generation matches AND the transform slot is in use
 			// (every game object must have a transform for now).
 			return (generations[index] == id::generation(id) && transforms[index].is_valid());
-
-
 		}
 
 		transform::component
 			game_object::transform() const 
 		{
-			assert(is_alive(*this));
+			assert(is_alive(get_id()));
 			assert(is_valid());
 			const id::id_type index{ id::index(_id) };
 			
@@ -99,7 +95,7 @@ namespace fluxion::ecs {
 			return transforms[index];
 		}
 		script::component game_object::script() const {
-			assert(is_alive(*this));
+			assert(is_alive(get_id()));
 			assert(is_valid());
 			const id::id_type index{ id::index(_id) };
 
