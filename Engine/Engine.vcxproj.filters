@@ -11,9 +11,11 @@
     <ClInclude Include="ECS\Components\Transform.h" />
     <ClInclude Include="EngineAPI\GameObject.h" />
     <ClInclude Include="EngineAPI\TransformComponent.h" />
+    <ClInclude Include="ECS\Components\Script.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ECS\GameObject.cpp" />
     <ClCompile Include="ECS\Components\Transform.cpp" />
+    <ClCompile Include="ECS\Components\Script.cpp" />
   </ItemGroup>
 </Project>

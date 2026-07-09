@@ -22,6 +22,7 @@
     <ClInclude Include="Common\CommonHeaders.h" />
     <ClInclude Include="Common\CustomTypes.h" />
     <ClInclude Include="Common\Id.h" />
+    <ClInclude Include="ECS\Components\Script.h" />
     <ClInclude Include="ECS\Components\Transform.h" />
     <ClInclude Include="ECS\ECSCommon.h" />
     <ClInclude Include="ECS\GameObject.h" />
@@ -31,6 +32,7 @@
     <ClInclude Include="Utilities\Utilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ECS\Components\Script.cpp" />
     <ClCompile Include="ECS\Components\Transform.cpp" />
     <ClCompile Include="ECS\GameObject.cpp" />
   </ItemGroup>
