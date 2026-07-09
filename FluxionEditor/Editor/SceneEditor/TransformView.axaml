@@ -13,17 +13,20 @@
          this view only provides the Transform inputs. -->
     <controls:ComponentView Header="Transform">
         <StackPanel Spacing="6">
-            <numeric:Vector3Input Header="Position"
+            <numeric:Vector3Input x:Name="PositionInput"
+                                  Header="Position"
                                   X="{Binding PosX}"
                                   Y="{Binding PosY}"
                                   Z="{Binding PosZ}"/>
 
-            <numeric:Vector3Input Header="Rotation"
+            <numeric:Vector3Input x:Name="RotationInput"
+                                  Header="Rotation"
                                   X="{Binding RotX}"
                                   Y="{Binding RotY}"
                                   Z="{Binding RotZ}"/>
 
-            <numeric:Vector3Input Header="Scale"
+            <numeric:Vector3Input x:Name="ScaleInput"
+                                  Header="Scale"
                                   X="{Binding ScaleX}"
                                   Y="{Binding ScaleY}"
                                   Z="{Binding ScaleZ}"/>
