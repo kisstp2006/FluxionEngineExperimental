@@ -15,5 +15,7 @@ namespace fluxion::ecs {
 		void remove_game_object(game_object id);
 		bool is_alive(game_object gameobject);
 	}
-
+	namespace script {     
+		
+	}
 }
