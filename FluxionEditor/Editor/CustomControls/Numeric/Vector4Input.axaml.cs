@@ -50,5 +50,12 @@ public partial class Vector4Input : UserControl
         remove => RemoveHandler(NumberBox.DragCompletedEvent, value);
     }
 
+    /// <summary>Fires when a value is typed-in (Enter / focus loss).</summary>
+    public event EventHandler<RoutedEventArgs> ValueCommitted
+    {
+        add => AddHandler(NumberBox.ValueCommittedEvent, value);
+        remove => RemoveHandler(NumberBox.ValueCommittedEvent, value);
+    }
+
     public Vector4Input() => InitializeComponent();
 }

@@ -23,6 +23,5 @@
         <FluentTheme />
         <StyleInclude Source="avares://FluxionEditor/Foundation/Resources/EditorResourceDictionary.axaml"/>
         <StyleInclude Source="avares://FluxionEditor/Editor/CustomControls/Numeric/NumericInput.axaml"/>
-        <StyleInclude Source="avares://FluxionEditor/Editor/CustomControls/ComponentView.axaml"/>
     </Application.Styles>
 </Application>

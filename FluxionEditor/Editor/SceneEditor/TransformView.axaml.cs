@@ -36,19 +36,21 @@ public partial class TransformView : UserControl
     {
         Loaded -= OnLoaded;
 
-        WireInput("PositionInput", OnPosition_DragStarted, OnPosition_DragCompleted);
-        WireInput("RotationInput", OnRotation_DragStarted, OnRotation_DragCompleted);
-        WireInput("ScaleInput",    OnScale_DragStarted,    OnScale_DragCompleted);
+        WireInput("PositionInput", OnPosition_DragStarted, OnPosition_DragCompleted, OnPosition_ValueCommitted);
+        WireInput("RotationInput", OnRotation_DragStarted, OnRotation_DragCompleted, OnRotation_ValueCommitted);
+        WireInput("ScaleInput",    OnScale_DragStarted,    OnScale_DragCompleted,    OnScale_ValueCommitted);
     }
 
     private void WireInput(string name,
         EventHandler<RoutedEventArgs> onStart,
-        EventHandler<RoutedEventArgs> onComplete)
+        EventHandler<RoutedEventArgs> onComplete,
+        EventHandler<RoutedEventArgs> onCommitted)
     {
         if (this.FindControl<Vector3Input>(name) is { } input)
         {
-            input.DragStarted   += onStart;
-            input.DragCompleted += onComplete;
+            input.DragStarted     += onStart;
+            input.DragCompleted   += onComplete;
+            input.ValueCommitted  += onCommitted;
         }
     }
 
@@ -64,8 +66,8 @@ public partial class TransformView : UserControl
     }
 
     /// <summary>
-    /// Compare snapshot with current values and, if anything changed,
-    /// push an <see cref="UndoRedoCommand"/> to the project.
+    /// Compare snapshot with current values, push undo if changed,
+    /// and update the snapshot for the next interaction.
     /// </summary>
     private void TryCommitUndo(
         string undoName,
@@ -77,18 +79,27 @@ public partial class TransformView : UserControl
 
         var oldValues = snapshot;
         var newValues = TakeSnapshot(vm, getValue);
-        snapshot = null;
+        snapshot = newValues;   // already ready for the next action
 
-        bool anyChanged = oldValues.Any(s => getValue(s.t) != s.v);
-        if (!anyChanged) return;
+        if (!oldValues.Any(s => getValue(s.t) != s.v)) return;
 
         var project = vm.SelectedComponents.FirstOrDefault()?.Owner?.ParentScene?.Project;
         if (project is null) return;
 
+        var self = this;
+
         project.UndoRedo.Add(new UndoRedoCommand(
             undoName,
-            execute: () => { foreach (var (t, v) in newValues) setValue(t, v); },
-            undo:    () => { foreach (var (t, v) in oldValues) setValue(t, v); }));
+            execute: () =>
+            {
+                foreach (var (t, val) in newValues) setValue(t, val);
+                if (self.DataContext is MSTransform vm) vm.Refresh();
+            },
+            undo: () =>
+            {
+                foreach (var (t, val) in oldValues) setValue(t, val);
+                if (self.DataContext is MSTransform vm) vm.Refresh();
+            }));
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -102,6 +113,11 @@ public partial class TransformView : UserControl
     }
 
     private void OnPosition_DragCompleted(object? sender, RoutedEventArgs e)
+    {
+        TryCommitUndo("Move", t => t.Position, (t, v) => t.Position = v, ref _positionSnapshot);
+    }
+
+    private void OnPosition_ValueCommitted(object? sender, RoutedEventArgs e)
     {
         TryCommitUndo("Move", t => t.Position, (t, v) => t.Position = v, ref _positionSnapshot);
     }
@@ -121,6 +137,11 @@ public partial class TransformView : UserControl
         TryCommitUndo("Rotate", t => t.Rotation, (t, v) => t.Rotation = v, ref _rotationSnapshot);
     }
 
+    private void OnRotation_ValueCommitted(object? sender, RoutedEventArgs e)
+    {
+        TryCommitUndo("Rotate", t => t.Rotation, (t, v) => t.Rotation = v, ref _rotationSnapshot);
+    }
+
     // ═══════════════════════════════════════════════════════════
     //  Scale
     // ═══════════════════════════════════════════════════════════
@@ -132,6 +153,11 @@ public partial class TransformView : UserControl
     }
 
     private void OnScale_DragCompleted(object? sender, RoutedEventArgs e)
+    {
+        TryCommitUndo("Scale", t => t.Scale, (t, v) => t.Scale = v, ref _scaleSnapshot);
+    }
+
+    private void OnScale_ValueCommitted(object? sender, RoutedEventArgs e)
     {
         TryCommitUndo("Scale", t => t.Scale, (t, v) => t.Scale = v, ref _scaleSnapshot);
     }

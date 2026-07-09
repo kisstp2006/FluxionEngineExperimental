@@ -72,6 +72,11 @@ public class NumberBox : TemplatedControl
         RoutedEvent.Register<NumberBox, RoutedEventArgs>(
             nameof(DragCompleted), RoutingStrategies.Bubble);
 
+    /// <summary>Fires when the user commits a value by typing (Enter or focus loss).</summary>
+    public static readonly RoutedEvent<RoutedEventArgs> ValueCommittedEvent =
+        RoutedEvent.Register<NumberBox, RoutedEventArgs>(
+            nameof(ValueCommitted), RoutingStrategies.Bubble);
+
     public event EventHandler<RoutedEventArgs> DragStarted
     {
         add => AddHandler(DragStartedEvent, value);
@@ -88,6 +93,12 @@ public class NumberBox : TemplatedControl
     {
         add => AddHandler(DragCompletedEvent, value);
         remove => RemoveHandler(DragCompletedEvent, value);
+    }
+
+    public event EventHandler<RoutedEventArgs> ValueCommitted
+    {
+        add => AddHandler(ValueCommittedEvent, value);
+        remove => RemoveHandler(ValueCommittedEvent, value);
     }
 
     // ═══════════════════════════════════════════════════════════
@@ -251,6 +262,7 @@ public class NumberBox : TemplatedControl
             }
 
             HideTextBox();
+            RaiseEvent(new RoutedEventArgs(ValueCommittedEvent));
             e.Handled = true;
         }
         else if (e.Key == Key.Escape)
@@ -272,6 +284,7 @@ public class NumberBox : TemplatedControl
         {
             Value = textBox.Text ?? Value;
             HideTextBox();
+            RaiseEvent(new RoutedEventArgs(ValueCommittedEvent));
         }
     }
 
