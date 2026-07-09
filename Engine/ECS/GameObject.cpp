@@ -60,7 +60,7 @@ namespace fluxion::ecs {
 			return new_game_object;
 		}
 
-		void remove_game_object(game_object gameobject)
+		void remove_game_object(game_object_id gameobject)
 		{
 			const game_object_id id{gameobject.get_id()};
 			const id::id_type index{ id::index(id) };
@@ -74,9 +74,9 @@ namespace fluxion::ecs {
 
 		}
 
-		bool is_alive(game_object gameobject)
+		bool is_alive(game_object_id gameobject)
 		{
-			assert(gameobject.is_valid());
+			assert(id::is_valid());
 			const game_object_id id{ gameobject.get_id() };
 			const id::id_type index{ id::index(id) };
 			assert(index < generations.size());
@@ -97,6 +97,15 @@ namespace fluxion::ecs {
 
 
 			return transforms[index];
+		}
+		script::component game_object::script() const {
+			assert(is_alive(*this));
+			assert(is_valid());
+			const id::id_type index{ id::index(_id) };
+
+
+
+			return scripts[index];
 		}
 	}
 }
