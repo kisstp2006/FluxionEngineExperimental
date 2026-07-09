@@ -10,7 +10,7 @@ namespace fluxion::ecs::transform
 
 	}//private-like namespace
 
-	component create_transform(const init_info& info, game_object::game_object gameobject) {
+	component create(const init_info& info, game_object::game_object gameobject) {
 		assert(gameobject.is_valid());
 		const id::id_type game_object_index{ id::index(gameobject.get_id()) };
 
@@ -33,7 +33,7 @@ namespace fluxion::ecs::transform
 		return component(transform_id{ game_object_index });
 	}
 
-	void remove_transform(component c) {
+	void remove(component c) {
 
 		assert(c.is_valid());
 

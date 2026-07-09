@@ -11,7 +11,7 @@ namespace fluxion::ecs::transform {
 		flf32 scale[3]{ 1.f, 1.f, 1.f };
 	};
 
-	component create_transform(const init_info& info, game_object::game_object gameobject);
+	component create(const init_info& info, game_object::game_object gameobject);
 
-	void remove_transform(component c);
+	void remove(component c);
 }

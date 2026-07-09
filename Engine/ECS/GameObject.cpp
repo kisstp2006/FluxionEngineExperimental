@@ -1,10 +1,14 @@
 #include "GameObject.h"
 #include "Components/Transform.h"
+#include "Components/Script.h"
+
 
 namespace fluxion::ecs {
 
 	namespace {
 		utl::vector<transform::component> transforms;
+		utl::vector<script::component> scripts;
+
 		utl::vector<id::generation_type> generations;
 		utl::deque<game_object_id> free_ids;
 	}
@@ -41,9 +45,17 @@ namespace fluxion::ecs {
 
 			// For now we need to create a transform component with every game object
 			assert(!transforms[index].is_valid());
-			transforms[index] = transform::create_transform(*info.transform, new_game_object);
+			transforms[index] = transform::create(*info.transform, new_game_object);
 
 			if (!transforms[index].is_valid()) return {};
+
+			//Create script component if it didnt have one 
+			if (info.script && info.script->script_creator) {
+				assert(!scripts[index].is_valid());
+				scripts[index] = script::create(*info.script, new_game_object);
+				assert(scripts[index].is_valid());
+
+			}
 
 			return new_game_object;
 		}
@@ -55,7 +67,7 @@ namespace fluxion::ecs {
 			assert(is_alive(gameobject));
 			if (is_alive(gameobject))
 			{
-				transform::remove_transform(transforms[index]);
+				transform::remove(transforms[index]);
 				transforms[index] = {}; // reset the slot so is_alive() reports dead and create can reuse it
 				free_ids.push_back(id);
 			}

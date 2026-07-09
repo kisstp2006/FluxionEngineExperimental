@@ -1,6 +1,8 @@
 #pragma once
 #include "../ECS/ECSCommon.h"
 #include "TransformComponent.h"
+#include "ScriptComponent.h"
+
 
 namespace fluxion::ecs {
 	DEFINE_TYPED_ID(game_object_id);
