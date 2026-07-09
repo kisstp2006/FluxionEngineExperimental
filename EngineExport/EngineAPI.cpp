@@ -1,5 +1,13 @@
 #ifndef EDITOR_INTERFACE
+#if defined(_WIN32)
+// MSVC / Windows: export the symbol from the DLL.
 #define EDITOR_INTERFACE extern "C" __declspec(dllexport)
+#else
+// GCC / Clang: make the symbol publicly visible in the shared object.
+// (Effective when the library is built with -fvisibility=hidden, which is
+//  the build system's job; harmless otherwise.)
+#define EDITOR_INTERFACE extern "C" __attribute__((visibility("default")))
+#endif
 #endif
 
 #include "Common/CommonHeaders.h"

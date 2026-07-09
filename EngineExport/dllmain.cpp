@@ -1,10 +1,15 @@
-#pragma comment(lib,"engine.lib")
+// dllmain.cpp : DLL entry point (Windows only).
+//
+// On non-Windows platforms a shared object (.so/.dylib) needs no explicit
+// entry point, so this whole translation unit compiles to nothing there.
+#if defined(_WIN32)
 
-
-// dllmain.cpp : Defines the entry point for the DLL application.
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+
+#if defined(_MSC_VER) && defined(_DEBUG)
 #include <crtdbg.h>
-#define WIN32_LEAN_AND_LEAN
+#endif
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -14,7 +19,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     switch (ul_reason_for_call)
     {
     case DLL_PROCESS_ATTACH:
-#if _DEBUG
+#if defined(_MSC_VER) && defined(_DEBUG)
         _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
         break;
@@ -27,3 +32,4 @@ BOOL APIENTRY DllMain( HMODULE hModule,
     return TRUE;
 }
 
+#endif // _WIN32
