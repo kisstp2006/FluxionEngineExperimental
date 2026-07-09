@@ -205,39 +205,78 @@ namespace FluxionEditor.Foundation.Components
             return false;
         }
 
-        public static float? GetMixedValues<T>(List<T> objects, Func<T,float> getProperty)
+        // ── Mixed value helpers ──
+        // Return the value shared by every item, or null when the selection
+        // disagrees. A null item (e.g. a game object without the queried
+        // component) also counts as "mixed".
+
+        private void MakeComponentList()
         {
-            var value = getProperty(objects.First());
-            foreach (var gameObject in objects.Skip(1)) {
-                if (!value.IsTheSameAs(getProperty(gameObject)))
+            _components.Clear();
+            var firstGameObject=selectedGameObjects.FirstOrDefault();
+            if(firstGameObject == null)
+            {
+                return;
+            }
+
+            foreach (var component in firstGameObject.Components) 
+            { 
+                var type = component.GetType();
+
+                if (!selectedGameObjects.Skip(1).Any(gameObject=>gameObject.GetComponent(type)==null))
                 {
-                    return null;
+                    // Guard against adding the same component type twice
+                    Debug.Assert(Components.FirstOrDefault(x=>x.GetType() == type) == null);
+                    _components.Add(component.GetMultiSelectionComponent(this));
                 }
             }
-            return value;
         }
-        public static bool? GetMixedValues(List<GameObject> gameObjects, Func<GameObject, bool> getProperty)
+
+
+        public static float? GetMixedValues<T>(IReadOnlyList<T> objects, Func<T, float> getProperty)
         {
-            var value = getProperty(gameObjects.First());
-            foreach (var gameObject in gameObjects.Skip(1))
+            if (objects is null) throw new ArgumentNullException(nameof(objects));
+            if (getProperty is null) throw new ArgumentNullException(nameof(getProperty));
+            if (objects.Count == 0 || objects[0] is null) return null;
+
+            var value = getProperty(objects[0]);
+            for (int i = 1; i < objects.Count; i++)
             {
-                if (value != getProperty(gameObject))
-                {
+                var item = objects[i];
+                if (item is null || !value.IsTheSameAs(getProperty(item)))
                     return null;
-                }
             }
             return value;
         }
 
-        public static string? GetMixedValues(List<GameObject> gameObjects, Func<GameObject, string> getProperty)
+        public static bool? GetMixedValues<T>(IReadOnlyList<T> objects, Func<T, bool> getProperty)
         {
-            var value = getProperty(gameObjects.First());
-            foreach (var gameObject in gameObjects.Skip(1))
+            if (objects is null) throw new ArgumentNullException(nameof(objects));
+            if (getProperty is null) throw new ArgumentNullException(nameof(getProperty));
+            if (objects.Count == 0 || objects[0] is null) return null;
+
+            var value = getProperty(objects[0]);
+            for (int i = 1; i < objects.Count; i++)
             {
-                if (value != getProperty(gameObject))
-                {
+                var item = objects[i];
+                if (item is null || value != getProperty(item))
                     return null;
-                }
+            }
+            return value;
+        }
+
+        public static string? GetMixedValues<T>(IReadOnlyList<T> objects, Func<T, string> getProperty)
+        {
+            if (objects is null) throw new ArgumentNullException(nameof(objects));
+            if (getProperty is null) throw new ArgumentNullException(nameof(getProperty));
+            if (objects.Count == 0 || objects[0] is null) return null;
+
+            var value = getProperty(objects[0]);
+            for (int i = 1; i < objects.Count; i++)
+            {
+                var item = objects[i];
+                if (item is null || value != getProperty(item))
+                    return null;
             }
             return value;
         }
@@ -256,6 +295,7 @@ namespace FluxionEditor.Foundation.Components
         {
             _enableUpdates = false;
             UpdateMSGameObjects();
+            MakeComponentList();
             _enableUpdates=true;
         }
 

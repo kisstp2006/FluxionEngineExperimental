@@ -16,6 +16,9 @@ namespace FluxionEditor.Foundation.Components
     [DataContract]
     abstract public class Component : ViewModelBase
     {
+        internal abstract IMSComponent GetMultiSelectionComponent(MSObject msObject);
+
+
         // ── Owner ──
         [DataMember]
         public GameObject Owner { get; private set; } = null!;
@@ -43,22 +46,24 @@ namespace FluxionEditor.Foundation.Components
     {
         private bool _enableUpdates=true;
         public List<T> SelectedComponents { get; private set; }
-        protected abstract string UpdateComponents(string PropertyName);
-        protected abstract string UpdateMSComponent();
+        protected abstract bool UpdateComponents(string propertyName);
+        protected abstract bool UpdateMSComponent();
 
         public void Refresh()
         {
-            _enableUpdates = true;
-            UpdateMSComponent();
+            // Disable write-back while reading values FROM the components,
+            // then re-enable so user edits propagate again (same pattern
+            // as MSObject.Refresh).
             _enableUpdates = false;
-
+            UpdateMSComponent();
+            _enableUpdates = true;
         }
 
 
-        public MSComponent(MSGameObject mSGameObject) 
+        public MSComponent(MSObject msObject)
         {
-            Debug.Assert(mSGameObject?.selectedGameObjects?.Count > 0);
-            SelectedComponents = mSGameObject.selectedGameObjects.Select(gameObject=>gameObject.GetComponent<T>()).ToList();
+            Debug.Assert(msObject?.selectedGameObjects?.Count > 0);
+            SelectedComponents = msObject.selectedGameObjects.Select(gameObject=>gameObject.GetComponent<T>()).ToList();
 
             PropertyChanged += (s, e) => { if (_enableUpdates) UpdateComponents(e.PropertyName); };
         }

@@ -76,9 +76,15 @@ namespace FluxionEditor.Foundation.Components
                 }
             }
         }
+
+        internal override IMSComponent GetMultiSelectionComponent(MSObject msObject)
+        {
+            return new MSTransform(msObject);
+        }
     }
-    public sealed class MSTransform : MSComponent<Transform>
+    sealed class MSTransform : MSComponent<Transform>
     {
+
         private float? _posX;
         public float? PosX
         {
@@ -220,13 +226,13 @@ namespace FluxionEditor.Foundation.Components
                 case nameof(RotX):
                 case nameof(RotY):
                 case nameof(RotZ):
-                    SelectedComponents.ForEach(c => c.Position = new Vector3(_rotX ?? c.Rotation.X, _rotY ?? c.Rotation.Y, _rotZ ?? c.Rotation.Z));
+                    SelectedComponents.ForEach(c => c.Rotation = new Vector3(_rotX ?? c.Rotation.X, _rotY ?? c.Rotation.Y, _rotZ ?? c.Rotation.Z));
                     return true;
 
                 case nameof(ScaleX):
                 case nameof(ScaleY):
                 case nameof(ScaleZ):
-                    SelectedComponents.ForEach(c => c.Position = new Vector3(_scaleX ?? c.Scale.X, _scaleX ?? c.Scale.Y, _scaleX ?? c.Scale.Z));
+                    SelectedComponents.ForEach(c => c.Scale = new Vector3(_scaleX ?? c.Scale.X, _scaleY ?? c.Scale.Y, _scaleZ ?? c.Scale.Z));
                     return true;
 
 
@@ -237,6 +243,23 @@ namespace FluxionEditor.Foundation.Components
         protected override bool UpdateMSComponent()
         {
             PosX = MSGameObject.GetMixedValues(SelectedComponents, new System.Func<Transform, float>(x=> x.Position.X ));
+            PosY = MSGameObject.GetMixedValues(SelectedComponents, new System.Func<Transform, float>(x=> x.Position.Y ));
+            PosZ = MSGameObject.GetMixedValues(SelectedComponents, new System.Func<Transform, float>(x=> x.Position.Z ));
+
+            RotX = MSGameObject.GetMixedValues(SelectedComponents, new System.Func<Transform, float>(x => x.Rotation.X));
+            RotY = MSGameObject.GetMixedValues(SelectedComponents, new System.Func<Transform, float>(x => x.Rotation.Y));
+            RotZ = MSGameObject.GetMixedValues(SelectedComponents, new System.Func<Transform, float>(x => x.Rotation.Z));
+
+            ScaleX = MSGameObject.GetMixedValues(SelectedComponents, new System.Func<Transform, float>(x => x.Scale.X));
+            ScaleY = MSGameObject.GetMixedValues(SelectedComponents, new System.Func<Transform, float>(x => x.Scale.Y));
+            ScaleZ = MSGameObject.GetMixedValues(SelectedComponents, new System.Func<Transform, float>(x => x.Scale.Z));
+
+            return true;
+        }
+
+        public MSTransform(MSObject msObject) : base(msObject)
+        {
+            Refresh();
         }
     }
 }
