@@ -88,13 +88,13 @@ namespace FluxionEditor.Foundation.Components
         private float? _posX;
         public float? PosX
         {
-            get=> _posX;
+            get => _posX;
             set
             {
-                if(_posX != value)
+                if (!_posX.IsTheSameAs(value))
                 {
-                    _posX.IsTheSameAs(value);
-                    OnPropertyChanged(nameof(_posX));
+                    _posX = value;
+                    OnPropertyChanged(nameof(PosX));
                 }
             }
         }
@@ -105,10 +105,10 @@ namespace FluxionEditor.Foundation.Components
             get => _posY;
             set
             {
-                if (_posY != value)
+                if (!_posY.IsTheSameAs(value))
                 {
-                    _posY.IsTheSameAs(value);
-                    OnPropertyChanged(nameof(_posY));
+                    _posY = value;
+                    OnPropertyChanged(nameof(PosY));
                 }
             }
         }
@@ -119,10 +119,10 @@ namespace FluxionEditor.Foundation.Components
             get => _posZ;
             set
             {
-                if (_posZ != value)
+                if (!_posZ.IsTheSameAs(value))
                 {
-                    _posZ.IsTheSameAs(value);
-                    OnPropertyChanged(nameof(_posZ));
+                    _posZ = value;
+                    OnPropertyChanged(nameof(PosZ));
                 }
             }
         }
@@ -133,10 +133,10 @@ namespace FluxionEditor.Foundation.Components
             get => _rotX;
             set
             {
-                if (_rotX != value)
+                if (!_rotX.IsTheSameAs(value))
                 {
-                    _rotX.IsTheSameAs(value);
-                    OnPropertyChanged(nameof(_rotX));
+                    _rotX = value;
+                    OnPropertyChanged(nameof(RotX));
                 }
             }
         }
@@ -147,10 +147,10 @@ namespace FluxionEditor.Foundation.Components
             get => _rotY;
             set
             {
-                if (_rotY != value)
+                if (!_rotY.IsTheSameAs(value))
                 {
-                    _rotY.IsTheSameAs(value);
-                    OnPropertyChanged(nameof(_rotY));
+                    _rotY = value;
+                    OnPropertyChanged(nameof(RotY));
                 }
             }
         }
@@ -161,10 +161,10 @@ namespace FluxionEditor.Foundation.Components
             get => _rotZ;
             set
             {
-                if (_rotZ != value)
+                if (!_rotZ.IsTheSameAs(value))
                 {
-                    _rotZ.IsTheSameAs(value);
-                    OnPropertyChanged(nameof(_rotZ));
+                    _rotZ = value;
+                    OnPropertyChanged(nameof(RotZ));
                 }
             }
         }
@@ -175,10 +175,10 @@ namespace FluxionEditor.Foundation.Components
             get => _scaleX;
             set
             {
-                if (_scaleX != value)
+                if (!_scaleX.IsTheSameAs(value))
                 {
-                    _scaleX.IsTheSameAs(value);
-                    OnPropertyChanged(nameof(_scaleX));
+                    _scaleX = value;
+                    OnPropertyChanged(nameof(ScaleX));
                 }
             }
         }
@@ -189,10 +189,10 @@ namespace FluxionEditor.Foundation.Components
             get => _scaleY;
             set
             {
-                if (_scaleY != value)
+                if (!_scaleY.IsTheSameAs(value))
                 {
-                    _scaleY.IsTheSameAs(value);
-                    OnPropertyChanged(nameof(_scaleY));
+                    _scaleY = value;
+                    OnPropertyChanged(nameof(ScaleY));
                 }
             }
         }
@@ -203,10 +203,10 @@ namespace FluxionEditor.Foundation.Components
             get => _scaleZ;
             set
             {
-                if (_scaleZ != value)
+                if (!_scaleZ.IsTheSameAs(value))
                 {
-                    _scaleZ.IsTheSameAs(value);
-                    OnPropertyChanged(nameof(_scaleZ));
+                    _scaleZ = value;
+                    OnPropertyChanged(nameof(ScaleZ));
                 }
             }
         }
