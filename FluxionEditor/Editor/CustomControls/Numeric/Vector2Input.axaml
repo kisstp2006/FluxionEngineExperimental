@@ -4,19 +4,24 @@
              x:Class="FluxionEditor.Editor.CustomControls.Numeric.Vector2Input"
              x:Name="Root">
 
-    <StackPanel Orientation="Horizontal" Spacing="6" VerticalAlignment="Center">
-        <!-- Property name on the left -->
-        <TextBlock Text="{Binding Header, ElementName=Root}"
+    <Grid ColumnDefinitions="Auto,*" VerticalAlignment="Center">
+        <!-- Property name on the left (Unity-style: left-aligned, fixed column) -->
+        <TextBlock Grid.Column="0"
+                   Text="{Binding Header, ElementName=Root}"
                    Width="65"
                    VerticalAlignment="Center"
-                   TextAlignment="Right"
+                   TextAlignment="Left"
                    FontSize="12"
                    IsVisible="{Binding Header, ElementName=Root, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
-        <numeric:NumberBox Label="X"
-                           Value="{Binding X, ElementName=Root}"/>
-        <numeric:NumberBox Label="Y"
-                           Value="{Binding Y, ElementName=Root}"/>
-    </StackPanel>
+        <!-- X / Y fields, evenly distributed and each preceded by its axis letter -->
+        <Grid Grid.Column="1" ColumnDefinitions="Auto,*,Auto,*">
+            <TextBlock Grid.Column="0" Classes="AxisLabel" Text="X"/>
+            <numeric:NumberBox Grid.Column="1" Value="{Binding X, ElementName=Root}" Margin="0,0,6,0"/>
+
+            <TextBlock Grid.Column="2" Classes="AxisLabel" Text="Y"/>
+            <numeric:NumberBox Grid.Column="3" Value="{Binding Y, ElementName=Root}"/>
+        </Grid>
+    </Grid>
 
 </UserControl>

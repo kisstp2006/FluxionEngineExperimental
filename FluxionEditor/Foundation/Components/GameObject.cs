@@ -205,10 +205,10 @@ namespace FluxionEditor.Foundation.Components
             return false;
         }
 
-        public static float? GetMixedValues(List<GameObject> gameObjects, Func<GameObject,float> getProperty)
+        public static float? GetMixedValues<T>(List<T> objects, Func<T,float> getProperty)
         {
-            var value = getProperty(gameObjects.First());
-            foreach (var gameObject in gameObjects.Skip(1)) {
+            var value = getProperty(objects.First());
+            foreach (var gameObject in objects.Skip(1)) {
                 if (!value.IsTheSameAs(getProperty(gameObject)))
                 {
                     return null;

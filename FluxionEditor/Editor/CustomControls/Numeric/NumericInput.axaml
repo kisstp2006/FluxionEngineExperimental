@@ -7,49 +7,128 @@
     <!-- ═══════════════════════════════════════════════════════ -->
 
     <Style Selector="numeric|NumberBox">
-        <Setter Property="MinWidth" Value="46"/>
+        <Setter Property="MinWidth" Value="28"/>
         <Setter Property="MinHeight" Value="20"/>
         <Setter Property="Cursor" Value="SizeWestEast"/>
 
         <Setter Property="Template">
             <ControlTemplate>
-                <Border Background="{DynamicResource Editor.Window.GrayBrush3}"
+                <Border x:Name="PART_Border"
+                        Background="{DynamicResource Editor.Window.GrayBrush2}"
                         BorderBrush="{DynamicResource Editor.Window.GrayBrush5}"
                         BorderThickness="1"
-                        CornerRadius="2"
+                        CornerRadius="3"
                         Padding="4,1">
-                    <StackPanel>
-                        <!-- Tiny axis label above (X, Y, Z, W) — centered -->
-                        <TextBlock x:Name="PART_Label"
-                                   Text="{TemplateBinding Label}"
-                                   FontSize="9"
-                                   Foreground="{DynamicResource Editor.Disabled.FontBrush}"
-                                   HorizontalAlignment="Center"
-                                   IsVisible="{TemplateBinding Label, Converter={x:Static ObjectConverters.IsNotNull}}"/>
-
-                        <Panel>
-                            <!-- Display value — visible by default, centered -->
-                            <TextBlock x:Name="PART_textBlock"
-                                       Text="{TemplateBinding Value}"
+                    <Panel>
+                        <StackPanel>
+                            <!-- Tiny axis label above — only used when a NumberBox
+                                 is placed standalone (not inside a Vector*Input,
+                                 which draws its own axis label to the left). -->
+                            <TextBlock x:Name="PART_Label"
+                                       Text="{TemplateBinding Label}"
+                                       FontSize="9"
+                                       Foreground="{DynamicResource Editor.Disabled.FontBrush}"
                                        HorizontalAlignment="Center"
-                                       VerticalAlignment="Center"
-                                       FontSize="12"/>
+                                       IsVisible="{TemplateBinding Label, Converter={x:Static ObjectConverters.IsNotNull}}"/>
 
-                            <!-- Edit field — hidden until click -->
-                            <TextBox x:Name="PART_textBox"
-                                     Text="{TemplateBinding Value, Mode=TwoWay}"
-                                     IsVisible="False"
-                                     HorizontalAlignment="Stretch"
-                                     HorizontalContentAlignment="Center"
-                                     VerticalContentAlignment="Center"
-                                     FontSize="12"
-                                     Padding="0"
-                                     BorderThickness="0"/>
-                        </Panel>
-                    </StackPanel>
+                            <Panel>
+                                <!-- Display value — visible by default, centered -->
+                                <TextBlock x:Name="PART_textBlock"
+                                           Text="{TemplateBinding Value}"
+                                           Foreground="{DynamicResource Editor.FontBrush}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="12"/>
+
+                                <!-- Edit field — hidden until click -->
+                                <TextBox x:Name="PART_textBox"
+                                         Text="{TemplateBinding Value, Mode=TwoWay}"
+                                         IsVisible="False"
+                                         Background="Transparent"
+                                         Foreground="{DynamicResource Editor.FontBrush}"
+                                         CaretBrush="{DynamicResource Editor.FontBrush}"
+                                         HorizontalAlignment="Stretch"
+                                         HorizontalContentAlignment="Center"
+                                         VerticalContentAlignment="Center"
+                                         FontSize="12"
+                                         Padding="0"
+                                         MinHeight="0"
+                                         BorderThickness="0"/>
+                            </Panel>
+                        </StackPanel>
+
+                        <!-- ═══════════════════════════════════════════════ -->
+                        <!--  Drag-scrub snap-ruler overlay: shown while     -->
+                        <!--  dragging. Row of nearby whole-number ticks     -->
+                        <!--  (closest one highlighted) + the raw pixel      -->
+                        <!--  delta and the precise resulting value.        -->
+                        <!-- ═══════════════════════════════════════════════ -->
+                        <Popup x:Name="PART_DragPopup"
+                               IsOpen="{TemplateBinding IsDragging}"
+                               PlacementTarget="{Binding ElementName=PART_Border}"
+                               Placement="Top"
+                               VerticalOffset="-8"
+                               IsLightDismissEnabled="False">
+                            <Border Background="{DynamicResource Editor.Selected.BackgroundBrush}"
+                                    CornerRadius="10"
+                                    Padding="14,7">
+                                <StackPanel HorizontalAlignment="Center" Spacing="2">
+                                    <StackPanel x:Name="PART_TickRow"
+                                                Orientation="Horizontal"
+                                                HorizontalAlignment="Center"
+                                                Spacing="10"/>
+                                    <TextBlock x:Name="PART_DeltaText"
+                                               HorizontalAlignment="Center"
+                                               FontSize="10"
+                                               Foreground="{DynamicResource Editor.OrangeBrush}"/>
+                                    <TextBlock x:Name="PART_ValueText"
+                                               HorizontalAlignment="Center"
+                                               FontSize="15"
+                                               FontWeight="Bold"
+                                               Foreground="White"/>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                    </Panel>
                 </Border>
             </ControlTemplate>
         </Setter>
+    </Style>
+
+    <!-- Hover / focus feedback: brighten the field, blue border when editing -->
+    <Style Selector="numeric|NumberBox:pointerover /template/ Border#PART_Border">
+        <Setter Property="Background" Value="{DynamicResource Editor.Window.GrayBrush3}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Editor.Window.GrayBrush6}"/>
+    </Style>
+    <Style Selector="numeric|NumberBox:focus-within /template/ Border#PART_Border">
+        <Setter Property="BorderBrush" Value="{DynamicResource Editor.BlueBrush}"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  Axis label (X / Y / Z / W) placed to the left of a       -->
+    <!--  NumberBox inside a Vector2/3/4Input row — Unity-style.   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="TextBlock.AxisLabel">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource Editor.Disabled.FontBrush}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Margin" Value="0,0,4,0"/>
+    </Style>
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  Drag-scrub ruler tick labels (see NumberBox overlay)     -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="TextBlock.DragTick">
+        <Setter Property="FontSize" Value="11"/>
+        <Setter Property="Opacity" Value="0.55"/>
+        <Setter Property="Foreground" Value="White"/>
+    </Style>
+    <Style Selector="TextBlock.DragTick.Current">
+        <Setter Property="FontWeight" Value="Bold"/>
+        <Setter Property="Opacity" Value="1"/>
     </Style>
 
 </Styles>

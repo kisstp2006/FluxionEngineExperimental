@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace FluxionEditor.Foundation.Components
@@ -38,6 +40,29 @@ namespace FluxionEditor.Foundation.Components
     }
 
     abstract class MSComponent<T> :ViewModelBase, IMSComponent where T : Component 
-    { }
+    {
+        private bool _enableUpdates=true;
+        public List<T> SelectedComponents { get; private set; }
+        protected abstract string UpdateComponents(string PropertyName);
+        protected abstract string UpdateMSComponent();
+
+        public void Refresh()
+        {
+            _enableUpdates = true;
+            UpdateMSComponent();
+            _enableUpdates = false;
+
+        }
+
+
+        public MSComponent(MSGameObject mSGameObject) 
+        {
+            Debug.Assert(mSGameObject?.selectedGameObjects?.Count > 0);
+            SelectedComponents = mSGameObject.selectedGameObjects.Select(gameObject=>gameObject.GetComponent<T>()).ToList();
+
+            PropertyChanged += (s, e) => { if (_enableUpdates) UpdateComponents(e.PropertyName); };
+        }
+    
+    }
 
 }
