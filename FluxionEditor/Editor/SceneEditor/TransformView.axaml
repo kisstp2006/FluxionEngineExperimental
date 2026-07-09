@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:components="using:FluxionEditor.Foundation.Components"
+             xmlns:controls="using:FluxionEditor.Editor.CustomControls"
+             xmlns:numeric="using:FluxionEditor.Editor.CustomControls.Numeric"
+             mc:Ignorable="d" d:DesignWidth="300"
+             x:Class="FluxionEditor.TransformView"
+             x:DataType="components:MSTransform">
+
+    <!-- The collapsible chrome comes from the shared ComponentView;
+         this view only provides the Transform inputs. -->
+    <controls:ComponentView Header="Transform">
+        <StackPanel Spacing="6">
+            <numeric:Vector3Input Header="Position"
+                                  X="{Binding PosX}"
+                                  Y="{Binding PosY}"
+                                  Z="{Binding PosZ}"/>
+
+            <numeric:Vector3Input Header="Rotation"
+                                  X="{Binding RotX}"
+                                  Y="{Binding RotY}"
+                                  Z="{Binding RotZ}"/>
+
+            <numeric:Vector3Input Header="Scale"
+                                  X="{Binding ScaleX}"
+                                  Y="{Binding ScaleY}"
+                                  Z="{Binding ScaleZ}"/>
+        </StackPanel>
+    </controls:ComponentView>
+
+</UserControl>

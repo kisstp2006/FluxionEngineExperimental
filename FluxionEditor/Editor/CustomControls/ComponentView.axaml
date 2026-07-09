@@ -1,0 +1,81 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="using:FluxionEditor.Editor.CustomControls">
+
+    <!-- ═══════════════════════════════════════════════════════ -->
+    <!--  ComponentView — collapsible inspector section.          -->
+    <!--  The header band ignores its content width and always    -->
+    <!--  fills the available horizontal space.                   -->
+    <!-- ═══════════════════════════════════════════════════════ -->
+
+    <Style Selector="controls|ComponentView">
+        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+        <Setter Property="Margin" Value="4,2"/>
+
+        <Setter Property="Template">
+            <ControlTemplate>
+                <StackPanel>
+                    <!-- Header band: full width, click toggles the content -->
+                    <ToggleButton x:Name="PART_HeaderToggle"
+                                  Classes="ComponentHeader"
+                                  IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}"
+                                  HorizontalAlignment="Stretch"
+                                  HorizontalContentAlignment="Left"
+                                  Padding="8,5">
+                        <DockPanel LastChildFill="False">
+                            <!-- Expand arrow: points right, rotates down when expanded -->
+                            <Path x:Name="PART_Arrow"
+                                  DockPanel.Dock="Left"
+                                  Data="M0,0 L4,4 L0,8 Z"
+                                  Fill="{DynamicResource Editor.FontBrush}"
+                                  VerticalAlignment="Center"
+                                  Margin="0,0,8,0"/>
+                            <TextBlock DockPanel.Dock="Left"
+                                       Text="{Binding Header, RelativeSource={RelativeSource TemplatedParent}}"
+                                       FontWeight="SemiBold"
+                                       VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </ToggleButton>
+
+                    <!-- Collapsible content -->
+                    <Border Background="{DynamicResource Editor.Window.GrayBrush2}"
+                            BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
+                            BorderThickness="1,0,1,1"
+                            CornerRadius="0,0,3,3"
+                            Padding="6,6"
+                            IsVisible="{Binding IsChecked, ElementName=PART_HeaderToggle}">
+                        <ContentPresenter Content="{TemplateBinding Content}"/>
+                    </Border>
+                </StackPanel>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
+    <!-- Rotate the arrow when expanded -->
+    <Style Selector="controls|ComponentView /template/ ToggleButton:checked Path#PART_Arrow">
+        <Setter Property="RenderTransform">
+            <RotateTransform Angle="90"/>
+        </Setter>
+    </Style>
+
+    <!-- Header band colors — override the global blue :checked ToggleButton
+         look; an expanded component header stays a neutral gray band. -->
+    <Style Selector="ToggleButton.ComponentHeader">
+        <Setter Property="Background" Value="{DynamicResource Editor.Window.GrayBrush3}"/>
+        <Setter Property="CornerRadius" Value="3,3,0,0"/>
+        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource Editor.Window.GrayBrush4}"/>
+    </Style>
+    <Style Selector="ToggleButton.ComponentHeader:checked /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Editor.Window.GrayBrush3}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Editor.FontBrush}"/>
+    </Style>
+    <Style Selector="ToggleButton.ComponentHeader:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Editor.Window.GrayBrush4}"/>
+        <Setter Property="Foreground" Value="{DynamicResource Editor.FontBrush}"/>
+    </Style>
+    <Style Selector="ToggleButton.ComponentHeader:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+        <Setter Property="Background" Value="{DynamicResource Editor.Window.GrayBrush4}"/>
+    </Style>
+
+</Styles>

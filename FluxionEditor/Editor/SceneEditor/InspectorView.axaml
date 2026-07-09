@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:components="using:FluxionEditor.Foundation.Components"
+             xmlns:local="using:FluxionEditor"
              xmlns:resources="using:FluxionEditor.Foundation.Resources"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="FluxionEditor.InspectorView"
@@ -55,14 +56,16 @@
                 </StackPanel>
             </Grid>
 
-            <!-- Components list -->
+            <!-- Components list: each MS component type gets its own editor
+                 view. Types without a template fall through to the app-level
+                 ViewLocator, which shows a "Not Found" placeholder. -->
             <TextBlock VerticalAlignment="Center" Text="Components:"/>
             <ItemsControl ItemsSource="{Binding Components}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate x:DataType="components:Component">
-                        <TextBlock Text="{Binding Owner}"/>
+                <ItemsControl.DataTemplates>
+                    <DataTemplate DataType="components:MSTransform">
+                        <local:TransformView/>
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                </ItemsControl.DataTemplates>
             </ItemsControl>
         </StackPanel>
     </ScrollViewer>
