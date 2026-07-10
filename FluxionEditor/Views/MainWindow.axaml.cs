@@ -13,6 +13,8 @@ namespace FluxionEditor.Views
     {
         private bool _isProjectManagerDialogOpen;
 
+        public static string FluxionPath { get; private set; }
+
         public MainWindow()
         {
             InitializeComponent();
