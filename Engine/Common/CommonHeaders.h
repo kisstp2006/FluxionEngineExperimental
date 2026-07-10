@@ -10,6 +10,6 @@
 #include<DirectXMath.h>
 #endif
 
-#include "CustomTypes.h"
+#include "../Common/CustomTypes.h"
 #include "Utilities/Utilities.h"
 #include "Utilities/MathTypes.h"

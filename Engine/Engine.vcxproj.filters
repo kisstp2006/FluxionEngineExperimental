@@ -17,5 +17,6 @@
     <ClCompile Include="ECS\GameObject.cpp" />
     <ClCompile Include="ECS\Components\Transform.cpp" />
     <ClCompile Include="ECS\Components\Script.cpp" />
+    <ClCompile Include="Core\Main.cpp" />
   </ItemGroup>
 </Project>

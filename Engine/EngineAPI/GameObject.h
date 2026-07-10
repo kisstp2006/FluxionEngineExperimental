@@ -49,6 +49,8 @@ namespace fluxion::ecs::script {
 		using script_ptr = std::unique_ptr<game_object_scripts>;
 		using script_creator = script_ptr(*)(ecs::game_object::game_object game_object);
 
+		flu8 register_script(size_t, script_creator);
+
 		template<class script_class>
 		script_ptr create_script(ecs::game_object::game_object obj) {
 			assert(obj.is_valid());

@@ -25,6 +25,11 @@ namespace fluxion::ecs::script
 				&& game_object_script_list[id_mapping[index]]->is_valid();
 		}
 	}
+	namespace detail {
+		flu8 register_script(size_t tag, script_creator func) {
+
+		}
+	}
 
 
 	component create(const init_info& info, game_object::game_object gameobject)
