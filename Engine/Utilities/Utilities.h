@@ -1,4 +1,6 @@
 #pragma once
+// 1 = use std::vector (default, safe with existing code).
+// 0 = use the custom fluxion::utl::vector from Vector.h.
 #define USE_STL_VECTOR 1
 #define USE_STL_DEQUE 1
 
@@ -10,7 +12,7 @@ namespace fluxion::utl {
 	using vector = std::vector<T>;
 
 	template<typename T>
-	void erase_unordered(std::vector<T>& v, size_t index) 
+	void erase_unordered(std::vector<T>& v, size_t index)
 	{
 		if (v.size() > 1) {
 			std::iter_swap(v.begin() + index, v.end() - 1);
@@ -20,6 +22,15 @@ namespace fluxion::utl {
 		{
 			v.clear();
 		}
+	}
+}
+#else
+#include "Vector.h"
+namespace fluxion::utl {
+	template<typename T>
+	void erase_unordered(T& v, size_t index)
+	{
+		v.erase_unordered(index);
 	}
 }
 #endif
@@ -32,4 +43,8 @@ namespace fluxion::utl {
 }
 #endif
 
-//TODO implement custom containers, etc.
+namespace fluxion::utl {
+	// TODO: implement our own containers, etc.
+}
+
+#include "FreeList.h"

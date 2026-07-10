@@ -31,6 +31,9 @@
     <ClInclude Include="EngineAPI\GameObject.h" />
     <ClInclude Include="EngineAPI\TransformComponent.h" />
     <ClInclude Include="Utilities\MathTypes.h" />
+    <ClInclude Include="Utilities\Math.h" />
+    <ClInclude Include="Utilities\Vector.h" />
+    <ClInclude Include="Utilities\FreeList.h" />
     <ClInclude Include="Utilities\Utilities.h" />
   </ItemGroup>
   <ItemGroup>
