@@ -15,4 +15,7 @@ namespace fluxion::ecs::script {
 	component create(const init_info& info, game_object::game_object gameobject);
 
 	void remove(component c);
+
+	// Ticks every live script's update(dt). Called once per frame.
+	void update(float dt);
 }

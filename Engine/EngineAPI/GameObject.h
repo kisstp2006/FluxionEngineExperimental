@@ -2,6 +2,7 @@
 #include "../ECS/ECSCommon.h"
 #include "TransformComponent.h"
 #include "ScriptComponent.h"
+#include <string> // std::hash<std::string> for the script-registry tag below
 
 
 namespace fluxion::ecs {
@@ -48,13 +49,26 @@ namespace fluxion::ecs::script {
 	namespace detail {
 		using script_ptr = std::unique_ptr<game_object_scripts>;
 		using script_creator = script_ptr(*)(ecs::game_object::game_object game_object);
+		using string_hash = std::hash<std::string>;
 
 		flu8 register_script(size_t, script_creator);
+		script_creator get_script_creator(size_t tag);
 
 		template<class script_class>
 		script_ptr create_script(ecs::game_object::game_object obj) {
 			assert(obj.is_valid());
 			return std::make_unique<script_class>(obj);
+		}
+
+		// Registers a script type under the hash of its name so the editor or
+		// loader can instantiate it by tag. Put REGISTER_SCRIPT(MyType) once,
+		// at file scope, in the script's .cpp.
+#define REGISTER_SCRIPT(TYPE)                                               \
+		namespace {                                                         \
+		const flu8 _reg_##TYPE                                              \
+		{ fluxion::ecs::script::detail::register_script(                    \
+			  fluxion::ecs::script::detail::string_hash()(#TYPE),           \
+			  &fluxion::ecs::script::detail::create_script<TYPE>) };        \
 		}
 	} // namespace detail
 }

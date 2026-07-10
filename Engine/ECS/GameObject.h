@@ -14,8 +14,8 @@ namespace fluxion::ecs {
 			script::init_info* script{ nullptr };
 		};
 
-		game_object create_game_object(const game_object_info& info);
-		void remove_game_object(game_object_id id);
+		game_object create(const game_object_info& info);
+		void remove(game_object_id id);
 		bool is_alive(game_object_id id);
 	}
 

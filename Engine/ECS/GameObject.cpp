@@ -17,7 +17,7 @@ namespace fluxion::ecs {
 
 
 		
-		game_object create_game_object(const game_object_info& info)
+		game_object create(const game_object_info& info)
 		{
 			assert(info.transform); //ALL game objects must have a transform component (fo now)
 			if (!info.transform) return game_object{};
@@ -38,6 +38,7 @@ namespace fluxion::ecs {
 				generations.push_back(0);
 
 				transforms.emplace_back();
+				scripts.emplace_back();
 			}
 
 			const game_object new_game_object{ id };
@@ -60,10 +61,16 @@ namespace fluxion::ecs {
 			return new_game_object;
 		}
 
-		void remove_game_object(game_object_id id)
+		void remove(game_object_id id)
 		{
 			const id::id_type index{ id::index(id) };
 			assert(is_alive(id));
+			if (scripts[index].is_valid()) {
+				script::remove(scripts[index]);
+				scripts[index] = {};
+			}
+
+
 			if (is_alive(id))
 			{
 				transform::remove(transforms[index]);

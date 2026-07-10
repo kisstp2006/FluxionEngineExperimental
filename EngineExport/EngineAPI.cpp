@@ -57,11 +57,11 @@ EDITOR_INTERFACE id::id_type CreateGameObject(game_object_descriptor* e)
 	ecs::transform::init_info transform_info{ desc.transform.to_init_info() };
 	ecs::game_object::game_object_info info{ &transform_info };
 
-	return ecs::game_object::create_game_object(info).get_id();
+	return ecs::game_object::create(info).get_id();
 }
 
 EDITOR_INTERFACE void RemoveGameObject(id::id_type id)
 {
 	assert(id::is_valid(id));
-	ecs::game_object::remove_game_object(ecs::game_object_id{ id });
+	ecs::game_object::remove(ecs::game_object_id{ id });
 }

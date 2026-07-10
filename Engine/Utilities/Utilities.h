@@ -1,8 +1,13 @@
 #pragma once
 // 1 = use std::vector (default, safe with existing code).
 // 0 = use the custom fluxion::utl::vector from Vector.h.
+// #ifndef guard so a build system (e.g. CMake) can override per platform.
+#ifndef USE_STL_VECTOR
 #define USE_STL_VECTOR 1
+#endif
+#ifndef USE_STL_DEQUE
 #define USE_STL_DEQUE 1
+#endif
 
 #if USE_STL_VECTOR
 #include <vector>
