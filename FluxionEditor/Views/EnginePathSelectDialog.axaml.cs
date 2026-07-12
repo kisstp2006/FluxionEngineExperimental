@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.Platform.Storage;
 using FluxionEditor.Views;
 using System.IO;
 
@@ -13,7 +14,24 @@ public partial class EnginePathSelectDialog : Window
     public EnginePathSelectDialog()
     {
         InitializeComponent();
-        
+
+    }
+
+    private async void OnBrowseButtonClicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        // StorageProvider is the cross-platform picker: it maps to the
+        // native folder dialog on Windows, macOS and Linux.
+        var folders = await StorageProvider.OpenFolderPickerAsync(new FolderPickerOpenOptions
+        {
+            Title = "Select the Fluxion Engine folder",
+            AllowMultiple = false
+        });
+
+        if (folders.Count > 0)
+        {
+            pathTextBox.Text = folders[0].Path.LocalPath;
+            messageTextBlock.Text = string.Empty;
+        }
     }
 
     private void OnOkButtonClicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -31,14 +49,14 @@ public partial class EnginePathSelectDialog : Window
             messageTextBlock.Text = "Path cant have invalid characters init";
 
         }
-        else if (!Directory.Exists(Path.Combine(path, @"Engine\EngineAPI\")))
+        else if (!Directory.Exists(Path.Combine(path, "Engine", "EngineAPI")))
         {
             messageTextBlock.Text = "Unable to find the engine";
         }
 
         if (string.IsNullOrEmpty(messageTextBlock.Text))
         {
-            if (!Path.EndsInDirectorySeparator(path)) path += @"\";
+            if (!Path.EndsInDirectorySeparator(path)) path += Path.DirectorySeparatorChar;
             FluxionPath = path;
             Close(true);
         }

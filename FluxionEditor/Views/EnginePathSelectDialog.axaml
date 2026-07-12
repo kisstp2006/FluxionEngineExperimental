@@ -8,7 +8,7 @@
         Title="Select the Engine path"
         Width="520" SizeToContent="Height"
         CanResize="False"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterScreen">
 
     <Border CornerRadius="4"
             Background="{DynamicResource Editor.Window.GrayBrush2}"
@@ -31,7 +31,7 @@
                     Margin="0,4"/>
 
             <!-- Path input row -->
-            <Grid ColumnDefinitions="Auto,*">
+            <Grid ColumnDefinitions="Auto,*,Auto">
                 <TextBlock Grid.Column="0"
                            Text="Engine path"
                            VerticalAlignment="Center"
@@ -39,6 +39,11 @@
                 <TextBox Grid.Column="1"
                          Name="pathTextBox"
                          Watermark="C:\Path\To\FluxionEngine"/>
+                <Button Grid.Column="2"
+                        Margin="8,0,0,0"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Click="OnBrowseButtonClicked">Browse...</Button>
             </Grid>
 
             <!-- Validation message -->
