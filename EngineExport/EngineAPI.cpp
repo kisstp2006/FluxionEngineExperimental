@@ -1,5 +1,13 @@
 #ifndef EDITOR_INTERFACE
+#if defined(_WIN32)
+// MSVC / Windows: export the symbol from the DLL.
 #define EDITOR_INTERFACE extern "C" __declspec(dllexport)
+#else
+// GCC / Clang: make the symbol publicly visible in the shared object.
+// (Effective when the library is built with -fvisibility=hidden, which is
+//  the build system's job; harmless otherwise.)
+#define EDITOR_INTERFACE extern "C" __attribute__((visibility("default")))
+#endif
 #endif
 
 #include "Common/CommonHeaders.h"
@@ -39,9 +47,6 @@ namespace {
 	{
 		transform_component transform;
 	};
-	ecs::game_object::game_object gameobject_from_id(id::id_type id) {
-		return ecs::game_object::game_object{ ecs::game_object_id{ id } };
-	}
 
 } // anonymous namespace
 
@@ -52,11 +57,11 @@ EDITOR_INTERFACE id::id_type CreateGameObject(game_object_descriptor* e)
 	ecs::transform::init_info transform_info{ desc.transform.to_init_info() };
 	ecs::game_object::game_object_info info{ &transform_info };
 
-	return ecs::game_object::create_game_object(info).get_id();
+	return ecs::game_object::create(info).get_id();
 }
 
 EDITOR_INTERFACE void RemoveGameObject(id::id_type id)
 {
 	assert(id::is_valid(id));
-	ecs::game_object::remove_game_object(gameobject_from_id(id));
+	ecs::game_object::remove(ecs::game_object_id{ id });
 }

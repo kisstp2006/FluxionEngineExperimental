@@ -8,12 +8,18 @@
     <ClInclude Include="ECS\GameObject.h" />
     <ClInclude Include="Utilities\Utilities.h" />
     <ClInclude Include="Utilities\MathTypes.h" />
+    <ClInclude Include="Utilities\Math.h" />
+    <ClInclude Include="Utilities\Vector.h" />
+    <ClInclude Include="Utilities\FreeList.h" />
     <ClInclude Include="ECS\Components\Transform.h" />
     <ClInclude Include="EngineAPI\GameObject.h" />
     <ClInclude Include="EngineAPI\TransformComponent.h" />
+    <ClInclude Include="ECS\Components\Script.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ECS\GameObject.cpp" />
     <ClCompile Include="ECS\Components\Transform.cpp" />
+    <ClCompile Include="ECS\Components\Script.cpp" />
+    <ClCompile Include="Core\Main.cpp" />
   </ItemGroup>
 </Project>

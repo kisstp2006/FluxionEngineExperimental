@@ -59,10 +59,10 @@ private:
 		while (count > 0)
 		{
 			++added;
-			game_object_ns::game_object obj{ game_object_ns::create_game_object(info) };
+			game_object_ns::game_object obj{ game_object_ns::create(info) };
 			assert(obj.is_valid());
 			game_objects.push_back(obj);
-			assert(game_object_ns::is_alive(obj));
+			assert(game_object_ns::is_alive(obj.get_id()));
 			--count;
 		}
 	}
@@ -78,10 +78,10 @@ private:
 			const game_object_ns::game_object gameobject{ game_objects[index] };
 			assert(gameobject.is_valid());
 			if (gameobject.is_valid()) {
-				game_object_ns::remove_game_object(gameobject);
+				game_object_ns::remove(gameobject.get_id());
 				game_objects.erase(game_objects.begin() + index);
 				++removed;
-				assert(!game_object_ns::is_alive(gameobject));
+				assert(!game_object_ns::is_alive(gameobject.get_id()));
 			}
 			--count;
 		}

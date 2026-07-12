@@ -1,4 +1,5 @@
 ﻿using FluxionEditor.Foundation.Utilities;
+using FluxionEditor.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -33,6 +34,7 @@ namespace FluxionEditor.Foundation
         public string ScreenshotFilePath { get; set; }
 
         public string ProjectFilePath { get; set; }
+        public string TemplatePath { get;  set; }
     }
 
     /// <summary>
@@ -41,16 +43,15 @@ namespace FluxionEditor.Foundation
     /// </summary>
     class NewProject : ViewModelBase
     {
-        // TODO: Don't hardcode this path — use relative paths or configuration
-        private readonly string _templatePaths = @"..\..\FluxionEditor\ProjectTemplates";
+        private string _templatePaths => Path.GetFullPath(Path.Combine(MainWindow.FluxionPath, @"FluxionEditor\ProjectTemplates"));
 
         // Flag this during development
-        private static bool _hardcodedPathWarned;
-        private void WarnHardcodedPath()
+        private static bool _templatePathWarned;
+        private void WarnTemplatePath()
         {
-            if (_hardcodedPathWarned) return;
-            _hardcodedPathWarned = true;
-            Logger.Log(SeverityLevel.Warning, $"Using hardcoded template path: {_templatePaths}");
+            if (_templatePathWarned) return;
+            _templatePathWarned = true;
+            Logger.Log(SeverityLevel.Warning, $"Resolved template path: {_templatePaths}");
         }
 
         // ── Project name ──
@@ -70,7 +71,7 @@ namespace FluxionEditor.Foundation
             }
         }
 
-        // ── Project path ──
+        // ── Project projectPath ──
 
         private string _projectPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)}\FluxionProject\";
 
@@ -125,7 +126,7 @@ namespace FluxionEditor.Foundation
         // ── Validation logic ──
 
         /// <summary>
-        /// Checks whether the current project name + path combination is valid
+        /// Checks whether the current project name + projectPath combination is valid
         /// and updates <see cref="IsValidProjectPath"/> and <see cref="ErrorMessage"/>.
         /// </summary>
         private bool ValidateProjectPath()
@@ -148,15 +149,15 @@ namespace FluxionEditor.Foundation
             }
             else if (string.IsNullOrWhiteSpace(ProjectPath.Trim()))
             {
-                ErrorMessage = "Project path cannot be empty or white space.";
+                ErrorMessage = "Project projectPath cannot be empty or white space.";
             }
             else if (ProjectPath.IndexOfAny(Path.GetInvalidPathChars()) != -1)
             {
-                ErrorMessage = "Project path contains invalid characters.";
+                ErrorMessage = "Project projectPath contains invalid characters.";
             }
             else if (Directory.Exists(path))
             {
-                ErrorMessage = "Project path already exists.";
+                ErrorMessage = "Project projectPath already exists.";
             }
             else
             {
@@ -173,7 +174,7 @@ namespace FluxionEditor.Foundation
         /// Creates the project directory structure on disk based on the
         /// selected <paramref name="template"/>.
         /// </summary>
-        /// <returns>The full project path, or an empty string on failure.</returns>
+        /// <returns>The full project projectPath, or an empty string on failure.</returns>
         public string CreateProject(ProjectTemplate template)
         {
             Debug.Assert(template != null, "ProjectTemplate cannot be null.");
@@ -181,7 +182,7 @@ namespace FluxionEditor.Foundation
             ValidateProjectPath();
             if (!IsValidProjectPath)
             {
-                Logger.Log(SeverityLevel.Warning, "CreateProject aborted: project path is not valid.");
+                Logger.Log(SeverityLevel.Warning, "CreateProject aborted: project projectPath is not valid.");
                 return "";
             }
 
@@ -239,6 +240,9 @@ namespace FluxionEditor.Foundation
                 var projectFilePath = Path.GetFullPath(Path.Combine(path, $"{ProjectName}{Project.Extension}"));
                 File.WriteAllText(projectFilePath, projectXMLFile);
 
+                CreateCodeProjectFile(template, path);
+
+
                 return path;
             }
             catch (Exception ex)
@@ -249,17 +253,49 @@ namespace FluxionEditor.Foundation
             }
         }
 
+        private void CreateCodeProjectFile(ProjectTemplate template, string projectPath)
+        {
+            Debug.Assert(File.Exists(Path.Combine(template.TemplatePath, "MSVCSolution")));
+            Debug.Assert(File.Exists(Path.Combine(template.TemplatePath, "MSVCProject")));
+
+
+            var engineAPIPath = Path.Combine(MainWindow.FluxionPath, @"Engine\EngineAPI");
+
+            Debug.Assert(Directory.Exists(engineAPIPath));
+
+            var _0 = ProjectName;
+            var _1= "{"+Guid.NewGuid().ToString().ToUpper()+"}";
+            var _2 = "{" + Guid.NewGuid().ToString().ToUpper() + "}";
+
+            var _2a = engineAPIPath; //its the second in the file 
+
+            var _3 = MainWindow.FluxionPath;
+
+
+            var solution = File.ReadAllText(Path.Combine(template.TemplatePath, "MSVCSolution"));
+            solution = String.Format(solution, _0,_1,_2);
+            File.WriteAllText(Path.GetFullPath(Path.Combine(projectPath, $"{_0}.sln")), solution);
+
+            // Create GameCode subfolder for the vcxproj (referenced by the .sln)
+            var gameCodePath = Path.Combine(projectPath, "GameCode");
+            Directory.CreateDirectory(gameCodePath);
+
+            var project = File.ReadAllText(Path.Combine(template.TemplatePath, "MSVCProject"));
+            project = String.Format(project, _0, _1, _2a, _3);
+            File.WriteAllText(Path.GetFullPath(Path.Combine(projectPath, $@"GameCode\{_0}.vcxproj")), project);
+        }
+
         // ── Constructor ──
 
         public NewProject()
         {
-            WarnHardcodedPath();
+            WarnTemplatePath();
             ProjectTemplates = new ReadOnlyObservableCollection<ProjectTemplate>(_projectTemplates);
 
             try
             {
                 var templateFiles = Directory.GetFiles(_templatePaths, "template.xml", SearchOption.AllDirectories);
-                Debug.Assert(templateFiles.Any(), "No project templates found in the specified path.");
+                Debug.Assert(templateFiles.Any(), "No project templates found in the specified projectPath.");
 
                 foreach (var file in templateFiles)
                 {
@@ -277,7 +313,7 @@ namespace FluxionEditor.Foundation
                         template.Screenshot = File.ReadAllBytes(template.ScreenshotFilePath);
 
                     template.ProjectFilePath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(file), template.ProjectFile));
-
+                    template.TemplatePath = Path.GetDirectoryName(file);
                     _projectTemplates.Add(template);
                 }
             }

@@ -22,15 +22,24 @@
     <ClInclude Include="Common\CommonHeaders.h" />
     <ClInclude Include="Common\CustomTypes.h" />
     <ClInclude Include="Common\Id.h" />
+    <ClInclude Include="Core\Application.h" />
+    <ClInclude Include="Core\EntryPoint.h" />
+    <ClInclude Include="ECS\Components\Script.h" />
     <ClInclude Include="ECS\Components\Transform.h" />
     <ClInclude Include="ECS\ECSCommon.h" />
     <ClInclude Include="ECS\GameObject.h" />
     <ClInclude Include="EngineAPI\GameObject.h" />
     <ClInclude Include="EngineAPI\TransformComponent.h" />
     <ClInclude Include="Utilities\MathTypes.h" />
+    <ClInclude Include="Utilities\Math.h" />
+    <ClInclude Include="Utilities\Vector.h" />
+    <ClInclude Include="Utilities\FreeList.h" />
     <ClInclude Include="Utilities\Utilities.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core\Application.cpp" />
+    <ClCompile Include="Core\EntryPoint.cpp" />
+    <ClCompile Include="ECS\Components\Script.cpp" />
     <ClCompile Include="ECS\Components\Transform.cpp" />
     <ClCompile Include="ECS\GameObject.cpp" />
   </ItemGroup>
