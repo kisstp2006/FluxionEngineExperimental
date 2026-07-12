@@ -10,63 +10,83 @@
              x:DataType="components:MSGameObject"
              Background="{DynamicResource Editor.Window.GrayBrush2}">
 
-    <ScrollViewer VerticalScrollBarVisibility="Visible"
-                  HorizontalScrollBarVisibility="Disabled"
-                  IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}}">
-        <StackPanel>
-            <!-- Add Component button -->
-            <Border Height="40">
-                <ToggleButton HorizontalAlignment="Center"
-                              VerticalAlignment="Center"
-                              Content="Add Component">
-                    <ToggleButton.Content>
-                        <DockPanel>
-                            <TextBlock Text="Add Component" Margin="5,0"/>
-                            <Path Margin="3,0,2,0"
-                                  Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 Z"
-                                  HorizontalAlignment="Center"
-                                  VerticalAlignment="Center"/>
-                        </DockPanel>
-                    </ToggleButton.Content>
+    <Grid RowDefinitions="30,*">
+
+        <!-- Panel header -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource Editor.Window.GrayBrush2}"
+                BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
+                BorderThickness="0,0,0,1">
+            <TextBlock Text="INSPECTOR"
+                       FontSize="11"
+                       FontWeight="SemiBold"
+                       VerticalAlignment="Center"
+                       Margin="8,0"
+                       Foreground="{DynamicResource Editor.Window.GrayBrush6}"/>
+        </Border>
+
+        <ScrollViewer Grid.Row="1"
+                      VerticalScrollBarVisibility="Visible"
+                      HorizontalScrollBarVisibility="Disabled"
+                      IsVisible="{Binding Converter={x:Static ObjectConverters.IsNotNull}}">
+            <StackPanel Margin="8" Spacing="10">
+
+                <!-- Name + Enabled -->
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <TextBlock Text="Name" Grid.Column="0"
+                               Margin="0,0,8,0" VerticalAlignment="Center"/>
+                    <TextBox Text="{Binding Name, Mode=OneWay}"
+                             Grid.Column="1"
+                             VerticalAlignment="Center"
+                             resources:TextBoxCommand.Command="{Binding RenameCommand}"
+                             resources:TextBoxCommand.EscCommand="{Binding CancelEditCommand}"/>
+
+                    <StackPanel Orientation="Horizontal" Grid.Column="2"
+                                Spacing="4" Margin="10,0,0,0">
+                        <TextBlock VerticalAlignment="Center">Enabled</TextBlock>
+                        <CheckBox IsChecked="{Binding IsEnabled, Mode=OneWay}"
+                                  VerticalAlignment="Center"
+                                  Command="{Binding IsEnabledCommand}"
+                                  CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"/>
+                    </StackPanel>
+                </Grid>
+
+                <!-- Add Component -->
+                <ToggleButton HorizontalAlignment="Stretch"
+                              HorizontalContentAlignment="Center"
+                              Background="{DynamicResource Editor.Window.GrayBrush3}"
+                              CornerRadius="4"
+                              Padding="0,4">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <TextBlock Text="Add Component"/>
+                        <Path Data="M0,0 L0,2 L4,6 L8,2 L8,0 L4,4 Z"
+                              Fill="{DynamicResource Editor.FontBrush}"
+                              HorizontalAlignment="Center"
+                              VerticalAlignment="Center"/>
+                    </StackPanel>
                 </ToggleButton>
-            </Border>
 
-            <!-- Name + Enabled -->
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="80"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <!-- Components section -->
+                <StackPanel Spacing="6">
+                    <TextBlock Text="COMPONENTS"
+                               FontSize="11"
+                               FontWeight="SemiBold"
+                               Foreground="{DynamicResource Editor.Window.GrayBrush6}"/>
+                    <Border Height="1"
+                            Background="{DynamicResource Editor.Window.GrayBrush4}"/>
 
-                <TextBlock Text="Name:" Grid.Column="0"
-                           Margin="5,0,0,0" VerticalAlignment="Center"/>
-                <TextBox Text="{Binding Name, Mode=OneWay}"
-                         Grid.Column="1"
-                         Margin="0,0,0,8" VerticalAlignment="Center"
-                         resources:TextBoxCommand.Command="{Binding RenameCommand}"
-                         resources:TextBoxCommand.EscCommand="{Binding CancelEditCommand}"/>
-
-                <StackPanel Orientation="Horizontal" Grid.Column="2">
-                    <TextBlock Margin="5,0,0,0" VerticalAlignment="Center">Enabled</TextBlock>
-                    <CheckBox IsChecked="{Binding IsEnabled, Mode=OneWay}"
-                              Margin="5,0,0,0" VerticalAlignment="Center"
-                              Command="{Binding IsEnabledCommand}"
-                              CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}"/>
+                    <!-- Each MS component type gets its own editor view.
+                         Types without a template fall through to the app-level
+                         ViewLocator, which shows a "Not Found" placeholder. -->
+                    <ItemsControl ItemsSource="{Binding Components}">
+                        <ItemsControl.DataTemplates>
+                            <DataTemplate DataType="components:MSTransform">
+                                <local:TransformView/>
+                            </DataTemplate>
+                        </ItemsControl.DataTemplates>
+                    </ItemsControl>
                 </StackPanel>
-            </Grid>
-
-            <!-- Components list: each MS component type gets its own editor
-                 view. Types without a template fall through to the app-level
-                 ViewLocator, which shows a "Not Found" placeholder. -->
-            <TextBlock VerticalAlignment="Center" Text="Components:"/>
-            <ItemsControl ItemsSource="{Binding Components}">
-                <ItemsControl.DataTemplates>
-                    <DataTemplate DataType="components:MSTransform">
-                        <local:TransformView/>
-                    </DataTemplate>
-                </ItemsControl.DataTemplates>
-            </ItemsControl>
-        </StackPanel>
-    </ScrollViewer>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
 </UserControl>

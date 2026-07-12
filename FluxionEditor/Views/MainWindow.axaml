@@ -19,7 +19,23 @@
              Darkest layer: window chrome sits behind everything. -->
         <Border DockPanel.Dock="Top"
                 Height="32"
-                Background="{DynamicResource Editor.Window.GrayBrush1}"/>
+                Background="{DynamicResource Editor.Window.GrayBrush1}">
+            <StackPanel Orientation="Horizontal"
+                        VerticalAlignment="Center"
+                        Margin="12,0"
+                        Spacing="8"
+                        IsHitTestVisible="False">
+                <!-- Accent tick + app title in the custom title bar -->
+                <Border Width="3" Height="14"
+                        CornerRadius="1.5"
+                        Background="{DynamicResource Editor.Selected.BackgroundBrush}"/>
+                <TextBlock Text="Fluxion Editor"
+                           FontSize="12"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource Editor.Window.GrayBrush6}"/>
+            </StackPanel>
+        </Border>
 
         <!-- Main content -->
         <editor:SceneEditorView/>
