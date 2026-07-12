@@ -30,4 +30,20 @@
   <ItemGroup>
     <ProjectReference Include="..\EngineWrapper\EngineWrapper.csproj" />
   </ItemGroup>
+
+  <!-- Visual Studio automation (EnvDTE / EnvDTE80, the "Microsoft Development
+       Environment 8.0" type libraries) — COM only exists on Windows, so the
+       interop packages are referenced there only. On other platforms the
+       WINDOWS symbol is undefined and IDE.cs compiles its cross-platform
+       fallback instead. NuGet interop packages are used rather than raw
+       COMReference items because the latter cannot be built with the
+       dotnet CLI (MSB4803), only inside Visual Studio. -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
+    <DefineConstants>$(DefineConstants);WINDOWS</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(OS)' == 'Windows_NT'">
+    <PackageReference Include="envdte" Version="17.14.40260" />
+    <PackageReference Include="envdte80" Version="17.14.40260" />
+  </ItemGroup>
 </Project>
