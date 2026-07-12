@@ -18,14 +18,15 @@ public partial class EnginePathSelectDialog : Window
 
     private void OnOkButtonClicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var path = pathTextBox.Text.Trim();
+        // Text is null until the user types something (the watermark is not text)
+        var path = pathTextBox.Text?.Trim() ?? string.Empty;
 
         messageTextBlock.Text = string.Empty;
         if (string.IsNullOrEmpty(path))
         {
             messageTextBlock.Text = "Path cant be empty";
         }
-        else if (path.IndexOfAny(Path.GetInvalidFileNameChars()) != 1)
+        else if (path.IndexOfAny(Path.GetInvalidPathChars()) != -1)
         {
             messageTextBlock.Text = "Path cant have invalid characters init";
 
