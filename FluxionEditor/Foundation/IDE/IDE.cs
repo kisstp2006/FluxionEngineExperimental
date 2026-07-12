@@ -47,5 +47,18 @@ namespace FluxionEditor.Foundation.IDE
                 Logger.Log(SeverityLevel.Error, $"Unable to open the solution in an IDE: {ex.Message}");
             }
         }
+
+
+        public static void CloseIDE(string solution)
+        {
+            if (string.IsNullOrEmpty(solution) || !File.Exists(solution))
+            {
+                Logger.Log(SeverityLevel.Error, $"Unable to find the solution: {solution}");
+                return;
+            }
+#if WINDOWS
+            if (VisualStudio.Close(solution)) return;
+#endif
+        }
     }
 }

@@ -1,0 +1,85 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="280"
+        x:Class="FluxionEditor.NewScriptDIalog"
+        Classes="FluxionWindow"
+        Title="Create new script"
+        Width="520" SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterScreen">
+
+    <Border CornerRadius="4"
+            Background="{DynamicResource Editor.Window.GrayBrush2}"
+            BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
+            BorderThickness="1"
+            Padding="20" Margin="20">
+        <StackPanel Spacing="12">
+
+            <TextBlock Text="Create new script (C++)"
+                       FontSize="18"
+                       FontWeight="SemiBold"/>
+
+            <TextBlock Text="Enter a name for the new script and choose where to save it. A header (.h) and source (.cpp) file will be created."
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource Editor.Window.GrayBrush6}"/>
+
+            <!-- Separator -->
+            <Border Height="1"
+                    Background="{DynamicResource Editor.Window.GrayBrush5}"
+                    Margin="0,4"/>
+
+            <!-- Script name row -->
+            <Grid ColumnDefinitions="Auto,*">
+                <TextBlock Grid.Column="0"
+                           Text="Script name"
+                           VerticalAlignment="Center"
+                           Margin="0,0,12,0"/>
+                <TextBox Grid.Column="1"
+                         Name="scriptNameTextBox"
+                         Watermark="MyScript"
+                         TextChanged="OnScriptNameTextChanged"/>
+            </Grid>
+
+            <!-- Script path row -->
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <TextBlock Grid.Column="0"
+                           Text="Script path"
+                           VerticalAlignment="Center"
+                           Margin="0,0,12,0"/>
+                <TextBox Grid.Column="1"
+                         Name="scriptPathTextBox"
+                         Watermark="\Path\To\Script\Folder"
+                         TextChanged="OnScriptPathTextChanged"/>
+                <Button Grid.Column="2"
+                        Margin="8,0,0,0"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Center"
+                        Click="OnBrowseButtonClicked">Browse...</Button>
+            </Grid>
+
+            <!-- Validation message -->
+            <TextBlock Name="messageTextBlock"
+                       Text=""
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource Editor.RedBrush}"/>
+
+            <!-- Action buttons -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="8"
+                        Margin="0,8,0,0">
+                <Button Width="80"
+                        HorizontalContentAlignment="Center"
+                        IsDefault="True"
+                        Click="OnOkButtonClicked">Ok</Button>
+                <Button Width="80"
+                        HorizontalContentAlignment="Center"
+                        IsCancel="True"
+                        Click="OnCancelButtonClicked">Cancel</Button>
+            </StackPanel>
+
+        </StackPanel>
+    </Border>
+</Window>
