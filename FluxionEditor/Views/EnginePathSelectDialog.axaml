@@ -1,0 +1,68 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="520" d:DesignHeight="240"
+        x:Class="FluxionEditor.EnginePathSelectDialog"
+        Classes="FluxionWindow"
+        Title="Select the Engine path"
+        Width="520" SizeToContent="Height"
+        CanResize="False"
+        WindowStartupLocation="CenterOwner">
+
+    <Border CornerRadius="4"
+            Background="{DynamicResource Editor.Window.GrayBrush2}"
+            BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
+            BorderThickness="1"
+            Padding="20" Margin="20">
+        <StackPanel Spacing="12">
+
+            <TextBlock Text="Locate the Fluxion Engine"
+                       FontSize="18"
+                       FontWeight="SemiBold"/>
+
+            <TextBlock Text="The editor could not find the engine installation. Please enter the folder where the Fluxion Engine is located."
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource Editor.Window.GrayBrush6}"/>
+
+            <!-- Separator -->
+            <Border Height="1"
+                    Background="{DynamicResource Editor.Window.GrayBrush5}"
+                    Margin="0,4"/>
+
+            <!-- Path input row -->
+            <Grid ColumnDefinitions="Auto,*">
+                <TextBlock Grid.Column="0"
+                           Text="Engine path"
+                           VerticalAlignment="Center"
+                           Margin="0,0,12,0"/>
+                <TextBox Grid.Column="1"
+                         Name="pathTextBox"
+                         Watermark="C:\Path\To\FluxionEngine"/>
+            </Grid>
+
+            <!-- Validation message -->
+            <TextBlock Name="messageTextBlock"
+                       Text=""
+                       TextWrapping="Wrap"
+                       Foreground="{DynamicResource Editor.RedBrush}"
+                       IsVisible="{Binding Text.Length, RelativeSource={RelativeSource Self}}"/>
+
+            <!-- Action buttons -->
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right"
+                        Spacing="8"
+                        Margin="0,8,0,0">
+                <Button Width="80"
+                        HorizontalContentAlignment="Center"
+                        IsDefault="True"
+                        Click="OnOkButtonClicked">Ok</Button>
+                <Button Width="80"
+                        HorizontalContentAlignment="Center"
+                        IsCancel="True"
+                        Click="OnCancelButtonClicked">Cancel</Button>
+            </StackPanel>
+
+        </StackPanel>
+    </Border>
+</Window>

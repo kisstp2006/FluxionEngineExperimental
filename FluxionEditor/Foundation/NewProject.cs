@@ -43,16 +43,15 @@ namespace FluxionEditor.Foundation
     /// </summary>
     class NewProject : ViewModelBase
     {
-        // TODO: Don't hardcode this projectPath — use relative paths or configuration
-        private readonly string _templatePaths = @"..\..\FluxionEditor\ProjectTemplates";
+        private string _templatePaths => Path.GetFullPath(Path.Combine(MainWindow.FluxionPath, @"FluxionEditor\ProjectTemplates"));
 
         // Flag this during development
-        private static bool _hardcodedPathWarned;
-        private void WarnHardcodedPath()
+        private static bool _templatePathWarned;
+        private void WarnTemplatePath()
         {
-            if (_hardcodedPathWarned) return;
-            _hardcodedPathWarned = true;
-            Logger.Log(SeverityLevel.Warning, $"Using hardcoded template projectPath: {_templatePaths}");
+            if (_templatePathWarned) return;
+            _templatePathWarned = true;
+            Logger.Log(SeverityLevel.Warning, $"Resolved template path: {_templatePaths}");
         }
 
         // ── Project name ──
@@ -275,20 +274,22 @@ namespace FluxionEditor.Foundation
 
             var solution = File.ReadAllText(Path.Combine(template.TemplatePath, "MSVCSolution"));
             solution = String.Format(solution, _0,_1,_2);
-            File.WriteAllText(Path.GetFullPath(Path.Combine(projectPath),$"{_0}.sln"), solution);
+            File.WriteAllText(Path.GetFullPath(Path.Combine(projectPath, $"{_0}.sln")), solution);
 
-
+            // Create GameCode subfolder for the vcxproj (referenced by the .sln)
+            var gameCodePath = Path.Combine(projectPath, "GameCode");
+            Directory.CreateDirectory(gameCodePath);
 
             var project = File.ReadAllText(Path.Combine(template.TemplatePath, "MSVCProject"));
-            project = String.Format(project, _0, _1, _2a);
-            File.WriteAllText(Path.GetFullPath(Path.Combine(projectPath), $"{_0}.vcxproj"), project);
+            project = String.Format(project, _0, _1, _2a, _3);
+            File.WriteAllText(Path.GetFullPath(Path.Combine(projectPath, $@"GameCode\{_0}.vcxproj")), project);
         }
 
         // ── Constructor ──
 
         public NewProject()
         {
-            WarnHardcodedPath();
+            WarnTemplatePath();
             ProjectTemplates = new ReadOnlyObservableCollection<ProjectTemplate>(_projectTemplates);
 
             try
