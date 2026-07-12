@@ -27,18 +27,21 @@
             <!-- Tab toggles -->
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Center"
+                        Spacing="8"
                         Margin="0,0,0,16">
                 <ToggleButton x:Name="OpenProjectBtn"
-                              FontSize="18"
-                              Margin="12,0"
+                              FontSize="16"
+                              Padding="18,6"
+                              CornerRadius="4"
                               Click="ToggleView"
                               IsChecked="true">
                     Open Project
                 </ToggleButton>
 
                 <ToggleButton x:Name="CreateProjectBtn"
-                              FontSize="18"
-                              Margin="12,0"
+                              FontSize="16"
+                              Padding="18,6"
+                              CornerRadius="4"
                               Click="ToggleView"
                               IsChecked="false">
                     Create Project

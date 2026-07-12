@@ -31,11 +31,17 @@
                 Background="{DynamicResource Editor.Window.GrayBrush2}"
                 BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
                 BorderThickness="0,0,0,1">
-            <StackPanel Margin="4,0" Orientation="Horizontal">
-                <Button Content="Clear" Margin="1,0" Click="OnClearButtonClick"/>
-                <CheckBox x:Name="InfoCheckBox"    Content="Info"  IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
-                <CheckBox x:Name="WarningCheckBox" Content="Warn"  IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
-                <CheckBox x:Name="ErrorCheckBox"   Content="Error" IsChecked="True" Margin="4,0" Click="OnFilterCheckBoxClick"/>
+            <StackPanel Margin="6,0" Orientation="Horizontal" Spacing="8">
+                <Button Content="Clear"
+                        Padding="10,1" MinHeight="20" FontSize="11"
+                        VerticalAlignment="Center"
+                        Click="OnClearButtonClick"/>
+                <!-- Vertical separator between action and filters -->
+                <Border Width="1" Margin="0,7"
+                        Background="{DynamicResource Editor.Window.GrayBrush4}"/>
+                <CheckBox x:Name="InfoCheckBox"    Content="Info"  IsChecked="True" Click="OnFilterCheckBoxClick"/>
+                <CheckBox x:Name="WarningCheckBox" Content="Warn"  IsChecked="True" Click="OnFilterCheckBoxClick"/>
+                <CheckBox x:Name="ErrorCheckBox"   Content="Error" IsChecked="True" Click="OnFilterCheckBoxClick"/>
             </StackPanel>
         </Border>
 
@@ -51,17 +57,19 @@
                         <DockPanel Classes="logRow"
                                    ToolTip.Tip="{Binding MetaData}"
                                    Margin="2,1">
-                            <!-- Color-coded time -->
+                            <!-- Color-coded time (fixed width so messages align) -->
                             <TextBlock Text="{Binding Time, StringFormat={}{0:HH:mm:ss}}"
                                        Foreground="{Binding Level, Converter={StaticResource LevelToBrushConverter}}"
                                        Margin="4,1"
+                                       Width="58"
                                        FontFamily="Consolas"
                                        FontSize="12"
                                        VerticalAlignment="Top"/>
-                            <!-- Level tag (same color) -->
+                            <!-- Level tag (same color, fixed width column) -->
                             <TextBlock Text="{Binding Level}"
                                        Foreground="{Binding Level, Converter={StaticResource LevelToBrushConverter}}"
                                        Margin="2,1"
+                                       Width="48"
                                        FontFamily="Consolas"
                                        FontSize="11"
                                        FontWeight="Bold"

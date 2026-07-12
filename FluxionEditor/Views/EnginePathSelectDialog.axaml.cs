@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using FluxionEditor.Views;
 using System.IO;
 
 namespace FluxionEditor;
@@ -12,6 +13,7 @@ public partial class EnginePathSelectDialog : Window
     public EnginePathSelectDialog()
     {
         InitializeComponent();
+        
     }
 
     private void OnOkButtonClicked(object? sender, Avalonia.Interactivity.RoutedEventArgs e)

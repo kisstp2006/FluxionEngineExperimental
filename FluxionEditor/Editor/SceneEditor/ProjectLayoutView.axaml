@@ -10,66 +10,94 @@
              x:Name="Root"
              Background="{DynamicResource Editor.Window.GrayBrush2}">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="32"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
+    <UserControl.Styles>
+        <!-- Rows stretch so per-item action buttons can dock to the right edge -->
+        <Style Selector="ListBoxItem">
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        </Style>
+        <!-- Compact inline action buttons used in headers and rows -->
+        <Style Selector="Button.inline">
+            <Setter Property="Padding" Value="8,1"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Styles>
 
-        <Button Grid.Row="0"
-                Width="150"
-                HorizontalAlignment="Left"
-                Margin="20,0,0,0"
-                VerticalContentAlignment="Center"
-                HorizontalContentAlignment="Center"
-                Command="{Binding AddSceneCommand}">
-            Add new scene
-        </Button>
+    <Grid RowDefinitions="30,*">
+
+        <!-- Panel header: title + toolbar actions -->
+        <Border Grid.Row="0"
+                Background="{DynamicResource Editor.Window.GrayBrush2}"
+                BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
+                BorderThickness="0,0,0,1">
+            <DockPanel Margin="8,0">
+                <Button DockPanel.Dock="Right"
+                        Classes="inline"
+                        Command="{Binding AddSceneCommand}">
+                    Add Scene
+                </Button>
+                <TextBlock Text="PROJECT LAYOUT"
+                           FontSize="11"
+                           FontWeight="SemiBold"
+                           VerticalAlignment="Center"
+                           Foreground="{DynamicResource Editor.Window.GrayBrush6}"/>
+            </DockPanel>
+        </Border>
 
         <ScrollViewer Grid.Row="1"
                       HorizontalScrollBarVisibility="Auto"
                       VerticalScrollBarVisibility="Visible">
-            <ItemsControl ItemsSource="{Binding Scenes}">
+            <ItemsControl ItemsSource="{Binding Scenes}" Margin="6">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical"/>
+                        <StackPanel Orientation="Vertical" Spacing="6"/>
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="foundation:Scene">
                         <Expander IsExpanded="{Binding IsActive, Mode=OneWay}"
-                                  Margin="8"
                                   MinWidth="200"
+                                  HorizontalAlignment="Stretch"
                                   HorizontalContentAlignment="Stretch">
                             <Expander.Header>
-                                <StackPanel Orientation="Horizontal">
+                                <DockPanel>
+                                    <StackPanel DockPanel.Dock="Right"
+                                                Orientation="Horizontal"
+                                                Spacing="4">
+                                        <Button Classes="inline"
+                                                IsEnabled="{Binding IsActive}"
+                                                Command="{Binding AddGameObjectCommand}">Add GameObject</Button>
+                                        <Button Classes="inline"
+                                                Command="{Binding DataContext.RemoveSceneCommand, ElementName=Root}"
+                                                CommandParameter="{Binding}">Remove</Button>
+                                    </StackPanel>
                                     <TextBlock Text="{Binding Name}"
-                                               VerticalAlignment="Center"/>
-                                    <Button Command="{Binding DataContext.RemoveSceneCommand, ElementName=Root}"
-                                            CommandParameter="{Binding}">Remove Scene</Button>
-                                    <Button IsEnabled="{Binding IsActive}"
-                                            Command="{Binding AddGameObjectCommand}">Add GameObject</Button>
-                                </StackPanel>
+                                               FontWeight="SemiBold"
+                                               VerticalAlignment="Center"
+                                               Margin="0,0,8,0"/>
+                                </DockPanel>
                             </Expander.Header>
-                            <StackPanel Margin="8,4">
-                                <ListBox IsEnabled="{Binding IsActive}"
-                                         ItemsSource="{Binding GameObjects}"
-                                         Background="{DynamicResource Editor.Window.GrayBrush2}"
-                                         BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
-                                         SelectionChanged="OnGameObjectListSelectionChanged"
-                                         SelectionMode="Multiple">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate x:DataType="components:GameObject">
-                                            <StackPanel Orientation="Horizontal">
-                                                <TextBlock Text="{Binding Name}"
-                                                           VerticalAlignment="Center"/>
-                                                <Button Command="{Binding ParentScene.RemoveGameObjectCommand}"
-                                                        CommandParameter="{Binding}">Remove</Button>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </StackPanel>
+                            <ListBox IsEnabled="{Binding IsActive}"
+                                     ItemsSource="{Binding GameObjects}"
+                                     Background="{DynamicResource Editor.Window.GrayBrush2}"
+                                     BorderBrush="{DynamicResource Editor.Window.GrayBrush4}"
+                                     Margin="4"
+                                     SelectionChanged="OnGameObjectListSelectionChanged"
+                                     SelectionMode="Multiple">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate x:DataType="components:GameObject">
+                                        <DockPanel>
+                                            <Button DockPanel.Dock="Right"
+                                                    Classes="inline"
+                                                    Command="{Binding ParentScene.RemoveGameObjectCommand}"
+                                                    CommandParameter="{Binding}">Remove</Button>
+                                            <TextBlock Text="{Binding Name}"
+                                                       VerticalAlignment="Center"/>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </Expander>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
